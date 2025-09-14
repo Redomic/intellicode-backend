@@ -1,0 +1,10 @@
+playwright==1.41.2
+aiohttp==3.9.3
+beautifulsoup4==4.12.3
+lxml==5.1.0
+pydantic==2.6.1
+asyncio-throttle==1.0.2
+fake-useragent==1.4.0
+python-dotenv==1.0.1
+tenacity==8.2.3
+rich==13.7.0

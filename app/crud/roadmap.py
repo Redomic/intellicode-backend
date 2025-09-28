@@ -211,6 +211,110 @@ class RoadmapCRUD:
         
         return roadmap_items
     
+    def get_user_roadmap_progress(self, user_key: str) -> List:
+        """Get user progress for all roadmaps."""
+        from app.models.roadmap import RoadmapProgress
+        
+        # Get all unique courses
+        courses_query = """
+        FOR r IN roadmap
+        COLLECT course = r.course
+        RETURN {
+            course: course,
+            total_questions: LENGTH(
+                FOR item IN roadmap
+                FILTER item.course == course
+                RETURN 1
+            )
+        }
+        """
+        
+        courses_cursor = self.db.aql.execute(courses_query)
+        courses_data = list(courses_cursor)
+        
+        roadmap_progress = []
+        
+        for course_info in courses_data:
+            course = course_info['course']
+            total_questions = course_info['total_questions']
+            
+            # Get completed questions for this user and course
+            completed_query = """
+            FOR session IN problem_solving_sessions
+            FILTER session.user_key == @user_key AND session.is_correct == true
+            LET roadmap_item = (
+                FOR r IN roadmap
+                FILTER r._key == session.question_key AND r.course == @course
+                RETURN r
+            )[0]
+            FILTER roadmap_item != null
+            COLLECT WITH COUNT INTO completed_count
+            RETURN completed_count
+            """
+            
+            completed_cursor = self.db.aql.execute(
+                completed_query, 
+                bind_vars={'user_key': user_key, 'course': course}
+            )
+            completed_result = list(completed_cursor)
+            completed_questions = completed_result[0] if completed_result else 0
+            
+            # Calculate progress percentage
+            progress_percentage = (completed_questions / total_questions * 100) if total_questions > 0 else 0
+            
+            # Get last activity for this course
+            last_activity_query = """
+            FOR session IN problem_solving_sessions
+            FILTER session.user_key == @user_key AND session.is_correct == true
+            LET roadmap_item = (
+                FOR r IN roadmap
+                FILTER r._key == session.question_key AND r.course == @course
+                RETURN r
+            )[0]
+            FILTER roadmap_item != null
+            SORT session.created_at DESC
+            LIMIT 1
+            RETURN session.created_at
+            """
+            
+            last_activity_cursor = self.db.aql.execute(
+                last_activity_query,
+                bind_vars={'user_key': user_key, 'course': course}
+            )
+            last_activity_result = list(last_activity_cursor)
+            last_activity = None
+            if last_activity_result and last_activity_result[0]:
+                if isinstance(last_activity_result[0], str):
+                    last_activity = datetime.fromisoformat(last_activity_result[0].replace('Z', '+00:00'))
+                else:
+                    last_activity = last_activity_result[0]
+            
+            # Generate course display name
+            course_name = self._generate_course_display_name(course)
+            
+            progress = RoadmapProgress(
+                course=course,
+                course_name=course_name,
+                total_questions=total_questions,
+                completed_questions=completed_questions,
+                progress_percentage=round(progress_percentage, 1),
+                last_activity=last_activity
+            )
+            
+            roadmap_progress.append(progress)
+        
+        return roadmap_progress
+    
+    def _generate_course_display_name(self, course: str) -> str:
+        """Generate a human-readable course name from course identifier."""
+        if course == "strivers-a2z":
+            return "Striver's A2Z DSA Course"
+        
+        # For future courses, you can add more mappings here
+        # Convert snake_case or kebab-case to Title Case
+        words = course.replace('-', ' ').replace('_', ' ').split()
+        return ' '.join(word.capitalize() for word in words)
+    
     def get_roadmap_by_step(self, step: str, sub_step: Optional[str] = None) -> List[RoadmapItemInDB]:
         """Get all roadmap items for a specific step or sub-step."""
         filters = RoadmapSearchFilters(a2z_step=step, a2z_sub_step=sub_step)
@@ -405,3 +509,107 @@ class RoadmapCRUD:
             roadmap_items.append(RoadmapItemInDB(**roadmap_data))
         
         return roadmap_items
+    
+    def get_user_roadmap_progress(self, user_key: str) -> List:
+        """Get user progress for all roadmaps."""
+        from app.models.roadmap import RoadmapProgress
+        
+        # Get all unique courses
+        courses_query = """
+        FOR r IN roadmap
+        COLLECT course = r.course
+        RETURN {
+            course: course,
+            total_questions: LENGTH(
+                FOR item IN roadmap
+                FILTER item.course == course
+                RETURN 1
+            )
+        }
+        """
+        
+        courses_cursor = self.db.aql.execute(courses_query)
+        courses_data = list(courses_cursor)
+        
+        roadmap_progress = []
+        
+        for course_info in courses_data:
+            course = course_info['course']
+            total_questions = course_info['total_questions']
+            
+            # Get completed questions for this user and course
+            completed_query = """
+            FOR session IN problem_solving_sessions
+            FILTER session.user_key == @user_key AND session.is_correct == true
+            LET roadmap_item = (
+                FOR r IN roadmap
+                FILTER r._key == session.question_key AND r.course == @course
+                RETURN r
+            )[0]
+            FILTER roadmap_item != null
+            COLLECT WITH COUNT INTO completed_count
+            RETURN completed_count
+            """
+            
+            completed_cursor = self.db.aql.execute(
+                completed_query, 
+                bind_vars={'user_key': user_key, 'course': course}
+            )
+            completed_result = list(completed_cursor)
+            completed_questions = completed_result[0] if completed_result else 0
+            
+            # Calculate progress percentage
+            progress_percentage = (completed_questions / total_questions * 100) if total_questions > 0 else 0
+            
+            # Get last activity for this course
+            last_activity_query = """
+            FOR session IN problem_solving_sessions
+            FILTER session.user_key == @user_key AND session.is_correct == true
+            LET roadmap_item = (
+                FOR r IN roadmap
+                FILTER r._key == session.question_key AND r.course == @course
+                RETURN r
+            )[0]
+            FILTER roadmap_item != null
+            SORT session.created_at DESC
+            LIMIT 1
+            RETURN session.created_at
+            """
+            
+            last_activity_cursor = self.db.aql.execute(
+                last_activity_query,
+                bind_vars={'user_key': user_key, 'course': course}
+            )
+            last_activity_result = list(last_activity_cursor)
+            last_activity = None
+            if last_activity_result and last_activity_result[0]:
+                if isinstance(last_activity_result[0], str):
+                    last_activity = datetime.fromisoformat(last_activity_result[0].replace('Z', '+00:00'))
+                else:
+                    last_activity = last_activity_result[0]
+            
+            # Generate course display name
+            course_name = self._generate_course_display_name(course)
+            
+            progress = RoadmapProgress(
+                course=course,
+                course_name=course_name,
+                total_questions=total_questions,
+                completed_questions=completed_questions,
+                progress_percentage=round(progress_percentage, 1),
+                last_activity=last_activity
+            )
+            
+            roadmap_progress.append(progress)
+        
+        return roadmap_progress
+    
+    def _generate_course_display_name(self, course: str) -> str:
+        """Generate a human-readable course name from course identifier."""
+        if course == "strivers-a2z":
+            return "Striver's A2Z DSA Course"
+        
+        # For future courses, you can add more mappings here
+        # Convert snake_case or kebab-case to Title Case
+        words = course.replace('-', ' ').replace('_', ' ').split()
+        return ' '.join(word.capitalize() for word in words)

@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 from arango.database import StandardDatabase
 
@@ -41,6 +41,10 @@ class UserCRUD:
         if users:
             user_data = users[0].copy()
             
+            # Ensure active_course field exists (for backward compatibility)
+            if 'active_course' not in user_data:
+                user_data['active_course'] = None
+            
             # Convert datetime strings to datetime objects
             if 'created_at' in user_data and isinstance(user_data['created_at'], str):
                 user_data['created_at'] = datetime.fromisoformat(user_data['created_at'].replace('Z', '+00:00'))
@@ -58,6 +62,10 @@ class UserCRUD:
                 user_data = user_data.copy()
                 # The _key should already be in the document, but ensure it's set
                 user_data['_key'] = key
+                
+                # Ensure active_course field exists (for backward compatibility)
+                if 'active_course' not in user_data:
+                    user_data['active_course'] = None
                 
                 # Convert datetime strings to datetime objects
                 if 'created_at' in user_data and isinstance(user_data['created_at'], str):

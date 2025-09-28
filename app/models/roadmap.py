@@ -189,3 +189,19 @@ class RoadmapSearchFilters(BaseModel):
     has_examples: Optional[bool] = None
     has_hints: Optional[bool] = None
     company_tags: Optional[List[str]] = None
+
+
+class RoadmapProgress(BaseModel):
+    """Model for roadmap progress data."""
+    course: str
+    course_name: str
+    total_questions: int
+    completed_questions: int
+    progress_percentage: float
+    last_activity: Optional[datetime] = None
+
+
+class RoadmapProgressResponse(BaseModel):
+    """Response model for roadmap progress API."""
+    roadmaps: List[RoadmapProgress]
+    total_roadmaps: int

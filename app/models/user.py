@@ -35,6 +35,9 @@ class UserInDB(UserBase):
     skill_strengths: Optional[List[str]] = Field(default_factory=list)
     areas_for_improvement: Optional[List[str]] = Field(default_factory=list)
     
+    # Course activation tracking (single course only)
+    active_course: Optional[str] = Field(default=None, description="Currently active course ID for the user")
+    
     model_config = {
         "populate_by_name": True,
         "extra": "ignore"
@@ -61,6 +64,9 @@ class User(UserBase):
     learning_preferences: Optional[Dict[str, Any]] = Field(default_factory=dict)
     skill_strengths: Optional[List[str]] = Field(default_factory=list)
     areas_for_improvement: Optional[List[str]] = Field(default_factory=list)
+    
+    # Course activation tracking (single course only)
+    active_course: Optional[str] = Field(default=None, description="Currently active course ID for the user")
     
     model_config = {
         "populate_by_name": True,

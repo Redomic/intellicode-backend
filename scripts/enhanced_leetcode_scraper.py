@@ -71,6 +71,7 @@ class EnhancedLeetCodeScraper:
             'a2z_difficulty': question_data.get('difficulty', 0),
             'a2z_topics': question_data.get('ques_topic', ''),
             'lc_link': lc_link,
+            'step_number': question_data.get('step_number', 0),  # Preserve sl_no for ordering
             'scraped_at': datetime.now().isoformat(),
             'success': False,
             'error': None,
@@ -562,20 +563,28 @@ class EnhancedLeetCodeScraper:
 
 
 def load_a2z_questions(a2z_file: Path) -> List[Dict]:
-    """Load questions from A2Z JSON file and filter for LeetCode links."""
+    """Load questions from A2Z JSON file and filter for LeetCode links with global sequential numbering."""
     try:
         with open(a2z_file, 'r', encoding='utf-8') as f:
             a2z_data = json.load(f)
         
         questions = []
+        global_step_number = 1  # Start global counter at 1
+        
         for step in a2z_data:
             for sub_step in step.get('sub_steps', []):
                 for topic in sub_step.get('topics', []):
                     lc_link = topic.get('lc_link')
                     if lc_link and lc_link.strip():
-                        questions.append(topic)
+                        # Create global sequential numbering across all sub-steps
+                        topic_with_metadata = topic.copy()
+                        topic_with_metadata['step_number'] = global_step_number
+                        topic_with_metadata['original_sl_no'] = topic.get('sl_no', 0)  # Preserve original for reference
+                        questions.append(topic_with_metadata)
+                        global_step_number += 1  # Increment for next question
         
         console.print(f"📚 Found {len(questions)} questions with LeetCode links", style="blue")
+        console.print(f"🔢 Assigned global step numbers 1-{global_step_number-1} (linear progression)", style="green")
         return questions
         
     except Exception as e:

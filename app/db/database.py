@@ -59,7 +59,8 @@ class DatabaseManager:
         collections = [
             'users', 'problems', 'submissions', 'progress', 'questions', 'assessments',
             'problem_solving_sessions', 'user_activities', 'user_stats',
-            'behavior_tracking_sessions', 'session_analyses', 'behavior_summaries'
+            'behavior_tracking_sessions', 'session_analyses', 'behavior_summaries',
+            'roadmap'  # Comprehensive LeetCode questions from A2Z roadmap
         ]
         
         for collection_name in collections:

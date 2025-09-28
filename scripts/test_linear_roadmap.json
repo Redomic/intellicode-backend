@@ -1,0 +1,800 @@
+{
+  "metadata": {
+    "scraped_at": "2025-09-28T01:10:34.244873",
+    "total_questions": 10,
+    "successful_scrapes": 10,
+    "failed_scrapes": 0,
+    "scraper": "Standalone Roadmap Scraper v1.0 using LeetScrape",
+    "format": "roadmap_collection_ready",
+    "content_statistics": {
+      "total_examples_extracted": 24,
+      "total_test_cases_extracted": 24,
+      "total_hints_extracted": 18,
+      "total_topics_extracted": 24
+    }
+  },
+  "roadmap_items": [
+    {
+      "question_id": "rvrsnmbr",
+      "original_title": "Reverse a Number",
+      "a2z_step": "Learn the basics",
+      "a2z_sub_step": "Know Basic Maths",
+      "a2z_difficulty": 0,
+      "a2z_topics": "[{\"value\":\"maths\",\"label\":\"Maths\"},{\"value\":\"data-structure\",\"label\":\"Data Structures\"}]",
+      "lc_link": "https://leetcode.com/problems/reverse-integer/",
+      "step_number": 1,
+      "leetcode_title": "Reverse Integer",
+      "leetcode_title_slug": "reverse-integer",
+      "leetcode_difficulty": "Medium",
+      "leetcode_question_id": 7,
+      "is_paid_only": false,
+      "problem_statement_html": "<p>Given a signed 32-bit integer <code>x</code>, return <code>x</code><em> with its digits reversed</em>. If reversing <code>x</code> causes the value to go outside the signed 32-bit integer range <code>[-2<sup>31</sup>, 2<sup>31</sup> - 1]</code>, then return <code>0</code>.</p>\n\n<p><strong>Assume the environment does not allow you to store 64-bit integers (signed or unsigned).</strong></p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> x = 123\n<strong>Output:</strong> 321\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> x = -123\n<strong>Output:</strong> -321\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> x = 120\n<strong>Output:</strong> 21\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>-2<sup>31</sup> &lt;= x &lt;= 2<sup>31</sup> - 1</code></li>\n</ul>\n",
+      "problem_statement_text": "Given a signed 32-bit integer x, return x with its digits reversed. If reversing x causes the value to go outside the signed 32-bit integer range [-231, 231 - 1], then return 0. Assume the environment does not allow you to store 64-bit integers (signed or unsigned). Example 1: Input: x = 123 Output: 321 Example 2: Input: x = -123 Output: -321 Example 3: Input: x = 120 Output: 21 Constraints: -231 <= x <= 231 - 1",
+      "examples": [
+        {
+          "example_number": 1,
+          "input": "x = 123",
+          "output": "321"
+        },
+        {
+          "example_number": 2,
+          "input": "x = -123",
+          "output": "321"
+        },
+        {
+          "example_number": 3,
+          "input": "x = 120",
+          "output": "21"
+        }
+      ],
+      "sample_test_cases": [
+        {
+          "input": "x = 123",
+          "expected_output": "321",
+          "explanation": "",
+          "example_number": 1
+        },
+        {
+          "input": "x = -123",
+          "expected_output": "321",
+          "explanation": "",
+          "example_number": 2
+        },
+        {
+          "input": "x = 120",
+          "expected_output": "21",
+          "explanation": "",
+          "example_number": 3
+        }
+      ],
+      "constraints": [
+        "231 <= x <= 231 - 1"
+      ],
+      "code_templates": {
+        "python": "class Solution:\n    def reverse(self, x: int) -> int:\n        "
+      },
+      "default_code": "class Solution:\n    def reverse(self, x: int) -> int:\n        ",
+      "hints": [],
+      "topics": [
+        "Math"
+      ],
+      "company_tags": [],
+      "similar_questions": [
+        8,
+        190,
+        2119,
+        2442
+      ],
+      "follow_up_questions": [],
+      "note_sections": [],
+      "scraping_duration": 2.0726590156555176,
+      "scraped_at": "2025-09-28T01:10:14.613706",
+      "scraping_success": true,
+      "scraping_error": null
+    },
+    {
+      "question_id": "chckplindrm",
+      "original_title": "Check Palindrome",
+      "a2z_step": "Learn the basics",
+      "a2z_sub_step": "Know Basic Maths",
+      "a2z_difficulty": 0,
+      "a2z_topics": "[{\"value\":\"maths\",\"label\":\"Maths\"},{\"value\":\"data-structure\",\"label\":\"Data Structures\"}]",
+      "lc_link": "https://leetcode.com/problems/palindrome-number/",
+      "step_number": 2,
+      "leetcode_title": "Palindrome Number",
+      "leetcode_title_slug": "palindrome-number",
+      "leetcode_difficulty": "Easy",
+      "leetcode_question_id": 9,
+      "is_paid_only": false,
+      "problem_statement_html": "<p>Given an integer <code>x</code>, return <code>true</code><em> if </em><code>x</code><em> is a </em><span data-keyword=\"palindrome-integer\"><em><strong>palindrome</strong></em></span><em>, and </em><code>false</code><em> otherwise</em>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> x = 121\n<strong>Output:</strong> true\n<strong>Explanation:</strong> 121 reads as 121 from left to right and from right to left.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> x = -121\n<strong>Output:</strong> false\n<strong>Explanation:</strong> From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome.\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> x = 10\n<strong>Output:</strong> false\n<strong>Explanation:</strong> Reads 01 from right to left. Therefore it is not a palindrome.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>-2<sup>31</sup>&nbsp;&lt;= x &lt;= 2<sup>31</sup>&nbsp;- 1</code></li>\n</ul>\n\n<p>&nbsp;</p>\n<strong>Follow up:</strong> Could you solve it without converting the integer to a string?",
+      "problem_statement_text": "Given an integer x, return true if x is a palindrome, and false otherwise. Example 1: Input: x = 121 Output: true Explanation: 121 reads as 121 from left to right and from right to left. Example 2: Input: x = -121 Output: false Explanation: From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome. Example 3: Input: x = 10 Output: false Explanation: Reads 01 from right to left. Therefore it is not a palindrome. Constraints: -231 <= x <= 231 - 1 Follow up: Could you solve it without converting the integer to a string?",
+      "examples": [
+        {
+          "example_number": 1,
+          "input": "x = 121",
+          "output": "true",
+          "explanation": "121 reads as 121 from left to right and from right to left."
+        },
+        {
+          "example_number": 2,
+          "input": "x = -121",
+          "output": "false",
+          "explanation": "From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome."
+        },
+        {
+          "example_number": 3,
+          "input": "x = 10",
+          "output": "false",
+          "explanation": "Reads 01 from right to left. Therefore it is not a palindrome."
+        }
+      ],
+      "sample_test_cases": [
+        {
+          "input": "x = 121",
+          "expected_output": "true",
+          "explanation": "121 reads as 121 from left to right and from right to left.",
+          "example_number": 1
+        },
+        {
+          "input": "x = -121",
+          "expected_output": "false",
+          "explanation": "From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome.",
+          "example_number": 2
+        },
+        {
+          "input": "x = 10",
+          "expected_output": "false",
+          "explanation": "Reads 01 from right to left. Therefore it is not a palindrome.",
+          "example_number": 3
+        }
+      ],
+      "constraints": [
+        "231 <= x <= 231 - 1"
+      ],
+      "code_templates": {
+        "python": "class Solution:\n    def isPalindrome(self, x: int) -> bool:\n        "
+      },
+      "default_code": "class Solution:\n    def isPalindrome(self, x: int) -> bool:\n        ",
+      "hints": [
+        "Beware of overflow when you reverse the integer."
+      ],
+      "topics": [
+        "Math"
+      ],
+      "company_tags": [],
+      "similar_questions": [
+        234,
+        2217,
+        2396,
+        2843,
+        3272,
+        3260
+      ],
+      "follow_up_questions": [
+        "Given an integer x, return true if x is a palindrome, and false otherwise. Example 1: Input: x = 121 Output: true Explanation: 121 reads as 121 from left to right and from right to left. Example 2: Input: x = -121 Output: false Explanation: From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome. Example 3: Input: x = 10 Output: false Explanation: Reads 01 from right to left. Therefore it is not a palindrome. Constraints: -231 <= x <= 231 - 1  Could you solve it without converting the integer to a string?"
+      ],
+      "note_sections": [],
+      "scraping_duration": 1.412458896636963,
+      "scraped_at": "2025-09-28T01:10:14.614258",
+      "scraping_success": true,
+      "scraping_error": null
+    },
+    {
+      "question_id": "rmstrngnmbrs",
+      "original_title": "Armstrong Numbers",
+      "a2z_step": "Learn the basics",
+      "a2z_sub_step": "Know Basic Maths",
+      "a2z_difficulty": 0,
+      "a2z_topics": "[{\"value\":\"maths\",\"label\":\"Maths\"},{\"value\":\"data-structure\",\"label\":\"Data Structures\"}]",
+      "lc_link": "https://leetcode.com/problems/armstrong-number/",
+      "step_number": 3,
+      "leetcode_title": "Armstrong Number",
+      "leetcode_title_slug": "armstrong-number",
+      "leetcode_difficulty": "Easy",
+      "leetcode_question_id": 1134,
+      "is_paid_only": true,
+      "problem_statement_html": "This questions is only for paid Leetcode subscribers.",
+      "problem_statement_text": "This questions is only for paid Leetcode subscribers.",
+      "examples": [],
+      "sample_test_cases": [],
+      "constraints": [],
+      "code_templates": {
+        "python": "# This questions is only for paid Leetcode subscribers.\n# Generating a generic Python code stub\nclass Solution:\n    def armstrongNumber(self) -> Any:\n      "
+      },
+      "default_code": "# This questions is only for paid Leetcode subscribers.\n# Generating a generic Python code stub\nclass Solution:\n    def armstrongNumber(self) -> Any:\n      ",
+      "hints": [
+        "Check if the given k-digit number equals the sum of the k-th power of it's digits.",
+        "How to compute the sum of the k-th power of the digits of a number ? Can you divide the number into digits using division and modulus operations ?",
+        "You can find the least significant digit of a number by taking it modulus 10. And you can remove it by dividing the number by 10 (integer division). Once you have a digit, you can raise it to the power of k and add it to the sum."
+      ],
+      "topics": [
+        "Math"
+      ],
+      "company_tags": [],
+      "similar_questions": [],
+      "follow_up_questions": [],
+      "note_sections": [],
+      "scraping_duration": 2.6127939224243164,
+      "scraped_at": "2025-09-28T01:10:14.614448",
+      "scraping_success": true,
+      "scraping_error": null
+    },
+    {
+      "question_id": "chckifstringisplindrmrnt",
+      "original_title": "Check if a string is palindrome or not",
+      "a2z_step": "Learn the basics",
+      "a2z_sub_step": "Learn Basic Recursion",
+      "a2z_difficulty": 1,
+      "a2z_topics": "[{\"value\":\"string\",\"label\":\"String\"},{\"value\":\"data-structure\",\"label\":\"Data Structures\"}]",
+      "lc_link": "https://leetcode.com/problems/valid-palindrome/",
+      "step_number": 4,
+      "leetcode_title": "Valid Palindrome",
+      "leetcode_title_slug": "valid-palindrome",
+      "leetcode_difficulty": "Easy",
+      "leetcode_question_id": 125,
+      "is_paid_only": false,
+      "problem_statement_html": "<p>A phrase is a <strong>palindrome</strong> if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.</p>\n\n<p>Given a string <code>s</code>, return <code>true</code><em> if it is a <strong>palindrome</strong>, or </em><code>false</code><em> otherwise</em>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;A man, a plan, a canal: Panama&quot;\n<strong>Output:</strong> true\n<strong>Explanation:</strong> &quot;amanaplanacanalpanama&quot; is a palindrome.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;race a car&quot;\n<strong>Output:</strong> false\n<strong>Explanation:</strong> &quot;raceacar&quot; is not a palindrome.\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot; &quot;\n<strong>Output:</strong> true\n<strong>Explanation:</strong> s is an empty string &quot;&quot; after removing non-alphanumeric characters.\nSince an empty string reads the same forward and backward, it is a palindrome.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= s.length &lt;= 2 * 10<sup>5</sup></code></li>\n\t<li><code>s</code> consists only of printable ASCII characters.</li>\n</ul>\n",
+      "problem_statement_text": "A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers. Given a string s, return true if it is a palindrome, or false otherwise. Example 1: Input: s = \"A man, a plan, a canal: Panama\" Output: true Explanation: \"amanaplanacanalpanama\" is a palindrome. Example 2: Input: s = \"race a car\" Output: false Explanation: \"raceacar\" is not a palindrome. Example 3: Input: s = \" \" Output: true Explanation: s is an empty string \"\" after removing non-alphanumeric characters. Since an empty string reads the same forward and backward, it is a palindrome. Constraints: 1 <= s.length <= 2 * 105 s consists only of printable ASCII characters.",
+      "examples": [
+        {
+          "example_number": 1,
+          "input": "s = \"A man, a plan, a canal: Panama\"",
+          "output": "true",
+          "explanation": "\"amanaplanacanalpanama\" is a palindrome."
+        },
+        {
+          "example_number": 2,
+          "input": "s = \"race a car\"",
+          "output": "false",
+          "explanation": "\"raceacar\" is not a palindrome."
+        },
+        {
+          "example_number": 3,
+          "input": "s = \" \"",
+          "output": "true",
+          "explanation": "s is an empty string \"\" after removing non-alphanumeric characters. Since an empty string reads the same forward and backward, it is a palindrome."
+        }
+      ],
+      "sample_test_cases": [
+        {
+          "input": "s = \"A man, a plan, a canal: Panama\"",
+          "expected_output": "true",
+          "explanation": "\"amanaplanacanalpanama\" is a palindrome.",
+          "example_number": 1
+        },
+        {
+          "input": "s = \"race a car\"",
+          "expected_output": "false",
+          "explanation": "\"raceacar\" is not a palindrome.",
+          "example_number": 2
+        },
+        {
+          "input": "s = \" \"",
+          "expected_output": "true",
+          "explanation": "s is an empty string \"\" after removing non-alphanumeric characters. Since an empty string reads the same forward and backward, it is a palindrome.",
+          "example_number": 3
+        }
+      ],
+      "constraints": [
+        "1 <= s.length <= 2 * 105",
+        "s consists only of printable ASCII characters."
+      ],
+      "code_templates": {
+        "python": "class Solution:\n    def isPalindrome(self, s: str) -> bool:\n        "
+      },
+      "default_code": "class Solution:\n    def isPalindrome(self, s: str) -> bool:\n        ",
+      "hints": [],
+      "topics": [
+        "Two Pointers",
+        "String"
+      ],
+      "company_tags": [],
+      "similar_questions": [
+        234,
+        680,
+        2002,
+        2108,
+        2330,
+        3035
+      ],
+      "follow_up_questions": [],
+      "note_sections": [],
+      "scraping_duration": 1.3223609924316406,
+      "scraped_at": "2025-09-28T01:10:16.694241",
+      "scraping_success": true,
+      "scraping_error": null
+    },
+    {
+      "question_id": "fibnccinmbr",
+      "original_title": "Fibonacci Number",
+      "a2z_step": "Learn the basics",
+      "a2z_sub_step": "Learn Basic Recursion",
+      "a2z_difficulty": 0,
+      "a2z_topics": "[{\"value\":\"maths\",\"label\":\"Maths\"},{\"value\":\"data-structure\",\"label\":\"Data Structures\"}]",
+      "lc_link": "https://leetcode.com/problems/fibonacci-number/",
+      "step_number": 5,
+      "leetcode_title": "Fibonacci Number",
+      "leetcode_title_slug": "fibonacci-number",
+      "leetcode_difficulty": "Easy",
+      "leetcode_question_id": 509,
+      "is_paid_only": false,
+      "problem_statement_html": "<p>The <b>Fibonacci numbers</b>, commonly denoted <code>F(n)</code> form a sequence, called the <b>Fibonacci sequence</b>, such that each number is the sum of the two preceding ones, starting from <code>0</code> and <code>1</code>. That is,</p>\n\n<pre>\nF(0) = 0, F(1) = 1\nF(n) = F(n - 1) + F(n - 2), for n &gt; 1.\n</pre>\n\n<p>Given <code>n</code>, calculate <code>F(n)</code>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> n = 2\n<strong>Output:</strong> 1\n<strong>Explanation:</strong> F(2) = F(1) + F(0) = 1 + 0 = 1.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> n = 3\n<strong>Output:</strong> 2\n<strong>Explanation:</strong> F(3) = F(2) + F(1) = 1 + 1 = 2.\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> n = 4\n<strong>Output:</strong> 3\n<strong>Explanation:</strong> F(4) = F(3) + F(2) = 2 + 1 = 3.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>0 &lt;= n &lt;= 30</code></li>\n</ul>\n",
+      "problem_statement_text": "The Fibonacci numbers, commonly denoted F(n) form a sequence, called the Fibonacci sequence, such that each number is the sum of the two preceding ones, starting from 0 and 1. That is, F(0) = 0, F(1) = 1 F(n) = F(n - 1) + F(n - 2), for n > 1. Given n, calculate F(n). Example 1: Input: n = 2 Output: 1 Explanation: F(2) = F(1) + F(0) = 1 + 0 = 1. Example 2: Input: n = 3 Output: 2 Explanation: F(3) = F(2) + F(1) = 1 + 1 = 2. Example 3: Input: n = 4 Output: 3 Explanation: F(4) = F(3) + F(2) = 2 + 1 = 3. Constraints: 0 <= n <= 30",
+      "examples": [
+        {
+          "example_number": 2,
+          "input": "n = 2",
+          "output": "1",
+          "explanation": "F(2) = F(1) + F(0) = 1 + 0 = 1."
+        },
+        {
+          "example_number": 3,
+          "input": "n = 3",
+          "output": "2",
+          "explanation": "F(3) = F(2) + F(1) = 1 + 1 = 2."
+        },
+        {
+          "example_number": 4,
+          "input": "n = 4",
+          "output": "3",
+          "explanation": "F(4) = F(3) + F(2) = 2 + 1 = 3."
+        }
+      ],
+      "sample_test_cases": [
+        {
+          "input": "n = 2",
+          "expected_output": "1",
+          "explanation": "F(2) = F(1) + F(0) = 1 + 0 = 1.",
+          "example_number": 2
+        },
+        {
+          "input": "n = 3",
+          "expected_output": "2",
+          "explanation": "F(3) = F(2) + F(1) = 1 + 1 = 2.",
+          "example_number": 3
+        },
+        {
+          "input": "n = 4",
+          "expected_output": "3",
+          "explanation": "F(4) = F(3) + F(2) = 2 + 1 = 3.",
+          "example_number": 4
+        }
+      ],
+      "constraints": [
+        "0 <= n <= 30"
+      ],
+      "code_templates": {
+        "python": "class Solution:\n    def fib(self, n: int) -> int:\n        "
+      },
+      "default_code": "class Solution:\n    def fib(self, n: int) -> int:\n        ",
+      "hints": [],
+      "topics": [
+        "Math",
+        "Dynamic Programming",
+        "Recursion",
+        "Memoization"
+      ],
+      "company_tags": [],
+      "similar_questions": [
+        70,
+        842,
+        873,
+        1137
+      ],
+      "follow_up_questions": [],
+      "note_sections": [],
+      "scraping_duration": 3.6470398902893066,
+      "scraped_at": "2025-09-28T01:10:18.040446",
+      "scraping_success": true,
+      "scraping_error": null
+    },
+    {
+      "question_id": "findthhighstlwstfrqncylmnt",
+      "original_title": "Find the highest/lowest frequency element",
+      "a2z_step": "Learn the basics",
+      "a2z_sub_step": "Learn Basic Hashing",
+      "a2z_difficulty": 0,
+      "a2z_topics": "[{\"value\":\"arrays\",\"label\":\"Arrays\"},{\"value\":\"hashing\",\"label\":\"Hashing\"},{\"value\":\"data-structure\",\"label\":\"Data Structures\"}]",
+      "lc_link": "https://leetcode.com/problems/frequency-of-the-most-frequent-element/",
+      "step_number": 6,
+      "leetcode_title": "Frequency of the Most Frequent Element",
+      "leetcode_title_slug": "frequency-of-the-most-frequent-element",
+      "leetcode_difficulty": "Medium",
+      "leetcode_question_id": 1838,
+      "is_paid_only": false,
+      "problem_statement_html": "<p>The <strong>frequency</strong> of an element is the number of times it occurs in an array.</p>\n\n<p>You are given an integer array <code>nums</code> and an integer <code>k</code>. In one operation, you can choose an index of <code>nums</code> and increment the element at that index by <code>1</code>.</p>\n\n<p>Return <em>the <strong>maximum possible frequency</strong> of an element after performing <strong>at most</strong> </em><code>k</code><em> operations</em>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [1,2,4], k = 5\n<strong>Output:</strong> 3<strong>\nExplanation:</strong> Increment the first element three times and the second element two times to make nums = [4,4,4].\n4 has a frequency of 3.</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [1,4,8,13], k = 5\n<strong>Output:</strong> 2\n<strong>Explanation:</strong> There are multiple optimal solutions:\n- Increment the first element three times to make nums = [4,4,8,13]. 4 has a frequency of 2.\n- Increment the second element four times to make nums = [1,8,8,13]. 8 has a frequency of 2.\n- Increment the third element five times to make nums = [1,4,13,13]. 13 has a frequency of 2.\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [3,9,6], k = 2\n<strong>Output:</strong> 1\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 10<sup>5</sup></code></li>\n\t<li><code>1 &lt;= nums[i] &lt;= 10<sup>5</sup></code></li>\n\t<li><code>1 &lt;= k &lt;= 10<sup>5</sup></code></li>\n</ul>\n",
+      "problem_statement_text": "The frequency of an element is the number of times it occurs in an array. You are given an integer array nums and an integer k. In one operation, you can choose an index of nums and increment the element at that index by 1. Return the maximum possible frequency of an element after performing at most k operations. Example 1: Input: nums = [1,2,4], k = 5 Output: 3 Explanation: Increment the first element three times and the second element two times to make nums = [4,4,4]. 4 has a frequency of 3. Example 2: Input: nums = [1,4,8,13], k = 5 Output: 2 Explanation: There are multiple optimal solutions: - Increment the first element three times to make nums = [4,4,8,13]. 4 has a frequency of 2. - Increment the second element four times to make nums = [1,8,8,13]. 8 has a frequency of 2. - Increment the third element five times to make nums = [1,4,13,13]. 13 has a frequency of 2. Example 3: Input: nums = [3,9,6], k = 2 Output: 1 Constraints: 1 <= nums.length <= 105 1 <= nums[i] <= 105 1 <= k <= 105",
+      "examples": [
+        {
+          "example_number": 1,
+          "input": "nums = [1,2,4], k = 5",
+          "output": "3",
+          "explanation": "Increment the first element three times and the second element two times to make nums = [4,4,4]. 4 has a frequency of 3."
+        },
+        {
+          "example_number": 2,
+          "input": "nums = [1,4,8,13], k = 5",
+          "output": "2",
+          "explanation": "There are multiple optimal solutions: - Increment the first element three times to make nums = [4,4,8,13]. 4 has a frequency of 2. - Increment the second element four times to make nums = [1,8,8,13]. 8 has a frequency of 2. - Increment the third element five times to make nums = [1,4,13,13]. 13 has a frequency of 2."
+        },
+        {
+          "example_number": 3,
+          "input": "nums = [3,9,6], k = 2",
+          "output": "1"
+        }
+      ],
+      "sample_test_cases": [
+        {
+          "input": "nums = [1,2,4], k = 5",
+          "expected_output": "3",
+          "explanation": "Increment the first element three times and the second element two times to make nums = [4,4,4]. 4 has a frequency of 3.",
+          "example_number": 1
+        },
+        {
+          "input": "nums = [1,4,8,13], k = 5",
+          "expected_output": "2",
+          "explanation": "There are multiple optimal solutions: - Increment the first element three times to make nums = [4,4,8,13]. 4 has a frequency of 2. - Increment the second element four times to make nums = [1,8,8,13]. 8 has a frequency of 2. - Increment the third element five times to make nums = [1,4,13,13]. 13 has a frequency of 2.",
+          "example_number": 2
+        },
+        {
+          "input": "nums = [3,9,6], k = 2",
+          "expected_output": "1",
+          "explanation": "",
+          "example_number": 3
+        }
+      ],
+      "constraints": [
+        "1 <= nums.length <= 105",
+        "1 <= nums[i] <= 105",
+        "1 <= k <= 105"
+      ],
+      "code_templates": {
+        "python": "class Solution:\n    def maxFrequency(self, nums: List[int], k: int) -> int:\n        "
+      },
+      "default_code": "class Solution:\n    def maxFrequency(self, nums: List[int], k: int) -> int:\n        ",
+      "hints": [
+        "Note that you can try all values in a brute force manner and find the maximum frequency of that value.",
+        "To find the maximum frequency of a value consider the biggest elements smaller than or equal to this value"
+      ],
+      "topics": [
+        "Array",
+        "Binary Search",
+        "Greedy",
+        "Sliding Window",
+        "Sorting",
+        "Prefix Sum"
+      ],
+      "company_tags": [],
+      "similar_questions": [
+        2150,
+        2401,
+        2968,
+        3346,
+        3347,
+        3445
+      ],
+      "follow_up_questions": [],
+      "note_sections": [],
+      "scraping_duration": 2.419917106628418,
+      "scraped_at": "2025-09-28T01:10:21.234143",
+      "scraping_success": true,
+      "scraping_error": null
+    },
+    {
+      "question_id": "chckifthrryissrtd",
+      "original_title": "Check if the array is sorted",
+      "a2z_step": "Solve Problems on Arrays [Easy -> Medium -> Hard]",
+      "a2z_sub_step": "Easy",
+      "a2z_difficulty": 0,
+      "a2z_topics": "[{\"value\":\"arrays\",\"label\":\"Arrays\"},{\"value\":\"data-structure\",\"label\":\"Data Structures\"}]",
+      "lc_link": "https://leetcode.com/problems/check-if-array-is-sorted-and-rotated/",
+      "step_number": 7,
+      "leetcode_title": "Check if Array Is Sorted and Rotated",
+      "leetcode_title_slug": "check-if-array-is-sorted-and-rotated",
+      "leetcode_difficulty": "Easy",
+      "leetcode_question_id": 1752,
+      "is_paid_only": false,
+      "problem_statement_html": "<p>Given an array <code>nums</code>, return <code>true</code><em> if the array was originally sorted in non-decreasing order, then rotated <strong>some</strong> number of positions (including zero)</em>. Otherwise, return <code>false</code>.</p>\n\n<p>There may be <strong>duplicates</strong> in the original array.</p>\n\n<p><strong>Note:</strong> An array <code>A</code> rotated by <code>x</code> positions results in an array <code>B</code> of the same length such that <code>B[i] == A[(i+x) % A.length]</code> for every valid index <code>i</code>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [3,4,5,1,2]\n<strong>Output:</strong> true\n<strong>Explanation:</strong> [1,2,3,4,5] is the original sorted array.\nYou can rotate the array by x = 2 positions to begin on the element of value 3: [3,4,5,1,2].\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [2,1,3,4]\n<strong>Output:</strong> false\n<strong>Explanation:</strong> There is no sorted array once rotated that can make nums.\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [1,2,3]\n<strong>Output:</strong> true\n<strong>Explanation:</strong> [1,2,3] is the original sorted array.\nYou can rotate the array by x = 0 positions (i.e. no rotation) to make nums.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 100</code></li>\n\t<li><code>1 &lt;= nums[i] &lt;= 100</code></li>\n</ul>\n",
+      "problem_statement_text": "Given an array nums, return true if the array was originally sorted in non-decreasing order, then rotated some number of positions (including zero). Otherwise, return false. There may be duplicates in the original array. Note: An array A rotated by x positions results in an array B of the same length such that B[i] == A[(i+x) % A.length] for every valid index i. Example 1: Input: nums = [3,4,5,1,2] Output: true Explanation: [1,2,3,4,5] is the original sorted array. You can rotate the array by x = 2 positions to begin on the element of value 3: [3,4,5,1,2]. Example 2: Input: nums = [2,1,3,4] Output: false Explanation: There is no sorted array once rotated that can make nums. Example 3: Input: nums = [1,2,3] Output: true Explanation: [1,2,3] is the original sorted array. You can rotate the array by x = 0 positions (i.e. no rotation) to make nums. Constraints: 1 <= nums.length <= 100 1 <= nums[i] <= 100",
+      "examples": [
+        {
+          "example_number": 1,
+          "input": "nums = [3,4,5,1,2]",
+          "output": "true",
+          "explanation": "[1,2,3,4,5] is the original sorted array. You can rotate the array by x = 2 positions to begin on the element of value 3: [3,4,5,1,2]."
+        },
+        {
+          "example_number": 2,
+          "input": "nums = [2,1,3,4]",
+          "output": "false",
+          "explanation": "There is no sorted array once rotated that can make nums."
+        },
+        {
+          "example_number": 3,
+          "input": "nums = [1,2,3]",
+          "output": "true",
+          "explanation": "[1,2,3] is the original sorted array. You can rotate the array by x = 0 positions (i.e. no rotation) to make nums."
+        }
+      ],
+      "sample_test_cases": [
+        {
+          "input": "nums = [3,4,5,1,2]",
+          "expected_output": "true",
+          "explanation": "[1,2,3,4,5] is the original sorted array. You can rotate the array by x = 2 positions to begin on the element of value 3: [3,4,5,1,2].",
+          "example_number": 1
+        },
+        {
+          "input": "nums = [2,1,3,4]",
+          "expected_output": "false",
+          "explanation": "There is no sorted array once rotated that can make nums.",
+          "example_number": 2
+        },
+        {
+          "input": "nums = [1,2,3]",
+          "expected_output": "true",
+          "explanation": "[1,2,3] is the original sorted array. You can rotate the array by x = 0 positions (i.e. no rotation) to make nums.",
+          "example_number": 3
+        }
+      ],
+      "constraints": [
+        "1 <= nums.length <= 100",
+        "1 <= nums[i] <= 100"
+      ],
+      "code_templates": {
+        "python": "class Solution:\n    def check(self, nums: List[int]) -> bool:\n        "
+      },
+      "default_code": "class Solution:\n    def check(self, nums: List[int]) -> bool:\n        ",
+      "hints": [
+        "Brute force and check if it is possible for a sorted array to start from each position."
+      ],
+      "topics": [
+        "Array"
+      ],
+      "company_tags": [],
+      "similar_questions": [
+        2124
+      ],
+      "follow_up_questions": [],
+      "note_sections": [
+        "An array A rotated by x positions results in an array B of the same length such that B[i] == A[(i+x) % A.length] for every valid index i."
+      ],
+      "scraping_duration": 1.5589039325714111,
+      "scraped_at": "2025-09-28T01:10:21.962395",
+      "scraping_success": true,
+      "scraping_error": null
+    },
+    {
+      "question_id": "rmvdplictsfrmsrtdrry",
+      "original_title": "Remove duplicates from Sorted array",
+      "a2z_step": "Solve Problems on Arrays [Easy -> Medium -> Hard]",
+      "a2z_sub_step": "Easy",
+      "a2z_difficulty": 0,
+      "a2z_topics": "[{\"value\":\"arrays\",\"label\":\"Arrays\"},{\"value\":\"data-structure\",\"label\":\"Data Structures\"}]",
+      "lc_link": "https://leetcode.com/problems/remove-duplicates-from-sorted-array/",
+      "step_number": 8,
+      "leetcode_title": "Remove Duplicates from Sorted Array",
+      "leetcode_title_slug": "remove-duplicates-from-sorted-array",
+      "leetcode_difficulty": "Easy",
+      "leetcode_question_id": 26,
+      "is_paid_only": false,
+      "problem_statement_html": "<p>Given an integer array <code>nums</code> sorted in <strong>non-decreasing order</strong>, remove the duplicates <a href=\"https://en.wikipedia.org/wiki/In-place_algorithm\" target=\"_blank\"><strong>in-place</strong></a> such that each unique element appears only <strong>once</strong>. The <strong>relative order</strong> of the elements should be kept the <strong>same</strong>. Then return <em>the number of unique elements in </em><code>nums</code>.</p>\n\n<p>Consider the number of unique elements of <code>nums</code> to be <code>k</code>, to get accepted, you need to do the following things:</p>\n\n<ul>\n\t<li>Change the array <code>nums</code> such that the first <code>k</code> elements of <code>nums</code> contain the unique elements in the order they were present in <code>nums</code> initially. The remaining elements of <code>nums</code> are not important as well as the size of <code>nums</code>.</li>\n\t<li>Return <code>k</code>.</li>\n</ul>\n\n<p><strong>Custom Judge:</strong></p>\n\n<p>The judge will test your solution with the following code:</p>\n\n<pre>\nint[] nums = [...]; // Input array\nint[] expectedNums = [...]; // The expected answer with correct length\n\nint k = removeDuplicates(nums); // Calls your implementation\n\nassert k == expectedNums.length;\nfor (int i = 0; i &lt; k; i++) {\n    assert nums[i] == expectedNums[i];\n}\n</pre>\n\n<p>If all assertions pass, then your solution will be <strong>accepted</strong>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [1,1,2]\n<strong>Output:</strong> 2, nums = [1,2,_]\n<strong>Explanation:</strong> Your function should return k = 2, with the first two elements of nums being 1 and 2 respectively.\nIt does not matter what you leave beyond the returned k (hence they are underscores).\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [0,0,1,1,1,2,2,3,3,4]\n<strong>Output:</strong> 5, nums = [0,1,2,3,4,_,_,_,_,_]\n<strong>Explanation:</strong> Your function should return k = 5, with the first five elements of nums being 0, 1, 2, 3, and 4 respectively.\nIt does not matter what you leave beyond the returned k (hence they are underscores).\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 3 * 10<sup>4</sup></code></li>\n\t<li><code>-100 &lt;= nums[i] &lt;= 100</code></li>\n\t<li><code>nums</code> is sorted in <strong>non-decreasing</strong> order.</li>\n</ul>\n",
+      "problem_statement_text": "Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once. The relative order of the elements should be kept the same. Then return the number of unique elements in nums. Consider the number of unique elements of nums to be k, to get accepted, you need to do the following things: Change the array nums such that the first k elements of nums contain the unique elements in the order they were present in nums initially. The remaining elements of nums are not important as well as the size of nums. Return k. Custom Judge: The judge will test your solution with the following code: int[] nums = [...]; // Input array int[] expectedNums = [...]; // The expected answer with correct length int k = removeDuplicates(nums); // Calls your implementation assert k == expectedNums.length; for (int i = 0; i < k; i++) { assert nums[i] == expectedNums[i]; } If all assertions pass, then your solution will be accepted. Example 1: Input: nums = [1,1,2] Output: 2, nums = [1,2,_] Explanation: Your function should return k = 2, with the first two elements of nums being 1 and 2 respectively. It does not matter what you leave beyond the returned k (hence they are underscores). Example 2: Input: nums = [0,0,1,1,1,2,2,3,3,4] Output: 5, nums = [0,1,2,3,4,_,_,_,_,_] Explanation: Your function should return k = 5, with the first five elements of nums being 0, 1, 2, 3, and 4 respectively. It does not matter what you leave beyond the returned k (hence they are underscores). Constraints: 1 <= nums.length <= 3 * 104 -100 <= nums[i] <= 100 nums is sorted in non-decreasing order.",
+      "examples": [
+        {
+          "example_number": 2,
+          "input": "nums = [1,1,2]",
+          "output": "2, nums = [1,2,_]",
+          "explanation": "Your function should return k = 2, with the first two elements of nums being 1 and 2 respectively. It does not matter what you leave beyond the returned k (hence they are underscores)."
+        },
+        {
+          "example_number": 3,
+          "input": "nums = [0,0,1,1,1,2,2,3,3,4]",
+          "output": "5, nums = [0,1,2,3,4,_,_,_,_,_]",
+          "explanation": "Your function should return k = 5, with the first five elements of nums being 0, 1, 2, 3, and 4 respectively. It does not matter what you leave beyond the returned k (hence they are underscores)."
+        }
+      ],
+      "sample_test_cases": [
+        {
+          "input": "nums = [1,1,2]",
+          "expected_output": "2, nums = [1,2,_]",
+          "explanation": "Your function should return k = 2, with the first two elements of nums being 1 and 2 respectively. It does not matter what you leave beyond the returned k (hence they are underscores).",
+          "example_number": 2
+        },
+        {
+          "input": "nums = [0,0,1,1,1,2,2,3,3,4]",
+          "expected_output": "5, nums = [0,1,2,3,4,_,_,_,_,_]",
+          "explanation": "Your function should return k = 5, with the first five elements of nums being 0, 1, 2, 3, and 4 respectively. It does not matter what you leave beyond the returned k (hence they are underscores).",
+          "example_number": 3
+        }
+      ],
+      "constraints": [
+        "1 <= nums.length <= 3 * 104",
+        "100 <= nums[i] <= 100",
+        "nums is sorted in non-decreasing order."
+      ],
+      "code_templates": {
+        "python": "class Solution:\n    def removeDuplicates(self, nums: List[int]) -> int:\n        "
+      },
+      "default_code": "class Solution:\n    def removeDuplicates(self, nums: List[int]) -> int:\n        ",
+      "hints": [
+        "In this problem, the key point to focus on is the input array being sorted. As far as duplicate elements are concerned, what is their positioning in the array when the given array is sorted? Look at the image below for the answer. If we know the position of one of the elements, do we also know the positioning of all the duplicate elements?\r\n\r\n<br>\r\n<img src=\"https://assets.leetcode.com/uploads/2019/10/20/hint_rem_dup.png\" width=\"500\"/>",
+        "We need to modify the array in-place and the size of the final array would potentially be smaller than the size of the input array. So, we ought to use a two-pointer approach here. One, that would keep track of the current element in the original array and another one for just the unique elements.",
+        "Essentially, once an element is encountered, you simply need to <b>bypass</b> its duplicates and move on to the next unique element."
+      ],
+      "topics": [
+        "Array",
+        "Two Pointers"
+      ],
+      "company_tags": [],
+      "similar_questions": [
+        27,
+        80,
+        2460,
+        2615
+      ],
+      "follow_up_questions": [],
+      "note_sections": [],
+      "scraping_duration": 1.6533679962158203,
+      "scraped_at": "2025-09-28T01:10:26.292597",
+      "scraping_success": true,
+      "scraping_error": null
+    },
+    {
+      "question_id": "lftrttnrrybynplc",
+      "original_title": "Left Rotate an array by one place",
+      "a2z_step": "Solve Problems on Arrays [Easy -> Medium -> Hard]",
+      "a2z_sub_step": "Easy",
+      "a2z_difficulty": 0,
+      "a2z_topics": "[{\"value\":\"arrays\",\"label\":\"Arrays\"},{\"value\":\"data-structure\",\"label\":\"Data Structures\"}]",
+      "lc_link": "https://leetcode.com/problems/rotate-array/",
+      "step_number": 9,
+      "leetcode_title": "Rotate Array",
+      "leetcode_title_slug": "rotate-array",
+      "leetcode_difficulty": "Medium",
+      "leetcode_question_id": 189,
+      "is_paid_only": false,
+      "problem_statement_html": "<p>Given an integer array <code>nums</code>, rotate the array to the right by <code>k</code> steps, where <code>k</code> is non-negative.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [1,2,3,4,5,6,7], k = 3\n<strong>Output:</strong> [5,6,7,1,2,3,4]\n<strong>Explanation:</strong>\nrotate 1 steps to the right: [7,1,2,3,4,5,6]\nrotate 2 steps to the right: [6,7,1,2,3,4,5]\nrotate 3 steps to the right: [5,6,7,1,2,3,4]\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [-1,-100,3,99], k = 2\n<strong>Output:</strong> [3,99,-1,-100]\n<strong>Explanation:</strong> \nrotate 1 steps to the right: [99,-1,-100,3]\nrotate 2 steps to the right: [3,99,-1,-100]\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 10<sup>5</sup></code></li>\n\t<li><code>-2<sup>31</sup> &lt;= nums[i] &lt;= 2<sup>31</sup> - 1</code></li>\n\t<li><code>0 &lt;= k &lt;= 10<sup>5</sup></code></li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong>Follow up:</strong></p>\n\n<ul>\n\t<li>Try to come up with as many solutions as you can. There are at least <strong>three</strong> different ways to solve this problem.</li>\n\t<li>Could you do it in-place with <code>O(1)</code> extra space?</li>\n</ul>\n",
+      "problem_statement_text": "Given an integer array nums, rotate the array to the right by k steps, where k is non-negative. Example 1: Input: nums = [1,2,3,4,5,6,7], k = 3 Output: [5,6,7,1,2,3,4] Explanation: rotate 1 steps to the right: [7,1,2,3,4,5,6] rotate 2 steps to the right: [6,7,1,2,3,4,5] rotate 3 steps to the right: [5,6,7,1,2,3,4] Example 2: Input: nums = [-1,-100,3,99], k = 2 Output: [3,99,-1,-100] Explanation: rotate 1 steps to the right: [99,-1,-100,3] rotate 2 steps to the right: [3,99,-1,-100] Constraints: 1 <= nums.length <= 105 -231 <= nums[i] <= 231 - 1 0 <= k <= 105 Follow up: Try to come up with as many solutions as you can. There are at least three different ways to solve this problem. Could you do it in-place with O(1) extra space?",
+      "examples": [
+        {
+          "example_number": 1,
+          "input": "nums = [1,2,3,4,5,6,7], k = 3",
+          "output": "[5,6,7,1,2,3,4]",
+          "explanation": "rotate 1 steps to the right: [7,1,2,3,4,5,6] rotate 2 steps to the right: [6,7,1,2,3,4,5] rotate 3 steps to the right: [5,6,7,1,2,3,4]"
+        },
+        {
+          "example_number": 2,
+          "input": "nums = [-1,-100,3,99], k = 2",
+          "output": "[3,99,-1,-100]",
+          "explanation": "rotate 1 steps to the right: [99,-1,-100,3] rotate 2 steps to the right: [3,99,-1,-100]"
+        }
+      ],
+      "sample_test_cases": [
+        {
+          "input": "nums = [1,2,3,4,5,6,7], k = 3",
+          "expected_output": "[5,6,7,1,2,3,4]",
+          "explanation": "rotate 1 steps to the right: [7,1,2,3,4,5,6] rotate 2 steps to the right: [6,7,1,2,3,4,5] rotate 3 steps to the right: [5,6,7,1,2,3,4]",
+          "example_number": 1
+        },
+        {
+          "input": "nums = [-1,-100,3,99], k = 2",
+          "expected_output": "[3,99,-1,-100]",
+          "explanation": "rotate 1 steps to the right: [99,-1,-100,3] rotate 2 steps to the right: [3,99,-1,-100]",
+          "example_number": 2
+        }
+      ],
+      "constraints": [
+        "1 <= nums.length <= 105",
+        "231 <= nums[i] <= 231 - 1",
+        "0 <= k <= 105"
+      ],
+      "code_templates": {
+        "python": "class Solution:\n    def rotate(self, nums: List[int], k: int) -> None:\n        \"\"\"\n        Do not return anything, modify nums in-place instead.\n        \"\"\"\n        "
+      },
+      "default_code": "class Solution:\n    def rotate(self, nums: List[int], k: int) -> None:\n        \"\"\"\n        Do not return anything, modify nums in-place instead.\n        \"\"\"\n        ",
+      "hints": [
+        "The easiest solution would use additional memory and that is perfectly fine.",
+        "The actual trick comes when trying to solve this problem without using any additional memory. This means you need to use the original array somehow to move the elements around. Now, we can place each element in its original location and shift all the elements around it to adjust as that would be too costly and most likely will time out on larger input arrays.",
+        "One line of thought is based on reversing the array (or parts of it) to obtain the desired result. Think about how reversal might potentially help us out by using an example.",
+        "The other line of thought is a tad bit complicated but essentially it builds on the idea of placing each element in its original position while keeping track of the element originally in that position. Basically, at every step, we place an element in its rightful position and keep track of the element already there or the one being overwritten in an additional variable. We can't do this in one linear pass and the idea here is based on <b>cyclic-dependencies</b> between elements."
+      ],
+      "topics": [
+        "Array",
+        "Math",
+        "Two Pointers"
+      ],
+      "company_tags": [],
+      "similar_questions": [
+        61,
+        186,
+        2607,
+        3400
+      ],
+      "follow_up_questions": [],
+      "note_sections": [],
+      "scraping_duration": 1.259706735610962,
+      "scraped_at": "2025-09-28T01:10:27.071515",
+      "scraping_success": true,
+      "scraping_error": null
+    },
+    {
+      "question_id": "lftrttnrrybydplcs",
+      "original_title": "Left rotate an array by D places",
+      "a2z_step": "Solve Problems on Arrays [Easy -> Medium -> Hard]",
+      "a2z_sub_step": "Easy",
+      "a2z_difficulty": 0,
+      "a2z_topics": "[{\"value\":\"arrays\",\"label\":\"Arrays\"},{\"value\":\"data-structure\",\"label\":\"Data Structures\"}]",
+      "lc_link": "https://leetcode.com/problems/rotate-array/",
+      "step_number": 10,
+      "leetcode_title": "Rotate Array",
+      "leetcode_title_slug": "rotate-array",
+      "leetcode_difficulty": "Medium",
+      "leetcode_question_id": 189,
+      "is_paid_only": false,
+      "problem_statement_html": "<p>Given an integer array <code>nums</code>, rotate the array to the right by <code>k</code> steps, where <code>k</code> is non-negative.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [1,2,3,4,5,6,7], k = 3\n<strong>Output:</strong> [5,6,7,1,2,3,4]\n<strong>Explanation:</strong>\nrotate 1 steps to the right: [7,1,2,3,4,5,6]\nrotate 2 steps to the right: [6,7,1,2,3,4,5]\nrotate 3 steps to the right: [5,6,7,1,2,3,4]\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [-1,-100,3,99], k = 2\n<strong>Output:</strong> [3,99,-1,-100]\n<strong>Explanation:</strong> \nrotate 1 steps to the right: [99,-1,-100,3]\nrotate 2 steps to the right: [3,99,-1,-100]\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 10<sup>5</sup></code></li>\n\t<li><code>-2<sup>31</sup> &lt;= nums[i] &lt;= 2<sup>31</sup> - 1</code></li>\n\t<li><code>0 &lt;= k &lt;= 10<sup>5</sup></code></li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong>Follow up:</strong></p>\n\n<ul>\n\t<li>Try to come up with as many solutions as you can. There are at least <strong>three</strong> different ways to solve this problem.</li>\n\t<li>Could you do it in-place with <code>O(1)</code> extra space?</li>\n</ul>\n",
+      "problem_statement_text": "Given an integer array nums, rotate the array to the right by k steps, where k is non-negative. Example 1: Input: nums = [1,2,3,4,5,6,7], k = 3 Output: [5,6,7,1,2,3,4] Explanation: rotate 1 steps to the right: [7,1,2,3,4,5,6] rotate 2 steps to the right: [6,7,1,2,3,4,5] rotate 3 steps to the right: [5,6,7,1,2,3,4] Example 2: Input: nums = [-1,-100,3,99], k = 2 Output: [3,99,-1,-100] Explanation: rotate 1 steps to the right: [99,-1,-100,3] rotate 2 steps to the right: [3,99,-1,-100] Constraints: 1 <= nums.length <= 105 -231 <= nums[i] <= 231 - 1 0 <= k <= 105 Follow up: Try to come up with as many solutions as you can. There are at least three different ways to solve this problem. Could you do it in-place with O(1) extra space?",
+      "examples": [
+        {
+          "example_number": 1,
+          "input": "nums = [1,2,3,4,5,6,7], k = 3",
+          "output": "[5,6,7,1,2,3,4]",
+          "explanation": "rotate 1 steps to the right: [7,1,2,3,4,5,6] rotate 2 steps to the right: [6,7,1,2,3,4,5] rotate 3 steps to the right: [5,6,7,1,2,3,4]"
+        },
+        {
+          "example_number": 2,
+          "input": "nums = [-1,-100,3,99], k = 2",
+          "output": "[3,99,-1,-100]",
+          "explanation": "rotate 1 steps to the right: [99,-1,-100,3] rotate 2 steps to the right: [3,99,-1,-100]"
+        }
+      ],
+      "sample_test_cases": [
+        {
+          "input": "nums = [1,2,3,4,5,6,7], k = 3",
+          "expected_output": "[5,6,7,1,2,3,4]",
+          "explanation": "rotate 1 steps to the right: [7,1,2,3,4,5,6] rotate 2 steps to the right: [6,7,1,2,3,4,5] rotate 3 steps to the right: [5,6,7,1,2,3,4]",
+          "example_number": 1
+        },
+        {
+          "input": "nums = [-1,-100,3,99], k = 2",
+          "expected_output": "[3,99,-1,-100]",
+          "explanation": "rotate 1 steps to the right: [99,-1,-100,3] rotate 2 steps to the right: [3,99,-1,-100]",
+          "example_number": 2
+        }
+      ],
+      "constraints": [
+        "1 <= nums.length <= 105",
+        "231 <= nums[i] <= 231 - 1",
+        "0 <= k <= 105"
+      ],
+      "code_templates": {
+        "python": "class Solution:\n    def rotate(self, nums: List[int], k: int) -> None:\n        \"\"\"\n        Do not return anything, modify nums in-place instead.\n        \"\"\"\n        "
+      },
+      "default_code": "class Solution:\n    def rotate(self, nums: List[int], k: int) -> None:\n        \"\"\"\n        Do not return anything, modify nums in-place instead.\n        \"\"\"\n        ",
+      "hints": [
+        "The easiest solution would use additional memory and that is perfectly fine.",
+        "The actual trick comes when trying to solve this problem without using any additional memory. This means you need to use the original array somehow to move the elements around. Now, we can place each element in its original location and shift all the elements around it to adjust as that would be too costly and most likely will time out on larger input arrays.",
+        "One line of thought is based on reversing the array (or parts of it) to obtain the desired result. Think about how reversal might potentially help us out by using an example.",
+        "The other line of thought is a tad bit complicated but essentially it builds on the idea of placing each element in its original position while keeping track of the element originally in that position. Basically, at every step, we place an element in its rightful position and keep track of the element already there or the one being overwritten in an additional variable. We can't do this in one linear pass and the idea here is based on <b>cyclic-dependencies</b> between elements."
+      ],
+      "topics": [
+        "Array",
+        "Math",
+        "Two Pointers"
+      ],
+      "company_tags": [],
+      "similar_questions": [
+        61,
+        186,
+        2607,
+        3400
+      ],
+      "follow_up_questions": [],
+      "note_sections": [],
+      "scraping_duration": 1.5853962898254395,
+      "scraped_at": "2025-09-28T01:10:28.216976",
+      "scraping_success": true,
+      "scraping_error": null
+    }
+  ],
+  "errors": []
+}

@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException, Depends, status
 from pydantic import BaseModel
 
 from app.models.user import User
-from app.crud.user_extensions import UserCourseExtensions
+from app.crud.user import UserCRUD
 from app.api.auth import get_current_user
 from app.db.database import get_db
 
@@ -21,19 +21,19 @@ class CourseActivationResponse(BaseModel):
 class UserActiveCourseResponse(BaseModel):
     active_course: Optional[str]
 
-def get_user_course_extensions():
+def get_user_crud():
     db = get_db()
-    return UserCourseExtensions(db)
+    return UserCRUD(db)
 
 @router.post("/courses/activate", response_model=CourseActivationResponse)
 async def activate_course(
     request: CourseActivationRequest,
     current_user: User = Depends(get_current_user),
-    user_course_ext: UserCourseExtensions = Depends(get_user_course_extensions)
+    user_crud: UserCRUD = Depends(get_user_crud)
 ):
     """Activate a course for the current user."""
     try:
-        updated_user = user_course_ext.activate_course(current_user.key, request.course_id)
+        updated_user = user_crud.activate_course(current_user.key, request.course_id)
         
         if not updated_user:
             raise HTTPException(
@@ -57,11 +57,11 @@ async def activate_course(
 async def deactivate_course(
     request: CourseActivationRequest,
     current_user: User = Depends(get_current_user),
-    user_course_ext: UserCourseExtensions = Depends(get_user_course_extensions)
+    user_crud: UserCRUD = Depends(get_user_crud)
 ):
     """Deactivate a course for the current user."""
     try:
-        updated_user = user_course_ext.deactivate_course(current_user.key, request.course_id)
+        updated_user = user_crud.deactivate_course(current_user.key, request.course_id)
         
         if not updated_user:
             raise HTTPException(
@@ -84,11 +84,11 @@ async def deactivate_course(
 @router.get("/courses/active", response_model=UserActiveCourseResponse)
 async def get_active_course(
     current_user: User = Depends(get_current_user),
-    user_course_ext: UserCourseExtensions = Depends(get_user_course_extensions)
+    user_crud: UserCRUD = Depends(get_user_crud)
 ):
     """Get the currently active course for the current user."""
     try:
-        active_course = user_course_ext.get_user_active_course(current_user.key)
+        active_course = user_crud.get_user_active_course(current_user.key)
         
         return UserActiveCourseResponse(
             active_course=active_course

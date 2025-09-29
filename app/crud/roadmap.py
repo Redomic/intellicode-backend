@@ -240,14 +240,15 @@ class RoadmapCRUD:
             
             # Get completed questions for this user and course
             completed_query = """
-            FOR session IN problem_solving_sessions
-            FILTER session.user_key == @user_key AND session.is_correct == true
+            FOR submission IN submissions
+            FILTER submission.user_key == @user_key AND submission.status == "Accepted"
             LET roadmap_item = (
                 FOR r IN roadmap
-                FILTER r._key == session.question_key AND r.course == @course
+                FILTER r._key == submission.question_key AND r.course == @course
                 RETURN r
             )[0]
             FILTER roadmap_item != null
+            COLLECT question_key = submission.question_key
             COLLECT WITH COUNT INTO completed_count
             RETURN completed_count
             """
@@ -264,17 +265,17 @@ class RoadmapCRUD:
             
             # Get last activity for this course
             last_activity_query = """
-            FOR session IN problem_solving_sessions
-            FILTER session.user_key == @user_key AND session.is_correct == true
+            FOR submission IN submissions
+            FILTER submission.user_key == @user_key AND submission.status == "Accepted"
             LET roadmap_item = (
                 FOR r IN roadmap
-                FILTER r._key == session.question_key AND r.course == @course
+                FILTER r._key == submission.question_key AND r.course == @course
                 RETURN r
             )[0]
             FILTER roadmap_item != null
-            SORT session.created_at DESC
+            SORT submission.created_at DESC
             LIMIT 1
-            RETURN session.created_at
+            RETURN submission.created_at
             """
             
             last_activity_cursor = self.db.aql.execute(
@@ -539,14 +540,15 @@ class RoadmapCRUD:
             
             # Get completed questions for this user and course
             completed_query = """
-            FOR session IN problem_solving_sessions
-            FILTER session.user_key == @user_key AND session.is_correct == true
+            FOR submission IN submissions
+            FILTER submission.user_key == @user_key AND submission.status == "Accepted"
             LET roadmap_item = (
                 FOR r IN roadmap
-                FILTER r._key == session.question_key AND r.course == @course
+                FILTER r._key == submission.question_key AND r.course == @course
                 RETURN r
             )[0]
             FILTER roadmap_item != null
+            COLLECT question_key = submission.question_key
             COLLECT WITH COUNT INTO completed_count
             RETURN completed_count
             """
@@ -563,17 +565,17 @@ class RoadmapCRUD:
             
             # Get last activity for this course
             last_activity_query = """
-            FOR session IN problem_solving_sessions
-            FILTER session.user_key == @user_key AND session.is_correct == true
+            FOR submission IN submissions
+            FILTER submission.user_key == @user_key AND submission.status == "Accepted"
             LET roadmap_item = (
                 FOR r IN roadmap
-                FILTER r._key == session.question_key AND r.course == @course
+                FILTER r._key == submission.question_key AND r.course == @course
                 RETURN r
             )[0]
             FILTER roadmap_item != null
-            SORT session.created_at DESC
+            SORT submission.created_at DESC
             LIMIT 1
-            RETURN session.created_at
+            RETURN submission.created_at
             """
             
             last_activity_cursor = self.db.aql.execute(

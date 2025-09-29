@@ -56,17 +56,22 @@ class DatabaseManager:
     
     def _ensure_collections(self) -> None:
         """Create required collections if they don't exist."""
+        # Only valid collections as per architecture requirements
         collections = [
-            'users', 'problems', 'submissions', 'progress', 'questions', 'assessments',
-            'problem_solving_sessions', 'user_activities', 'user_stats',
-            'behavior_tracking_sessions', 'session_analyses', 'behavior_summaries',
-            'roadmap'  # Comprehensive LeetCode questions from A2Z roadmap
+            'users',         # User data
+            'questions',     # All questions/problems
+            'assessments',   # User assessments
+            'roadmap',       # Roadmap questions (from A2Z, etc.)
+            'sessions',      # Active coding sessions
+            'submissions',   # Code submissions (LeetCode-style)
+            'behavior'       # Behavior tracking data
         ]
         
         for collection_name in collections:
             if not self._db.has_collection(collection_name):
                 self._db.create_collection(collection_name)
                 logger.info(f"Created collection: {collection_name}")
+                print(f"✅ Created collection: {collection_name}")
 
 # Database dependency for FastAPI
 def get_db() -> StandardDatabase:

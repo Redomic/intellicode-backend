@@ -1,0 +1,199 @@
+from datetime import datetime, timedelta
+from typing import Optional, Dict, Any, List
+from enum import Enum
+from pydantic import BaseModel, Field
+
+
+class SessionState(str, Enum):
+    """Session state enumeration."""
+    ACTIVE = "active"
+    PAUSED = "paused"
+    COMPLETED = "completed"
+    EXPIRED = "expired"
+    ABANDONED = "abandoned"
+
+
+class SessionType(str, Enum):
+    """Session type enumeration."""
+    PRACTICE = "practice"
+    DAILY_CHALLENGE = "daily_challenge"
+    ROADMAP_CHALLENGE = "roadmap_challenge"
+    ASSESSMENT = "assessment"
+
+
+class CodingSessionBase(BaseModel):
+    """Base model for coding sessions."""
+    user_key: str
+    session_id: str
+    session_type: SessionType
+    state: SessionState = SessionState.ACTIVE
+    question_id: Optional[str] = None
+    question_title: Optional[str] = None
+    roadmap_id: Optional[str] = None
+    difficulty: Optional[str] = None
+    programming_language: str = "python"
+    
+    # Session metadata
+    config: Dict[str, Any] = Field(default_factory=dict)
+    
+    # Timestamps
+    start_time: datetime
+    last_activity: datetime
+    pause_time: Optional[datetime] = None
+    resume_time: Optional[datetime] = None
+    end_time: Optional[datetime] = None
+    
+    # Tracking data
+    behavior_session_id: Optional[str] = None
+    analytics: Dict[str, Any] = Field(default_factory=dict)
+    code_snapshots: List[Dict[str, Any]] = Field(default_factory=list)
+    session_events: List[Dict[str, Any]] = Field(default_factory=list)
+
+
+class CodingSessionCreate(BaseModel):
+    """Model for creating a coding session."""
+    session_id: str
+    session_type: SessionType
+    question_id: Optional[str] = None
+    question_title: Optional[str] = None
+    roadmap_id: Optional[str] = None
+    difficulty: Optional[str] = None
+    programming_language: str = "python"
+    config: Dict[str, Any] = Field(default_factory=dict)
+    behavior_session_id: Optional[str] = None
+
+
+class CodingSessionUpdate(BaseModel):
+    """Model for updating a coding session."""
+    state: Optional[SessionState] = None
+    last_activity: Optional[datetime] = None
+    pause_time: Optional[datetime] = None
+    resume_time: Optional[datetime] = None
+    end_time: Optional[datetime] = None
+    analytics: Optional[Dict[str, Any]] = None
+    config: Optional[Dict[str, Any]] = None
+
+
+class CodingSessionInDB(CodingSessionBase):
+    """Coding session database model."""
+    key: str = Field(alias="_key")
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+    
+    # Auto-expiration tracking
+    expires_at: Optional[datetime] = None  # When paused session should auto-expire
+    pause_duration_seconds: int = 0  # Total time spent paused
+    
+    model_config = {
+        "populate_by_name": True,
+        "extra": "ignore"
+    }
+    
+    @property
+    def _key(self) -> str:
+        return self.key
+    
+    @property
+    def is_expired(self) -> bool:
+        """Check if session has expired."""
+        if self.expires_at and datetime.utcnow() > self.expires_at:
+            return True
+        return False
+    
+    @property
+    def total_duration_seconds(self) -> int:
+        """Calculate total session duration excluding paused time."""
+        if not self.end_time:
+            end_time = datetime.utcnow()
+        else:
+            end_time = self.end_time
+            
+        total_time = (end_time - self.start_time).total_seconds()
+        return max(0, int(total_time - self.pause_duration_seconds))
+
+
+class CodingSession(CodingSessionBase):
+    """Coding session API model."""
+    key: str = Field(alias="_key")
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+    expires_at: Optional[datetime] = None
+    pause_duration_seconds: int = 0
+    
+    model_config = {
+        "populate_by_name": True,
+        "extra": "ignore"
+    }
+    
+    @property
+    def _key(self) -> str:
+        return self.key
+    
+    @property
+    def is_expired(self) -> bool:
+        """Check if session has expired."""
+        if self.expires_at and datetime.utcnow() > self.expires_at:
+            return True
+        return False
+    
+    @property
+    def total_duration_seconds(self) -> int:
+        """Calculate total session duration excluding paused time."""
+        if not self.end_time:
+            end_time = datetime.utcnow()
+        else:
+            end_time = self.end_time
+            
+        total_time = (end_time - self.start_time).total_seconds()
+        return max(0, int(total_time - self.pause_duration_seconds))
+
+
+class SessionEventCreate(BaseModel):
+    """Model for creating session events."""
+    session_id: str
+    event_type: str
+    data: Dict[str, Any] = Field(default_factory=dict)
+    timestamp: Optional[datetime] = None
+
+
+class SessionCodeSnapshot(BaseModel):
+    """Model for code snapshots during session."""
+    session_id: str
+    code: str
+    language: str = "python"
+    timestamp: Optional[datetime] = None
+    is_current: bool = False  # Marks the current/latest code state
+
+
+class SessionCodeUpdate(BaseModel):
+    """Model for updating current code state."""
+    session_id: str
+    code: str
+    language: str = "python"
+    is_current: bool = True
+
+
+# Response models for API
+class SessionResponse(BaseModel):
+    """Response model for session operations."""
+    session_id: str
+    state: SessionState
+    message: str
+    current_code: Optional[str] = None  # Include current code in response
+    language: Optional[str] = None
+    
+
+class SessionRecoveryResponse(BaseModel):
+    """Response model for session recovery."""
+    session: CodingSession
+    current_code: Optional[str] = None
+    language: Optional[str] = None
+    last_activity: Optional[datetime] = None
+    
+    
+class SessionListResponse(BaseModel):
+    """Response model for listing sessions."""
+    sessions: List[CodingSession]
+    total: int
+    has_active_session: bool
+    active_session_id: Optional[str] = None

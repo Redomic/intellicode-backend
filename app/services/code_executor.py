@@ -222,18 +222,100 @@ def run_tests():
             input_str = test_case.get('input', '')
             expected = test_case.get('expected_output', '')
             
-            # Extract function parameters from input string
-            # Handle different input formats
+            # Helper function to parse value (handles JSON booleans and Python literals)
+            def parse_value(val_str):
+                val_str = val_str.strip()
+                # Handle JSON booleans
+                if val_str.lower() == 'true':
+                    return True
+                elif val_str.lower() == 'false':
+                    return False
+                elif val_str.lower() == 'null':
+                    return None
+                else:
+                    try:
+                        # Try JSON parsing first
+                        return json.loads(val_str)
+                    except (json.JSONDecodeError, ValueError):
+                        try:
+                            # Use ast.literal_eval for safe Python literal evaluation
+                            import ast
+                            return ast.literal_eval(val_str)
+                        except:
+                            try:
+                                # Final fallback to eval (less safe but more flexible)
+                                return eval(val_str)
+                            except:
+                                # Return as string if all else fails
+                                return val_str
+            
+            # Extract function parameters from input string using AST parsing
+            # This properly handles commas in strings, nested structures, etc.
+            params = {{}}
+            
             if '=' in input_str:
-                # Format: "x = 123" or "nums = [1,2,3]"
-                params = {{}}
-                for part in input_str.split(','):
-                    if '=' in part:
-                        key, value = part.split('=', 1)
-                        params[key.strip()] = eval(value.strip())
+                # Use regex to properly split parameter assignments
+                # This pattern matches: key = value (where value can be complex)
+                import re
+                import ast
+                
+                # Try to parse as Python code first (most robust)
+                try:
+                    # Treat the input as a series of assignments
+                    # Parse them using compile/exec to let Python handle the complexity
+                    temp_globals = {{}}
+                    exec(input_str, temp_globals)
+                    # Extract all variables that were set (exclude builtins)
+                    params = {{k: v for k, v in temp_globals.items() if not k.startswith('_')}}
+                except:
+                    # Fallback: manual parsing
+                    # Find all parameter assignments by looking for '=' not in quotes
+                    in_quotes = False
+                    quote_char = None
+                    depth = 0
+                    current_param = []
+                    
+                    i = 0
+                    while i < len(input_str):
+                        char = input_str[i]
+                        
+                        # Track quotes
+                        if char in ('"', "'") and (i == 0 or input_str[i-1] != '\\\\'):
+                            if not in_quotes:
+                                in_quotes = True
+                                quote_char = char
+                            elif char == quote_char:
+                                in_quotes = False
+                                quote_char = None
+                        
+                        # Track bracket depth
+                        if not in_quotes:
+                            if char in '([' + '{{':
+                                depth += 1
+                            elif char in ')]' + '}}':
+                                depth -= 1
+                            elif char == ',' and depth == 0:
+                                # End of parameter
+                                param_str = ''.join(current_param).strip()
+                                if '=' in param_str:
+                                    key, value = param_str.split('=', 1)
+                                    params[key.strip()] = parse_value(value)
+                                current_param = []
+                                i += 1
+                                continue
+                        
+                        current_param.append(char)
+                        i += 1
+                    
+                    # Don't forget the last parameter
+                    if current_param:
+                        param_str = ''.join(current_param).strip()
+                        if '=' in param_str:
+                            key, value = param_str.split('=', 1)
+                            params[key.strip()] = parse_value(value)
             else:
-                # Format: "123" or "[1,2,3]"
-                params = {{'arg': eval(input_str)}}
+                # Single argument without key (e.g., "123" or "[1,2,3]")
+                params = {{'arg': parse_value(input_str)}}
             
             # Call the solution function
             solution_obj = Solution()
@@ -255,9 +337,34 @@ def run_tests():
                 else:
                     raise AttributeError("No solution method found")
             
-            # Compare results
-            expected_value = eval(str(expected))
-            passed = str(actual) == str(expected_value)
+            # Compare results - handle JSON boolean format
+            expected_str = str(expected).strip()
+            
+            # Convert JSON booleans to Python booleans
+            if expected_str.lower() == 'true':
+                expected_value = True
+            elif expected_str.lower() == 'false':
+                expected_value = False
+            elif expected_str.lower() == 'null' or expected_str.lower() == 'none':
+                expected_value = None
+            else:
+                try:
+                    # Try to parse as JSON first (handles arrays, objects, etc.)
+                    expected_value = json.loads(expected_str)
+                except (json.JSONDecodeError, ValueError):
+                    try:
+                        # Fallback to eval for Python-style inputs
+                        expected_value = eval(expected_str)
+                    except:
+                        # If all else fails, use the string as-is
+                        expected_value = expected_str
+            
+            # Normalize comparison - handle both value and string comparison
+            if type(actual) == type(expected_value):
+                passed = actual == expected_value
+            else:
+                # Try comparing as strings for type mismatches
+                passed = str(actual) == str(expected_value)
             
             results.append({{
                 'passed': passed,

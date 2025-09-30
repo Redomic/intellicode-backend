@@ -273,22 +273,20 @@ async def get_submission_history(
     current_user: User = Depends(get_current_user),
     submission_crud: SubmissionCRUD = Depends(get_submission_crud)
 ):
-    """Get user's submission history."""
+    """Get user's submission history, optionally filtered by question_key."""
     if limit < 1 or limit > 100:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Limit must be between 1 and 100"
         )
     
+    # Fetch submissions with database-level filtering for efficiency
     submissions = submission_crud.get_user_submissions(
         user_key=current_user.key,
+        question_key=question_key,  # Filter at database level
         limit=limit,
         offset=offset
     )
-    
-    # Filter by question if specified
-    if question_key:
-        submissions = [s for s in submissions if s.question_key == question_key]
     
     return [Submission(**sub.model_dump()) for sub in submissions]
 

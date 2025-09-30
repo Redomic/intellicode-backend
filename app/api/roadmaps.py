@@ -84,3 +84,41 @@ async def get_roadmap_questions(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to retrieve roadmap questions: {str(e)}"
         )
+
+@router.get("/{course}/completed", response_model=List[int])
+async def get_completed_questions(
+    course: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Get list of step_numbers for all completed questions in a course (accepted submissions)."""
+    try:
+        db = get_db()
+        
+        # Query to find all completed questions (accepted submissions) for this user and course
+        query = """
+        FOR submission IN submissions
+        FILTER submission.user_key == @user_key AND submission.status == "Accepted"
+        LET roadmap_item = (
+            FOR r IN roadmap
+            FILTER r._key == submission.question_key AND r.course == @course
+            RETURN r
+        )[0]
+        FILTER roadmap_item != null
+        COLLECT step_number = roadmap_item.step_number
+        SORT step_number ASC
+        RETURN step_number
+        """
+        
+        cursor = db.aql.execute(query, bind_vars={
+            'user_key': current_user.key,
+            'course': course
+        })
+        
+        completed_steps = list(cursor)
+        return completed_steps
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to retrieve completed questions: {str(e)}"
+        )

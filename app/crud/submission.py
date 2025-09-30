@@ -85,6 +85,7 @@ class SubmissionCRUD:
         start_date: Optional[date] = None,
         end_date: Optional[date] = None,
         status: Optional[SubmissionStatus] = None,
+        question_key: Optional[str] = None,
         limit: int = 100,
         offset: int = 0
     ) -> List[SubmissionInDB]:
@@ -103,6 +104,10 @@ class SubmissionCRUD:
         if status:
             query_filters.append("s.status == @status")
             bind_vars["status"] = status.value
+        
+        if question_key:
+            query_filters.append("s.question_key == @question_key")
+            bind_vars["question_key"] = question_key
         
         query = f"""
         FOR s IN submissions

@@ -41,34 +41,42 @@ async def start_session(
         print(f"📊 === SESSION START ENDPOINT CALLED ===")
         print(f"👤 User: {current_user.key}")
         print(f"📋 Session data received: {session_data.dict()}")
-        print(f"🔍 Session ID: {session_data.session_id}")
         print(f"🏷️  Session type: {session_data.session_type}")
         
-        # Clean up ALL active/paused sessions for this user before starting new one
-        # This handles orphaned sessions from crashes, network issues, etc.
-        print(f"🧹 Cleaning up any existing active/paused sessions...")
+        # Get question info for targeted cleanup
+        question_id = session_data.questionId or session_data.question_id
+        question_title = session_data.questionTitle or session_data.question_title
+        
+        # Only clean up active sessions for THE SAME QUESTION
+        # This allows multiple sessions for different questions while preventing duplicates
+        print(f"🧹 Checking for existing active sessions for this question...")
         
         cleanup_aql = """
             FOR session IN sessions
                 FILTER session.user_key == @user_key
-                AND session.state IN ["active", "paused"]
+                AND session.state == "active"
+                AND (session.question_id == @question_id OR session.question_title == @question_title)
                 RETURN session
         """
         
         cleanup_cursor = session_crud.db.aql.execute(
             cleanup_aql,
-            bind_vars={"user_key": current_user.key}
+            bind_vars={
+                "user_key": current_user.key,
+                "question_id": question_id,
+                "question_title": question_title
+            }
         )
         sessions_to_end = list(cleanup_cursor)
         
         if sessions_to_end:
-            print(f"🔄 Found {len(sessions_to_end)} active/paused sessions to clean up")
+            print(f"🔄 Found {len(sessions_to_end)} active session(s) for this question")
             for old_session in sessions_to_end:
-                print(f"   🛑 Ending session: {old_session['session_id']}")
+                print(f"   🛑 Ending duplicate session: {old_session['session_id']}")
                 session_crud.end_session(old_session['session_id'], "new_session_started")
-            print(f"✅ Cleaned up {len(sessions_to_end)} old sessions")
+            print(f"✅ Cleaned up {len(sessions_to_end)} duplicate session(s)")
         else:
-            print(f"✅ No existing active sessions found - starting fresh")
+            print(f"✅ No existing active session for this question - starting fresh")
         
         # Create new session
         session = session_crud.create_session(current_user.key, session_data)
@@ -96,127 +104,6 @@ async def start_session(
         )
 
 
-@router.post("/{session_id}/pause", response_model=SessionResponse)
-async def pause_session(
-    session_id: str,
-    reason: Optional[str] = "user_request",
-    current_user: User = Depends(get_current_user),
-    session_crud: SessionCRUD = Depends(get_session_crud)
-):
-    """Pause an active session."""
-    try:
-        # Get session and verify ownership
-        session = session_crud.get_session(session_id)
-        if not session:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Session not found"
-            )
-        
-        if session.user_key != current_user.key:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Access denied"
-            )
-        
-        if session.state != SessionState.ACTIVE:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Cannot pause session in {session.state} state"
-            )
-        
-        success = session_crud.pause_session(session_id, reason or "user_request")
-        
-        if not success:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to pause session"
-            )
-        
-        return SessionResponse(
-            session_id=session_id,
-            state=SessionState.PAUSED,
-            message="Session paused successfully"
-        )
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to pause session: {str(e)}"
-        )
-
-
-@router.post("/{session_id}/resume", response_model=SessionResponse)
-async def resume_session(
-    session_id: str,
-    current_user: User = Depends(get_current_user),
-    session_crud: SessionCRUD = Depends(get_session_crud)
-):
-    """Resume a paused session."""
-    try:
-        print(f"🔍 Attempting to resume session: {session_id}")
-        print(f"👤 User: {current_user.key}")
-        
-        # Get session and verify ownership
-        session = session_crud.get_session(session_id)
-        print(f"🔎 Session lookup result: {session is not None}")
-        
-        if not session:
-            # Try to list user's sessions to see what exists
-            user_sessions = session_crud.get_user_sessions(current_user.key, limit=5)
-            print(f"📋 User has {len(user_sessions)} recent sessions:")
-            for s in user_sessions:
-                print(f"   - {s.session_id} ({s.state}) - {s.question_title}")
-            
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Session not found: {session_id}"
-            )
-        
-        if session.user_key != current_user.key:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Access denied"
-            )
-        
-        if session.state != SessionState.PAUSED:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Cannot resume session in {session.state} state"
-            )
-        
-        # Check if session has expired
-        if session.is_expired:
-            raise HTTPException(
-                status_code=status.HTTP_410_GONE,
-                detail="Session has expired and cannot be resumed"
-            )
-        
-        success = session_crud.resume_session(session_id)
-        
-        if not success:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to resume session"
-            )
-        
-        return SessionResponse(
-            session_id=session_id,
-            state=SessionState.ACTIVE,
-            message="Session resumed successfully"
-        )
-        
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to resume session: {str(e)}"
-        )
-
-
 @router.post("/{session_id}/end", response_model=SessionResponse)
 async def end_session(
     session_id: str,
@@ -240,7 +127,7 @@ async def end_session(
                 detail="Access denied"
             )
         
-        if session.state in [SessionState.COMPLETED, SessionState.ABANDONED, SessionState.EXPIRED]:
+        if session.state == SessionState.ABANDONED:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Session already ended with state: {session.state}"
@@ -254,12 +141,9 @@ async def end_session(
                 detail="Failed to end session"
             )
         
-        # Determine final state based on reason
-        final_state = SessionState.COMPLETED if reason == "completed" else SessionState.ABANDONED
-        
         return SessionResponse(
             session_id=session_id,
-            state=final_state,
+            state=SessionState.ABANDONED,
             message="Session ended successfully"
         )
         
@@ -359,6 +243,41 @@ async def get_active_session(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to get active session: {str(e)}"
+        )
+
+
+@router.get("/active/by-question", response_model=Optional[CodingSession])
+async def get_active_session_by_question(
+    question_id: Optional[str] = None,
+    question_title: Optional[str] = None,
+    current_user: User = Depends(get_current_user),
+    session_crud: SessionCRUD = Depends(get_session_crud)
+):
+    """Get user's active session for a specific question."""
+    try:
+        if not question_id and not question_title:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Either question_id or question_title must be provided"
+            )
+        
+        session = session_crud.get_user_active_session_by_question(
+            current_user.key, 
+            question_id=question_id,
+            question_title=question_title
+        )
+        
+        if not session:
+            return None
+        
+        return CodingSession(**session.dict())
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get active session by question: {str(e)}"
         )
 
 
@@ -562,11 +481,11 @@ async def get_session_recovery_data(
                 detail="Access denied"
             )
 
-        # Do not allow recovery of sessions in a terminal state
-        if session.state in [SessionState.COMPLETED, SessionState.ABANDONED, SessionState.EXPIRED]:
+        # Do not allow recovery of abandoned sessions
+        if session.state == SessionState.ABANDONED:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail=f"Cannot recover session in terminal state: {session.state.value}"
+                detail=f"Cannot recover abandoned session"
             )
         
         session_data = session_crud.get_session_with_code(session_id)

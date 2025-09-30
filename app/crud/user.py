@@ -162,7 +162,9 @@ class UserCRUD:
         }
         
         try:
-            result = self.collection.update(user_key, update_data, return_new=True)
+            update_document = {"_key": user_key}
+            update_document.update(update_data)
+            result = self.collection.update(update_document, return_new=True)
             if result:
                 updated_user_data = result['new'].copy()
                 updated_user_data['updated_at'] = now
@@ -191,7 +193,9 @@ class UserCRUD:
         }
         
         try:
-            result = self.collection.update(user_key, update_data, return_new=True)
+            update_document = {"_key": user_key}
+            update_document.update(update_data)
+            result = self.collection.update(update_document, return_new=True)
             if result:
                 updated_user_data = result['new'].copy()
                 updated_user_data['updated_at'] = now

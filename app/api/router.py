@@ -7,6 +7,7 @@ from app.api.behavior import router as behavior_router
 from app.api.roadmaps import router as roadmaps_router
 from app.api.users import router as users_router
 from app.api.sessions import router as sessions_router
+from app.api.submissions import router as submissions_router
 
 api_router = APIRouter()
 
@@ -19,3 +20,4 @@ api_router.include_router(behavior_router, prefix="/behavior", tags=["behavior"]
 api_router.include_router(roadmaps_router, prefix="/roadmaps", tags=["roadmaps"])
 api_router.include_router(users_router, prefix="/users", tags=["users"])
 api_router.include_router(sessions_router, prefix="/sessions", tags=["sessions"])
+api_router.include_router(submissions_router, prefix="/submissions", tags=["submissions"])

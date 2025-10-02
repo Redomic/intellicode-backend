@@ -315,15 +315,19 @@ class SessionCRUD:
             if update_data.config is not None:
                 update_doc["config"] = update_data.config
             
-            self.sessions_collection.update_match(
+            result = self.sessions_collection.update_match(
                 {"session_id": session_id},
                 update_doc
             )
             
+            print(f"✅ Session {session_id} updated: {result}")
+            
             return self.get_session(session_id)
             
         except Exception as e:
-            print(f"Error updating session: {e}")
+            print(f"❌ Error updating session: {e}")
+            import traceback
+            traceback.print_exc()
             return None
     
     def end_session(self, session_id: str, reason: str = "user_request") -> bool:

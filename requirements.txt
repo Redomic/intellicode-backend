@@ -9,3 +9,8 @@ bcrypt==3.2.0
 python-multipart==0.0.6
 python-dotenv==1.0.0
 email-validator==2.1.0
+
+# Multi-Agent System Dependencies
+langgraph>=0.2.50
+langchain>=0.3.0
+langchain-google-genai>=2.0.0

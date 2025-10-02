@@ -16,6 +16,10 @@ class Settings(BaseSettings):
     # CORS settings
     FRONTEND_URL: str = "http://localhost:5173"
     
+    # AI Agent settings
+    GEMINI_API_KEY: Optional[str] = None
+    GEMINI_MODEL: str = "gemini-2.0-flash-exp"  # Gemini 2.5 Flash
+    
     class Config:
         env_file = ".env"
         case_sensitive = True

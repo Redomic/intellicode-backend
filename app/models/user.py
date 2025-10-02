@@ -2,6 +2,8 @@ from typing import Optional, List, Dict, Any
 from datetime import datetime
 from pydantic import BaseModel, EmailStr, Field
 
+from .learner_state import LearnerState
+
 class UserBase(BaseModel):
     email: EmailStr
     name: str
@@ -14,7 +16,7 @@ class UserUpdate(UserBase):
     password: Optional[str] = None
 
 class UserInDB(UserBase):
-    key: str = Field(alias="_key")
+    key: str = Field(alias="_key", serialization_alias="key")
     hashed_password: str
     created_at: datetime
     updated_at: Optional[datetime] = None
@@ -38,6 +40,12 @@ class UserInDB(UserBase):
     # Course activation tracking (single course only)
     active_course: Optional[str] = Field(default=None, description="Currently active course ID for the user")
     
+    # AI Tutoring System - Centralized learner state
+    learner_state: Optional[LearnerState] = Field(
+        default=None,
+        description="Centralized state for AI tutoring agents (initialized on first activity)"
+    )
+    
     model_config = {
         "populate_by_name": True,
         "extra": "ignore"
@@ -49,7 +57,7 @@ class UserInDB(UserBase):
         return self.key
     
 class User(UserBase):
-    key: str = Field(alias="_key")
+    key: str = Field(alias="_key", serialization_alias="key")
     created_at: datetime
     updated_at: Optional[datetime] = None
     skill_level: Optional[str] = None
@@ -67,6 +75,12 @@ class User(UserBase):
     
     # Course activation tracking (single course only)
     active_course: Optional[str] = Field(default=None, description="Currently active course ID for the user")
+    
+    # AI Tutoring System - Centralized learner state
+    learner_state: Optional[LearnerState] = Field(
+        default=None,
+        description="Centralized state for AI tutoring agents (initialized on first activity)"
+    )
     
     model_config = {
         "populate_by_name": True,

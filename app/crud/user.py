@@ -115,6 +115,46 @@ class UserCRUD:
             return UserInDB(**updated_user_data)
         return None
     
+    def update_user_fields(self, key: str, fields: dict) -> Optional[UserInDB]:
+        """
+        Update arbitrary user fields with a dictionary.
+        
+        Useful for updating embedded documents like learner_state.
+        
+        Args:
+            key: User document key
+            fields: Dictionary of fields to update
+            
+        Returns:
+            Updated user or None if failed
+        """
+        now = datetime.utcnow()
+        update_data = {
+            "_key": key,  # Include key in update document
+            "updated_at": now.isoformat(),
+            **fields  # Merge provided fields
+        }
+        
+        try:
+            result = self.collection.update(update_data, return_new=True)
+            if result:
+                updated_user_data = result['new'].copy()
+                updated_user_data['updated_at'] = now
+                
+                # Convert datetime strings
+                if 'created_at' in updated_user_data and isinstance(updated_user_data['created_at'], str):
+                    updated_user_data['created_at'] = datetime.fromisoformat(
+                        updated_user_data['created_at'].replace('Z', '+00:00')
+                    )
+                
+                return UserInDB(**updated_user_data)
+        except Exception as e:
+            print(f"Error updating user fields for {key}: {e}")
+            import traceback
+            traceback.print_exc()
+        
+        return None
+    
     def complete_onboarding(self, key: str, expertise_rank: int, skill_level: str, onboarding_data: dict = None) -> Optional[UserInDB]:
         """Mark user onboarding as completed and update related fields."""
         now = datetime.utcnow()

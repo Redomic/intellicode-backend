@@ -19,9 +19,12 @@ from app.models.submission import (
 )
 from app.crud.submission import SubmissionCRUD
 from app.crud.session import SessionCRUD
+from app.crud.learner_state import LearnerStateCRUD
+from app.crud.user import UserCRUD
 from app.api.auth import get_current_user
 from app.db.database import get_db
 from app.services.code_executor import execute_code, ExecutionStatus
+from app.services.learner_state_service import create_learner_state_service
 
 
 router = APIRouter(tags=["Submissions"])
@@ -37,6 +40,18 @@ def get_session_crud():
     """Dependency to get SessionCRUD instance."""
     db = get_db()
     return SessionCRUD(db)
+
+
+def get_learner_state_crud():
+    """Dependency to get LearnerStateCRUD instance."""
+    db = get_db()
+    return LearnerStateCRUD(db)
+
+
+def get_user_crud():
+    """Dependency to get UserCRUD instance."""
+    db = get_db()
+    return UserCRUD(db)
 
 
 class RunCodeRequest(BaseModel):
@@ -142,7 +157,9 @@ async def submit_code(
     request: SubmitCodeRequest,
     current_user: User = Depends(get_current_user),
     submission_crud: SubmissionCRUD = Depends(get_submission_crud),
-    session_crud: SessionCRUD = Depends(get_session_crud)
+    session_crud: SessionCRUD = Depends(get_session_crud),
+    learner_crud: LearnerStateCRUD = Depends(get_learner_state_crud),
+    user_crud: UserCRUD = Depends(get_user_crud)
 ):
     """
     Submit code for full evaluation and create a submission record.
@@ -224,6 +241,31 @@ async def submit_code(
                 
             except Exception as e:
                 print(f"Warning: Failed to update session analytics: {e}")
+        
+        # Update learner state (ITS integration)
+        try:
+            learner_service = create_learner_state_service(learner_crud, user_crud)
+            
+            # Get topics from the question
+            topics = learner_service.get_topics_from_question(request.question_key)
+            
+            # Update learner state based on submission
+            await learner_service.update_on_submission(
+                user=current_user,
+                question_key=request.question_key,
+                submission_status=submission_status,
+                topics=topics,
+                error_message=result.error_message,
+                hints_used=0  # TODO: Track hints if available
+            )
+            
+            print(f"✅ Learner state updated for user {current_user.key}")
+            
+        except Exception as e:
+            # Don't fail the submission if learner state update fails
+            print(f"⚠️ Warning: Failed to update learner state: {e}")
+            import traceback
+            traceback.print_exc()
         
         # Convert test results for response
         test_results_dict = None

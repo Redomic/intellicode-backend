@@ -76,15 +76,6 @@ class LearnerStateService:
             )
             logger.debug(f"✅ Updated mastery: {state.mastery}")
         
-        # Track error patterns if submission failed
-        if not is_success and topics and error_message:
-            error_pattern = self._extract_error_pattern(error_message, submission_status)
-            if error_pattern:
-                state.common_errors = self.learner_crud.add_error_pattern(
-                    state, topics[0], error_pattern, question_key
-                )
-                logger.debug(f"❌ Tracked error pattern: {error_pattern}")
-        
         # Schedule review if successfully solved
         if is_success and topics:
             # Check if this is first successful solve for this question
@@ -190,54 +181,6 @@ class LearnerStateService:
         
         # If no previous accepted submissions, this is the first
         return len(results) == 0
-    
-    def _extract_error_pattern(
-        self, 
-        error_message: str, 
-        status: SubmissionStatus
-    ) -> Optional[str]:
-        """
-        Extract a meaningful error pattern from error message.
-        
-        This is a simple pattern matcher. In Phase 2, this could be
-        enhanced with LLM-based error analysis.
-        
-        Args:
-            error_message: Error message from submission
-            status: Submission status
-            
-        Returns:
-            Error pattern identifier or None
-        """
-        if not error_message:
-            return status.value.lower().replace(" ", "-")
-        
-        error_lower = error_message.lower()
-        
-        # Common error patterns
-        patterns = {
-            'index': 'index-error',
-            'out of range': 'index-error',
-            'keyerror': 'key-error',
-            'attributeerror': 'attribute-error',
-            'nameerror': 'name-error',
-            'typeerror': 'type-error',
-            'valueerror': 'value-error',
-            'zerodivisionerror': 'division-error',
-            'recursionerror': 'recursion-depth',
-            'timeout': 'time-limit',
-            'memory': 'memory-limit',
-            'null': 'null-pointer',
-            'none': 'null-pointer',
-            'undefined': 'undefined-variable'
-        }
-        
-        for keyword, pattern in patterns.items():
-            if keyword in error_lower:
-                return pattern
-        
-        # Default to status-based pattern
-        return status.value.lower().replace(" ", "-")
 
 
 def create_learner_state_service(

@@ -46,6 +46,35 @@ class UserInDB(UserBase):
         description="Centralized state for AI tutoring agents (initialized on first activity)"
     )
     
+    # ============================================================================
+    # MULTI-AGENT SYSTEM FIELDS
+    # ============================================================================
+    
+    memory: Optional[str] = Field(
+        default=None,
+        description="Long-term learning insights maintained by AI agents"
+    )
+    
+    agent_data: Optional[Dict[str, Any]] = Field(
+        default_factory=dict,
+        description="Agent-specific metadata"
+    )
+    
+    recommendations: Optional[List[str]] = Field(
+        default_factory=list,
+        description="Daily recommended question keys"
+    )
+    
+    recommendations_updated_at: Optional[datetime] = Field(
+        default=None,
+        description="When recommendations were last generated"
+    )
+    
+    gamification: Optional[Dict[str, Any]] = Field(
+        default_factory=dict,
+        description="XP, badges, level, achievements"
+    )
+    
     model_config = {
         "populate_by_name": True,
         "extra": "ignore"
@@ -80,6 +109,35 @@ class User(UserBase):
     learner_state: Optional[LearnerState] = Field(
         default=None,
         description="Centralized state for AI tutoring agents (initialized on first activity)"
+    )
+    
+    # ============================================================================
+    # MULTI-AGENT SYSTEM FIELDS
+    # ============================================================================
+    
+    memory: Optional[str] = Field(
+        default=None,
+        description="Long-term learning insights maintained by AI agents"
+    )
+    
+    agent_data: Optional[Dict[str, Any]] = Field(
+        default_factory=dict,
+        description="Agent-specific metadata"
+    )
+    
+    recommendations: Optional[List[str]] = Field(
+        default_factory=list,
+        description="Daily recommended question keys"
+    )
+    
+    recommendations_updated_at: Optional[datetime] = Field(
+        default=None,
+        description="When recommendations were last generated"
+    )
+    
+    gamification: Optional[Dict[str, Any]] = Field(
+        default_factory=dict,
+        description="XP, badges, level, achievements"
     )
     
     model_config = {

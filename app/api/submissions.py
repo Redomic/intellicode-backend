@@ -255,7 +255,6 @@ async def submit_code(
                 question_key=request.question_key,
                 submission_status=submission_status,
                 topics=topics,
-                error_message=result.error_message,
                 hints_used=0  # TODO: Track hints if available
             )
             

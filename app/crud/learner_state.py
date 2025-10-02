@@ -100,42 +100,6 @@ class LearnerStateCRUD:
         
         return mastery
     
-    def add_error_pattern(
-        self,
-        current_state: LearnerState,
-        topic: str,
-        error_pattern: str,
-        question_id: str
-    ) -> Dict[str, List[str]]:
-        """
-        Add or update an error pattern for a topic.
-        
-        Keeps only the most recent 3 unique error patterns per topic.
-        
-        Args:
-            current_state: Current learner state
-            topic: DSA topic
-            error_pattern: Error identifier (e.g., 'off-by-one')
-            question_id: Question where error occurred
-            
-        Returns:
-            Updated common_errors dict
-        """
-        errors = current_state.common_errors.copy()
-        
-        if topic not in errors:
-            errors[topic] = []
-        
-        # Add error if not already present
-        if error_pattern not in errors[topic]:
-            errors[topic].append(error_pattern)
-            
-            # Keep only last 3 errors per topic
-            if len(errors[topic]) > 3:
-                errors[topic] = errors[topic][-3:]
-        
-        return errors
-    
     def schedule_review(
         self,
         current_state: LearnerState,
@@ -252,13 +216,11 @@ class LearnerStateCRUD:
                 problems_solved=0,
                 success_rate=0.0,
                 last_practiced=None,
-                needs_review=False,
-                common_errors=[]
+                needs_review=False
             )
         
         state_dict = user['learner_state']
         mastery_level = state_dict.get('mastery', {}).get(topic, 0.0)
-        common_errors = state_dict.get('common_errors', {}).get(topic, [])
         
         # Get submission stats for this topic
         query = """
@@ -305,8 +267,7 @@ class LearnerStateCRUD:
             problems_solved=problems_solved,
             success_rate=success_rate,
             last_practiced=last_practiced,
-            needs_review=needs_review,
-            common_errors=common_errors
+            needs_review=needs_review
         )
     
     # ============================================================================

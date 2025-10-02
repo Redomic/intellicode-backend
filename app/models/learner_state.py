@@ -3,12 +3,14 @@ Learner State Models for Intelligent Tutoring System.
 
 This module defines the centralized learner state that tracks:
 - Knowledge mastery per topic
-- Error patterns for targeted feedback
 - Spaced repetition review schedule
 - Engagement metrics
 
 The learner state is stored in the user document and serves as the
 single source of truth for all AI tutoring agents.
+
+Note: Error patterns are NOT stored here - they can be queried directly 
+from the submissions collection when needed.
 """
 
 from typing import Dict, List, Optional
@@ -52,34 +54,6 @@ class TopicMastery(BaseModel):
 
 
 # ============================================================================
-# ERROR PATTERN TRACKING
-# ============================================================================
-
-class ErrorPattern(BaseModel):
-    """
-    Records a recurring error pattern for targeted feedback.
-    
-    Helps the Pedagogical Feedback Agent identify misconceptions
-    and provide specific hints.
-    """
-    pattern: str = Field(
-        description="Error pattern identifier (e.g., 'off-by-one', 'null-check')"
-    )
-    count: int = Field(
-        default=1,
-        ge=1,
-        description="Number of times this error occurred"
-    )
-    last_seen: datetime = Field(
-        description="Most recent occurrence"
-    )
-    example_question_ids: List[str] = Field(
-        default_factory=list,
-        description="Question IDs where this error occurred (max 3 for context)"
-    )
-
-
-# ============================================================================
 # SPACED REPETITION SCHEDULE
 # ============================================================================
 
@@ -118,12 +92,13 @@ class LearnerState(BaseModel):
     This is the single source of truth for all AI agents:
     - Learner Profiler: Updates mastery levels
     - Skill Assessor: Analyzes submissions
-    - Pedagogical Feedback: Uses error patterns
     - Content Curator: Uses mastery + reviews for suggestions
     - Progress Synthesizer: Manages review schedule
     - Engagement Orchestrator: Tracks activity
     
     Stored in user document. Updated by orchestrator after agent execution.
+    
+    Note: Error patterns are queried from submissions, not stored here.
     """
     
     # Versioning for future schema migrations
@@ -140,12 +115,6 @@ class LearnerState(BaseModel):
     mastery: Dict[str, float] = Field(
         default_factory=dict,
         description="Map of topic -> mastery level (0.0-1.0)"
-    )
-    
-    # Error pattern tracking
-    common_errors: Dict[str, List[str]] = Field(
-        default_factory=dict,
-        description="Map of topic -> list of error patterns"
     )
     
     # Spaced repetition schedule
@@ -182,7 +151,6 @@ class LearnerStateUpdate(BaseModel):
     Used by agents to return state changes.
     """
     mastery: Optional[Dict[str, float]] = None
-    common_errors: Optional[Dict[str, List[str]]] = None
     reviews: Optional[List[ReviewItem]] = None
     streak: Optional[int] = None
     last_seen: Optional[date] = None
@@ -190,7 +158,7 @@ class LearnerStateUpdate(BaseModel):
 
 class TopicStatistics(BaseModel):
     """
-    Statistics for a single topic (derived from learner state).
+    Statistics for a single topic (derived from learner state + submissions).
     """
     topic: str
     mastery_level: float
@@ -199,7 +167,6 @@ class TopicStatistics(BaseModel):
     success_rate: float
     last_practiced: Optional[datetime]
     needs_review: bool
-    common_errors: List[str]
 
 
 def create_default_learner_state() -> LearnerState:
@@ -213,7 +180,6 @@ def create_default_learner_state() -> LearnerState:
         version="1.0",
         updated=datetime.utcnow(),
         mastery={},
-        common_errors={},
         reviews=[],
         streak=0,
         last_seen=date.today()

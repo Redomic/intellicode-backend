@@ -45,6 +45,7 @@ class CodingSessionBase(BaseModel):
     analytics: Dict[str, Any] = Field(default_factory=dict)
     code_snapshots: List[Dict[str, Any]] = Field(default_factory=list)
     session_events: List[Dict[str, Any]] = Field(default_factory=list)
+    chat_history: List[Dict[str, Any]] = Field(default_factory=list, description="AI assistant chat messages")
 
 
 class CodingSessionCreate(BaseModel):

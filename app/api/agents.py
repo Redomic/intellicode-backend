@@ -220,29 +220,47 @@ async def get_hint_orchestrated(
     Returns:
         Adaptive hint with proficiency metadata
     """
+    print(f"\n{'='*80}")
+    print(f"🎯 ORCHESTRATED HINT REQUEST")
+    print(f"User: {current_user.key}")
+    print(f"Question: {request.question_id}")
+    print(f"Session: {request.session_id}")
+    print(f"Code length: {len(request.code) if request.code else 0}")
+    print(f"{'='*80}\n")
+    
     logger.info(
         f"🎯 Orchestrated hint request from user {current_user.key}: "
         f"Question={request.question_id}, Level={request.hint_level}"
     )
+    logger.info(f"🔍 DEBUG - Request data: question_id={request.question_id}, session_id={request.session_id}, code_length={len(request.code) if request.code else 0}")
     
     try:
         # 1. Get session and check hint limit
         from app.models.session import CodingSessionUpdate
         session_crud = SessionCRUD(get_db())
+        
+        logger.info(f"🔍 DEBUG - Fetching session with ID: {request.session_id}")
         session = session_crud.get_session(request.session_id) if request.session_id else None
         
         if not session:
+            logger.error(f"❌ DEBUG - Session not found! session_id={request.session_id}")
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="No active session found"
             )
         
+        logger.info(f"✅ DEBUG - Session found: {session.session_id}, state={session.state}")
+        
         # Check current hints used and calculate next level
         analytics = session.analytics if session.analytics else {}
         current_hints_used = analytics.get('hints_used', 0)
         
+        logger.info(f"🔍 DEBUG - Session analytics: {analytics}")
+        logger.info(f"🔍 DEBUG - Current hints used: {current_hints_used}")
+        
         # Enforce 5-hint limit
         if current_hints_used >= 5:
+            logger.warning(f"⚠️ DEBUG - Hint limit reached: {current_hints_used}/5")
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Maximum of 5 hints per session reached"
@@ -254,8 +272,10 @@ async def get_hint_orchestrated(
         logger.info(f"📊 Session hints: {current_hints_used}/5 used, generating level {hint_level}")
         
         # 2. Fetch question
+        logger.info(f"🔍 DEBUG - Fetching question: {request.question_id}")
         question_doc = roadmap_crud.collection.get(request.question_id)
         if not question_doc:
+            logger.error(f"❌ DEBUG - Question not found: {request.question_id}")
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Question {request.question_id} not found"
@@ -265,6 +285,7 @@ async def get_hint_orchestrated(
         question = RoadmapItem.model_validate(question_doc)
         
         problem_statement = question.problem_statement_text or question.original_title or ''
+        logger.info(f"✅ DEBUG - Question loaded: {question.original_title}, problem_length={len(problem_statement)}")
         
         # 3. Prepare context for orchestrator with calculated hint level
         context = {
@@ -275,31 +296,49 @@ async def get_hint_orchestrated(
             "topics": question.topics or []
         }
         
+        logger.info(f"🔍 DEBUG - Orchestrator context: hint_level={hint_level}, code_length={len(request.code) if request.code else 0}, topics={question.topics}")
+        
         # 3. Invoke orchestrator (async)
+        logger.info(f"🔍 DEBUG - Invoking orchestrator for user {current_user.key}...")
+        print(f"🔍 About to call orchestrator.ainvoke()")
         orchestrator = get_orchestrator()
+        print(f"🔍 Got orchestrator: {orchestrator}")
         result = await orchestrator.ainvoke(
             user_key=current_user.key,
             trigger="hint_request",
             context=context
         )
+        print(f"🔍 Orchestrator returned: {type(result)}, keys: {result.keys() if result else 'None'}")
+        
+        logger.info(f"🔍 DEBUG - Orchestrator result keys: {result.keys()}")
         
         # 4. Extract results
         if result.get("errors"):
+            logger.error(f"❌ DEBUG - Orchestrator errors: {result['errors']}")
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Hint generation failed: {result['errors']}"
             )
         
+        logger.info(f"🔍 DEBUG - Agent outputs: {result.get('agent_outputs', {}).keys()}")
+        
         hint_data = result["agent_outputs"].get("hint", {})
         proficiency = result["agent_outputs"].get("proficiency", {})
         
+        print(f"🔍 HINT DATA RECEIVED FROM ORCHESTRATOR:")
+        print(f"  - hint_data keys: {hint_data.keys() if hint_data else 'None'}")
+        print(f"  - hint_data full: {hint_data}")
+        
+        logger.info(f"🔍 DEBUG - Hint data: success={hint_data.get('success')}, hint_text_length={len(hint_data.get('hint_text', ''))}, hint_level={hint_data.get('hint_level')}")
+        
         if not hint_data.get("success"):
+            logger.error(f"❌ DEBUG - Hint generation failed, hint_data={hint_data}")
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Hint generation failed"
             )
         
-        # 5. Update session analytics with new hint count
+        # 5. Update session analytics and save hint to chat history
         try:
             analytics_update = analytics.copy()
             analytics_update['hints_used'] = hint_level  # Set to the level we just used
@@ -314,9 +353,22 @@ async def get_hint_orchestrated(
                 logger.error(f"Failed to update session {request.session_id}")
             else:
                 logger.info(f"✅ Session updated: hints_used = {hint_level}")
+            
+            # Save hint to chat history
+            session_crud.add_chat_message(
+                request.session_id,
+                role="assistant",
+                content=hint_data['hint_text'],
+                metadata={
+                    "type": "hint",
+                    "hint_level": hint_level,
+                    "level_name": hint_data['level_name'],
+                    "hints_used": hint_level
+                }
+            )
                 
         except Exception as e:
-            logger.exception(f"❌ Error updating hint count: {e}")
+            logger.exception(f"❌ Error updating session: {e}")
             # Don't fail the request if analytics update fails
             pass
         
@@ -325,7 +377,7 @@ async def get_hint_orchestrated(
             f"Proficiency {proficiency.get('overall_score', 0):.2f}"
         )
         
-        return HintResponse(
+        response = HintResponse(
             hint_text=hint_data['hint_text'],
             hint_level=hint_level,  # Return the calculated level
             level_name=hint_data['level_name'],
@@ -334,9 +386,22 @@ async def get_hint_orchestrated(
             success=True
         )
         
+        print(f"\n{'='*80}")
+        print(f"📤 RETURNING HINT RESPONSE")
+        print(f"Hint text length: {len(response.hint_text)}")
+        print(f"Hint level: {response.hint_level}")
+        print(f"Hints remaining: {response.hints_remaining}")
+        print(f"Hint preview: {response.hint_text[:100]}...")
+        print(f"{'='*80}\n")
+        
+        logger.info(f"🔍 DEBUG - Response: hint_text_length={len(response.hint_text)}, hint_level={response.hint_level}, hints_remaining={response.hints_remaining}")
+        
+        return response
+        
     except HTTPException:
         raise
     except Exception as e:
+        print(f"❌ EXCEPTION in orchestrated hint: {type(e).__name__}: {str(e)}")
         logger.exception(f"❌ Error in orchestrated hint: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -351,13 +416,14 @@ async def chat_with_assistant(
 ):
     """
     Chat with the AI assistant about the coding problem.
+    Uses learner profiling to adapt responses to student's level.
     
     Args:
-        request: Chat request with message, question_id, code, and history
+        request: Chat request with message, question_id, code, session_id, and history
         current_user: Authenticated user
         
     Returns:
-        AI assistant's response
+        AI assistant's response adapted to student's proficiency
     """
     logger.info(f"💬 Chat request from user {current_user.key}")
     
@@ -365,7 +431,10 @@ async def chat_with_assistant(
         message = request.get("message", "")
         question_id = request.get("question_id")
         code = request.get("code", "")
+        session_id = request.get("session_id")
         history = request.get("history", [])
+        
+        logger.info(f"📝 Chat request - Code length: {len(code)} characters")
         
         if not message.strip():
             raise HTTPException(
@@ -373,30 +442,137 @@ async def chat_with_assistant(
                 detail="Message cannot be empty"
             )
         
-        # Build context for the chat
-        context_parts = [
-            "You are an AI teaching assistant helping a student with coding problems.",
-            "Be helpful, concise, and pedagogical. Guide them towards the solution without giving it away.",
-            ""
-        ]
+        # Get learner state and calculate proficiency
+        from app.crud.learner_state import LearnerStateCRUD
+        from app.crud.roadmap import RoadmapCRUD
+        from app.utils.user_profiling import calculate_user_proficiency
         
+        db = get_db()
+        learner_crud = LearnerStateCRUD(db)
+        roadmap_crud = RoadmapCRUD(db)
+        
+        learner_state = learner_crud.get_or_initialize(current_user.key)
+        
+        # Attach learner state to user object for proficiency calculation
+        current_user.learner_state = learner_state
+        
+        # Get question data for proficiency calculation and context
+        question_topics = []
+        question_data = None
         if question_id:
-            context_parts.append(f"Current problem ID: {question_id}")
+            try:
+                question_doc = roadmap_crud.collection.get(question_id)
+                if question_doc:
+                    if question_doc.get('topics'):
+                        question_topics = question_doc['topics']
+                    question_data = question_doc
+            except Exception as e:
+                logger.warning(f"Could not fetch question data: {e}")
         
-        if code:
-            context_parts.append(f"Student's current code:\n```\n{code}\n```\n")
+        # Calculate user proficiency (0.0 to 1.0)
+        proficiency_data = calculate_user_proficiency(
+            current_user,
+            question_topics
+        )
+        proficiency_score = proficiency_data.get('overall_score', 0.5)
         
-        context_parts.append(f"Student's question: {message}")
+        logger.info(f"📊 User proficiency: {proficiency_score:.2f}")
         
-        # Add conversation history for context
+        # Analyze code state - check if user has written meaningful code
+        stripped_code = code.strip()
+        has_code = bool(stripped_code and len(stripped_code) > 10)  # Lowered threshold to catch early code
+        
+        # Format conversation history
+        conversation_history = "No prior conversation"
         if history:
-            context_parts.append("\nPrevious conversation:")
-            for msg in history[-3:]:  # Last 3 messages for context
-                role = msg.get("role", "user")
-                content = msg.get("content", "")
-                context_parts.append(f"{role.capitalize()}: {content}")
+            history_lines = [f"{msg.get('role', 'user')}: {msg.get('content', '')[:100]}" for msg in history[-2:]]
+            conversation_history = "\n".join(history_lines)
         
-        prompt = "\n".join(context_parts)
+        # Format question section
+        question_section = ""
+        if question_data:
+            title = question_data.get('title', 'Unknown Problem')
+            difficulty = question_data.get('difficulty', 'Unknown')
+            description = question_data.get('description', '')[:500]  # Truncate if too long
+            
+            question_section = f"""**Problem:** {title} ({difficulty})
+**Description:** {description}"""
+            
+            # Add examples if available
+            if question_data.get('examples'):
+                examples = question_data['examples']
+                if isinstance(examples, list) and len(examples) > 0:
+                    example = examples[0]
+                    if isinstance(example, dict):
+                        input_val = example.get('input', '')
+                        output_val = example.get('output', '')
+                        question_section += f"\n**Example:** Input: {input_val} → Output: {output_val}"
+        else:
+            question_section = "**Problem:** (Question not loaded)"
+        
+        # Format code section - always show code if it exists, even if minimal
+        code_section = ""
+        if has_code:
+            code_section = f"\n**Student's Current Code:**\n```\n{stripped_code[:400]}\n```\n"
+            logger.info(f"✅ Including user's code in chat context ({len(stripped_code)} chars)")
+        elif stripped_code:
+            # Even if code is minimal/boilerplate, show it
+            code_section = f"\n**Student's Current Code:**\n```\n{stripped_code}\n```\n(Note: This appears to be starting code or boilerplate)\n"
+            logger.info(f"✅ Including minimal/boilerplate code in chat context ({len(stripped_code)} chars)")
+        else:
+            logger.info("ℹ️ No code provided in chat request")
+        
+        # Build adaptive pedagogical prompt
+        prompt = f"""You are an AI teaching assistant helping a student with a coding problem. Adapt your teaching style to their level.
+
+**Student Profile:**
+- Proficiency: {proficiency_score:.2f}/1.0
+- Skill Level: {current_user.skill_level or 'intermediate'}
+- Expertise Rank: {current_user.expertise_rank or 'N/A'}
+
+**Adaptation Guidelines:**
+
+▸ IF proficiency < 0.3 (BEGINNER):
+  - Use simple, encouraging language
+  - Avoid jargon, explain concepts from first principles
+  - Give concrete examples and analogies
+  - Focus on one concept at a time
+  - Be patient and supportive
+
+▸ IF 0.3 <= proficiency < 0.6 (INTERMEDIATE):
+  - Use standard programming terminology
+  - Reference common patterns and techniques
+  - Ask guiding questions to develop problem-solving skills
+  - Balance explanation with discovery
+
+▸ IF proficiency >= 0.6 (ADVANCED):
+  - Use technical language and CS concepts
+  - Challenge them with optimization considerations
+  - Be concise, assume foundational knowledge
+  - Focus on edge cases and efficiency
+
+---
+
+{question_section}
+{code_section}
+
+**Recent Conversation:**
+{conversation_history}
+
+**Student's Question:** "{message}"
+
+---
+
+**Your Response Guidelines:**
+- Keep responses concise (2-4 sentences)
+- Match complexity to their proficiency level
+- You already know the problem, don't ask what they're working on
+- **IMPORTANT: If code is provided above, ALWAYS reference and analyze it specifically**
+- If code is empty or minimal, guide them on where to start
+- Don't give away solutions, guide discovery
+- Be specific about what you observe in their code or approach
+
+Respond now:"""
         
         # Use Gemini to generate response
         from langchain_google_genai import ChatGoogleGenerativeAI
@@ -410,6 +586,31 @@ async def chat_with_assistant(
         
         response = await llm.ainvoke(prompt)
         response_text = response.content.strip()
+        
+        # Save chat messages to session history
+        if session_id:
+            try:
+                session_crud = SessionCRUD(get_db())
+                
+                # Save user message
+                session_crud.add_chat_message(
+                    session_id,
+                    role="user",
+                    content=message,
+                    metadata={"type": "chat"}
+                )
+                
+                # Save assistant response
+                session_crud.add_chat_message(
+                    session_id,
+                    role="assistant",
+                    content=response_text,
+                    metadata={"type": "chat"}
+                )
+                
+                logger.info(f"✅ Chat messages saved to session {session_id}")
+            except Exception as e:
+                logger.warning(f"Failed to save chat to session: {e}")
         
         logger.info(f"✅ Chat response generated for user {current_user.key}")
         
@@ -426,6 +627,58 @@ async def chat_with_assistant(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to generate response: {str(e)}"
+        )
+
+
+@router.get("/chat/history/{session_id}")
+async def get_chat_history(
+    session_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Get chat history for a session.
+    
+    Args:
+        session_id: Session ID
+        current_user: Authenticated user
+        
+    Returns:
+        List of chat messages
+    """
+    try:
+        db = get_db()
+        session_crud = SessionCRUD(db)
+        
+        # Verify session belongs to user
+        session = session_crud.get_session(session_id)
+        if not session:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Session not found"
+            )
+        
+        if session.user_key != current_user.key:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Not authorized to access this session"
+            )
+        
+        chat_history = session_crud.get_chat_history(session_id)
+        
+        return {
+            "success": True,
+            "session_id": session_id,
+            "messages": chat_history,
+            "total": len(chat_history)
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.exception(f"❌ Error getting chat history: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to retrieve chat history"
         )
 
 

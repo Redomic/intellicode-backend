@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     
     # AI Agent settings
     GEMINI_API_KEY: Optional[str] = None
-    GEMINI_MODEL: str = "gemini-2.0-flash-exp"  # Gemini 2.5 Flash
+    GEMINI_MODEL: str = "gemini-2.5-flash"  # Gemini 2.5 Flash
     
     class Config:
         env_file = ".env"

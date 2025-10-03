@@ -146,7 +146,7 @@ class IntelliTOrchestrator:
         Load user data from database.
         
         Populates state with:
-        - user: Full user object
+        - user: Full user object with learner_state attached
         - learner_state: Current learning state
         - memory: Agent memory string
         - agent_data: Agent metadata
@@ -173,11 +173,19 @@ class IntelliTOrchestrator:
             # Convert UserInDB to User (API model)
             user = User.model_validate(user_in_db.model_dump())
             
+            # Explicitly load learner state using CRUD layer
+            from app.crud.learner_state import LearnerStateCRUD
+            learner_crud = LearnerStateCRUD(db)
+            learner_state = learner_crud.get_or_initialize(user_key)
+            
+            # Attach learner state to user object for proficiency calculations
+            user.learner_state = learner_state
+            
             logger.info(f"✅ User loaded: {user.name} ({user.key})")
             
             return {
                 "user": user,
-                "learner_state": user.learner_state,
+                "learner_state": learner_state,
                 "memory": user.memory,
                 "agent_data": user.agent_data or {},
                 "next_action": "route"
@@ -253,10 +261,13 @@ class IntelliTOrchestrator:
             hint_level = context.get("hint_level", 2)
             topics = context.get("topics", [])
             
+            logger.info(f"🔍 DEBUG - Feedback context: problem_length={len(problem_statement)}, code_length={len(user_code)}, hint_level={hint_level}, topics={topics}")
+            
             # Get feedback agent
             feedback_agent = get_feedback_agent()
             
             # Generate hint with proficiency adjustment
+            logger.info(f"🔍 DEBUG - Calling feedback_agent.generate_hint with proficiency={proficiency.get('overall_score')}")
             hint_result = await feedback_agent.generate_hint(
                 problem_statement=problem_statement,
                 user_code=user_code,
@@ -265,6 +276,8 @@ class IntelliTOrchestrator:
                 topics=topics,
                 proficiency_score=proficiency.get("overall_score")
             )
+            
+            logger.info(f"🔍 DEBUG - Feedback agent returned: success={hint_result.get('success')}, hint_text_length={len(hint_result.get('hint_text', ''))}, hint_level={hint_result.get('hint_level')}")
             
             logger.info(
                 f"✅ Hint generated: Level {hint_level} "

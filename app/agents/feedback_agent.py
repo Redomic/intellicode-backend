@@ -56,13 +56,13 @@ YOU MUST adapt your response based on this score:
   - Focus on ONE simple idea
   - Example: "Think of this like sorting playing cards in your hand - what steps do you take?"
 
-▸ IF 0.3 ≤ {proficiency_score} < 0.6 (INTERMEDIATE):
+▸ IF 0.3 <= {proficiency_score} < 0.6 (INTERMEDIATE):
   - Use standard programming terms (loops, arrays, conditions)
   - Mention problem patterns by name (two pointers, sliding window)
   - Ask about tradeoffs and alternatives
   - Example: "This looks like a pattern-matching problem. Do you see repeated subproblems?"
 
-▸ IF {proficiency_score} ≥ 0.6 (ADVANCED):
+▸ IF {proficiency_score} >= 0.6 (ADVANCED):
   - Use technical CS terminology
   - Reference algorithmic paradigms directly (DP, greedy, divide-conquer)
   - Be concise and assume deep knowledge
@@ -90,14 +90,14 @@ YOU MUST adapt based on this score:
   - Avoid Big-O - say "fast" or "slow" instead
   - Example: "You might use a list (like a row of boxes) to store the items as you process them one by one."
 
-▸ IF 0.3 ≤ {proficiency_score} < 0.6 (INTERMEDIATE):
+▸ IF 0.3 <= {proficiency_score} < 0.6 (INTERMEDIATE):
   - Name 2-3 relevant data structures directly
   - Use basic complexity: "O(n) vs O(1)"
   - Mention common patterns (sliding window, two pointers)
   - Explain why the structure fits
   - Example: "A hash map gives O(1) lookups, which helps since you need to check if elements were seen before."
 
-▸ IF {proficiency_score} ≥ 0.6 (ADVANCED):
+▸ IF {proficiency_score} >= 0.6 (ADVANCED):
   - Suggest multiple structures with complexity analysis
   - Reference advanced structures (heaps, tries, segment trees) if relevant
   - Discuss space-time tradeoffs
@@ -125,13 +125,13 @@ YOU MUST adapt based on this score:
   - Avoid terms like "greedy" or "dynamic programming"
   - Example: "Step 1: Start at the first number. Step 2: For each number, check if it's bigger than what you've seen. Step 3: Keep the biggest one."
 
-▸ IF 0.3 ≤ {proficiency_score} < 0.6 (INTERMEDIATE):
+▸ IF 0.3 <= {proficiency_score} < 0.6 (INTERMEDIATE):
   - Name the algorithmic technique (two pointers, sliding window, etc.)
   - Break into 3-5 logical steps
   - Explain the intuition briefly
   - Example: "Use two pointers starting at opposite ends. Move them inward based on which side has the smaller value."
 
-▸ IF {proficiency_score} ≥ 0.6 (ADVANCED):
+▸ IF {proficiency_score} >= 0.6 (ADVANCED):
   - State the paradigm directly (DP, greedy, divide-conquer)
   - Reference theoretical properties (optimal substructure, etc.)
   - Mention alternatives and tradeoffs
@@ -159,13 +159,13 @@ YOU MUST adapt based on this score:
   - Use simple vocabulary
   - Example: "Your loop starts here on line 3, but before the loop, you need to create a variable to store your answer. Right now there's nowhere to save the results."
 
-▸ IF 0.3 ≤ {proficiency_score} < 0.6 (INTERMEDIATE):
+▸ IF 0.3 <= {proficiency_score} < 0.6 (INTERMEDIATE):
   - Point out structural patterns (initialization, accumulation, termination)
   - Name common mistakes (off-by-one, missing base case)
   - Explain what's wrong and why
   - Example: "Missing base case for recursion. When n==0, your function will keep calling itself infinitely."
 
-▸ IF {proficiency_score} ≥ 0.6 (ADVANCED):
+▸ IF {proficiency_score} >= 0.6 (ADVANCED):
   - Be direct about the structural flaw
   - Reference design patterns and best practices
   - Mention edge cases and invariants
@@ -193,13 +193,13 @@ YOU MUST adapt based on this score:
   - Be very patient and detailed
   - Example: "This line `digit = n % 10` gets the last digit (if n=123, digit becomes 3). Good! But then you need to ADD that digit to your result. Right now you're just storing it but not using it."
 
-▸ IF 0.3 ≤ {proficiency_score} < 0.6 (INTERMEDIATE):
+▸ IF 0.3 <= {proficiency_score} < 0.6 (INTERMEDIATE):
   - Point to the specific line/section
   - Explain the logical error
   - Give an example showing the failure
   - Example: "Line 7: you update `result` before checking for overflow. If result is already at INT_MAX/10, multiplying by 10 will overflow. Check BEFORE updating."
 
-▸ IF {proficiency_score} ≥ 0.6 (ADVANCED):
+▸ IF {proficiency_score} >= 0.6 (ADVANCED):
   - Be direct and concise
   - Point out edge cases and constraints
   - Reference algorithmic properties
@@ -234,8 +234,10 @@ class FeedbackAgent:
             model=settings.GEMINI_MODEL,
             google_api_key=settings.GEMINI_API_KEY,
             temperature=0.7,  # Some creativity for varied hints
-            max_output_tokens=500  # Keep hints concise
+            max_output_tokens=2048  # Increased from 500 to avoid MAX_TOKENS error
         )
+        
+        logger.info(f"✅ FeedbackAgent initialized with model: {settings.GEMINI_MODEL}")
         
         # Map hint levels to their prompt templates
         self.hint_templates = {
@@ -281,6 +283,7 @@ class FeedbackAgent:
         proficiency = proficiency_score if proficiency_score is not None else 0.5
         
         logger.info(f"🤔 Generating Level {hint_level} hint (proficiency: {proficiency:.2f})")
+        logger.info(f"🔍 DEBUG - FeedbackAgent inputs: problem_length={len(problem_statement)}, code_length={len(user_code or '')}, hint_level={hint_level}")
         
         # Get appropriate prompt template
         template_str = self.hint_templates[hint_level]
@@ -297,12 +300,42 @@ class FeedbackAgent:
             proficiency_score=f"{proficiency:.2f}"
         )
         
+        logger.info(f"🔍 DEBUG - Sending prompt to LLM (level {hint_level})...")
+        print(f"\n{'='*80}")
+        print(f"📤 SENDING TO GEMINI (Level {hint_level})")
+        print(f"Prompt preview (first 500 chars):")
+        prompt_str = str(formatted_prompt[0].content) if formatted_prompt else "No prompt"
+        print(f"{prompt_str[:500]}...")
+        print(f"{'='*80}\n")
+        
         try:
             # Generate hint
             response = await self.llm.ainvoke(formatted_prompt)
-            hint_text = response.content.strip()
+            
+            print(f"\n{'='*80}")
+            print(f"📥 RECEIVED FROM GEMINI (Level {hint_level})")
+            print(f"Response type: {type(response)}")
+            print(f"Response content length: {len(response.content) if response.content else 0}")
+            print(f"Response preview: {response.content[:200] if response.content else 'EMPTY'}...")
+            print(f"Full response object attributes: {dir(response)}")
+            print(f"Response metadata: {response.response_metadata if hasattr(response, 'response_metadata') else 'No metadata'}")
+            print(f"{'='*80}\n")
+            hint_text = response.content.strip() if response.content else ""
+            
+            # Validate that we actually got a hint
+            if not hint_text or len(hint_text) < 10:
+                logger.error(f"❌ LLM returned empty or too short hint (length: {len(hint_text)})")
+                logger.error(f"❌ Response object: {response}")
+                return {
+                    "hint_text": "I apologize, but I couldn't generate a helpful hint at this moment. Please try again.",
+                    "hint_level": hint_level,
+                    "level_name": self._get_level_name(hint_level),
+                    "success": False,
+                    "error": "LLM returned empty response"
+                }
             
             logger.info(f"✅ Generated Level {hint_level} hint ({len(hint_text)} chars)")
+            logger.info(f"🔍 DEBUG - Hint preview: {hint_text[:100]}...")
             
             return {
                 "hint_text": hint_text,

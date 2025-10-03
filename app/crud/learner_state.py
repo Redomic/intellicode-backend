@@ -29,6 +29,44 @@ class LearnerStateCRUD:
         self.submissions_collection = db.collection('submissions')
         self.roadmap_collection = db.collection('roadmap')
     
+    def get_or_initialize(self, user_key: str) -> LearnerState:
+        """
+        Get existing learner state or initialize from history.
+        
+        Args:
+            user_key: User's document key
+            
+        Returns:
+            LearnerState (existing or newly initialized)
+        """
+        try:
+            user = self.users_collection.get(user_key)
+            if user and 'learner_state' in user and user['learner_state']:
+                # Parse existing learner state
+                state_dict = user['learner_state']
+                
+                # Convert string dates to date/datetime objects
+                if 'last_seen' in state_dict and isinstance(state_dict['last_seen'], str):
+                    state_dict['last_seen'] = date.fromisoformat(state_dict['last_seen'])
+                if 'updated' in state_dict and isinstance(state_dict['updated'], str):
+                    state_dict['updated'] = datetime.fromisoformat(state_dict['updated'])
+                
+                # Convert reviews list
+                if 'reviews' in state_dict:
+                    reviews = []
+                    for r in state_dict['reviews']:
+                        if isinstance(r['due_date'], str):
+                            r['due_date'] = datetime.fromisoformat(r['due_date'])
+                        reviews.append(ReviewItem(**r))
+                    state_dict['reviews'] = reviews
+                
+                return LearnerState(**state_dict)
+        except Exception as e:
+            print(f"Error loading learner state for {user_key}: {e}")
+        
+        # If not found or error, initialize from history
+        return self.initialize_from_history(user_key)
+    
     def initialize_from_history(self, user_key: str) -> LearnerState:
         """
         Initialize learner state from user's submission history.

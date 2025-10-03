@@ -94,6 +94,7 @@ class SessionCRUD:
             },
             "code_snapshots": [],
             "session_events": [],
+            "chat_history": [],
             "created_at": now.isoformat() + 'Z',
             "updated_at": now.isoformat() + 'Z'
         }
@@ -465,6 +466,60 @@ class SessionCRUD:
     def update_current_code(self, session_id: str, code: str, language: str = "python") -> bool:
         """Update the current code state for a session."""
         return self.add_code_snapshot(session_id, code, language, is_current=True)
+    
+    def add_chat_message(self, session_id: str, role: str, content: str, metadata: Optional[Dict[str, Any]] = None) -> bool:
+        """Add a chat message to session history."""
+        try:
+            now = datetime.utcnow()
+            
+            # Get current session
+            cursor = self.sessions_collection.find({"session_id": session_id})
+            session_docs = list(cursor)
+            if not session_docs:
+                return False
+            
+            session_doc = session_docs[0]
+            chat_history = session_doc.get("chat_history", [])
+            
+            message = {
+                "role": role,  # 'user' or 'assistant'
+                "content": content,
+                "timestamp": now.isoformat() + 'Z',
+                "metadata": metadata or {}
+            }
+            
+            chat_history.append(message)
+            
+            # Update session
+            self.sessions_collection.update_match(
+                {"session_id": session_id},
+                {
+                    "chat_history": chat_history,
+                    "last_activity": now.isoformat() + 'Z',
+                    "updated_at": now.isoformat() + 'Z'
+                }
+            )
+            
+            return True
+            
+        except Exception as e:
+            print(f"Error adding chat message: {e}")
+            return False
+    
+    def get_chat_history(self, session_id: str) -> List[Dict[str, Any]]:
+        """Get chat history for a session."""
+        try:
+            cursor = self.sessions_collection.find({"session_id": session_id})
+            session_docs = list(cursor)
+            if not session_docs:
+                return []
+            
+            session_doc = session_docs[0]
+            return session_doc.get("chat_history", [])
+            
+        except Exception as e:
+            print(f"Error getting chat history: {e}")
+            return []
     
     def get_current_code(self, session_id: str) -> Optional[Dict[str, Any]]:
         """Get the current code state for a session."""

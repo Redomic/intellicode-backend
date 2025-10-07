@@ -467,6 +467,53 @@ class SessionCRUD:
         """Update the current code state for a session."""
         return self.add_code_snapshot(session_id, code, language, is_current=True)
     
+    def update_last_run(
+        self, 
+        session_id: str, 
+        code: str,
+        language: str,
+        status: str,
+        passed_count: int,
+        total_count: int,
+        runtime_ms: Optional[int] = None,
+        error_message: Optional[str] = None,
+        test_results: Optional[List[Dict[str, Any]]] = None
+    ) -> bool:
+        """
+        Update the last run state for a session.
+        This tracks the most recent 'Run' action (sample test cases), not submissions.
+        """
+        try:
+            now = datetime.utcnow()
+            
+            last_run = {
+                "code": code,
+                "language": language,
+                "status": status,
+                "passed_count": passed_count,
+                "total_count": total_count,
+                "runtime_ms": runtime_ms,
+                "error_message": error_message,
+                "test_results": test_results or [],
+                "timestamp": now.isoformat() + 'Z'
+            }
+            
+            # Update session with last run state
+            result = self.sessions_collection.update_match(
+                {"session_id": session_id},
+                {
+                    "last_run": last_run,
+                    "last_activity": now.isoformat() + 'Z',
+                    "updated_at": now.isoformat() + 'Z'
+                }
+            )
+            
+            return result > 0
+            
+        except Exception as e:
+            print(f"Error updating last run: {e}")
+            return False
+    
     def add_chat_message(self, session_id: str, role: str, content: str, metadata: Optional[Dict[str, Any]] = None) -> bool:
         """Add a chat message to session history."""
         try:

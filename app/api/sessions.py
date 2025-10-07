@@ -16,6 +16,7 @@ from ..models.session import (
     SessionEventCreate,
     SessionCodeSnapshot,
     SessionCodeUpdate,
+    SessionLastRunUpdate,
     SessionState,
     SessionType
 )
@@ -417,6 +418,58 @@ async def update_current_code(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to update current code: {str(e)}"
+        )
+
+
+@router.post("/{session_id}/last-run", response_model=dict)
+async def update_last_run(
+    session_id: str,
+    run_data: SessionLastRunUpdate,
+    current_user: User = Depends(get_current_user),
+    session_crud: SessionCRUD = Depends(get_session_crud)
+):
+    """Update the last run state for a session (Run button, not submission)."""
+    try:
+        # Verify session ownership
+        session = session_crud.get_session(session_id)
+        if not session:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Session not found"
+            )
+        
+        if session.user_key != current_user.key:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied"
+            )
+        
+        success = session_crud.update_last_run(
+            session_id=session_id,
+            code=run_data.code,
+            language=run_data.language,
+            status=run_data.status,
+            passed_count=run_data.passed_count,
+            total_count=run_data.total_count,
+            runtime_ms=run_data.runtime_ms,
+            error_message=run_data.error_message,
+            test_results=run_data.test_results
+        )
+        
+        if not success:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to update last run state"
+            )
+        
+        return {"message": "Last run state updated successfully"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to update last run state: {str(e)}"
         )
 
 

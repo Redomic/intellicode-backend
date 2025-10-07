@@ -46,6 +46,7 @@ class CodingSessionBase(BaseModel):
     code_snapshots: List[Dict[str, Any]] = Field(default_factory=list)
     session_events: List[Dict[str, Any]] = Field(default_factory=list)
     chat_history: List[Dict[str, Any]] = Field(default_factory=list, description="AI assistant chat messages")
+    last_run: Optional[Dict[str, Any]] = Field(None, description="Most recent run state (not submission)")
 
 
 class CodingSessionCreate(BaseModel):
@@ -182,6 +183,18 @@ class SessionCodeUpdate(BaseModel):
     code: str
     language: str = "python"
     is_current: bool = True
+
+
+class SessionLastRunUpdate(BaseModel):
+    """Model for updating last run state (Run button, not submission)."""
+    code: str
+    language: str
+    status: str
+    passed_count: int
+    total_count: int
+    runtime_ms: Optional[int] = None
+    error_message: Optional[str] = None
+    test_results: Optional[List[Dict[str, Any]]] = None
 
 
 # Response models for API

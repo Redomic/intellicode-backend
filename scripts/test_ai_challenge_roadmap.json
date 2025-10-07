@@ -1,0 +1,788 @@
+{
+  "metadata": {
+    "created_at": "2025-10-07T22:27:53.755987",
+    "total_questions": 10,
+    "successful_scrapes": 10,
+    "failed_scrapes": 0,
+    "scraper": "AI Challenge Test Roadmap - Curated Extreme Hard Problems",
+    "format": "roadmap_collection_ready",
+    "description": "A curated collection of 10 extremely challenging LeetCode problems designed to test AI capabilities across various algorithmic domains",
+    "content_statistics": {
+      "total_examples_extracted": 20,
+      "total_test_cases_extracted": 20,
+      "total_hints_extracted": 9,
+      "total_topics_extracted": 34
+    },
+    "difficulty_areas_tested": [
+      "Binary Search on Complex Spaces",
+      "Backtracking with Constraints",
+      "Linked List Manipulation",
+      "Monotonic Stack Patterns",
+      "Dynamic Programming",
+      "System Design",
+      "Heap Operations",
+      "Sliding Window Optimization",
+      "String Algorithms"
+    ]
+  },
+  "roadmap_items": [
+    {
+      "question_id": "ai_challenge_mdinf2srtdrrys",
+      "original_title": "Median of 2 sorted arrays",
+      "a2z_step": "AI Capability Test - Extreme Challenges",
+      "a2z_sub_step": "Hard Problems",
+      "a2z_difficulty": 2,
+      "a2z_topics": "[{\"value\":\"arrays\",\"label\":\"Arrays\"},{\"value\":\"binary-search\",\"label\":\"Binary Search\"},{\"value\":\"data-structure\",\"label\":\"Data Structures\"}]",
+      "lc_link": "https://leetcode.com/problems/median-of-two-sorted-arrays/",
+      "step_number": 1,
+      "leetcode_title": "Median of Two Sorted Arrays",
+      "leetcode_title_slug": "median-of-two-sorted-arrays",
+      "leetcode_difficulty": "Hard",
+      "leetcode_question_id": 4,
+      "is_paid_only": false,
+      "problem_statement_html": "<p>Given two sorted arrays <code>nums1</code> and <code>nums2</code> of size <code>m</code> and <code>n</code> respectively, return <strong>the median</strong> of the two sorted arrays.</p>\n\n<p>The overall run time complexity should be <code>O(log (m+n))</code>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums1 = [1,3], nums2 = [2]\n<strong>Output:</strong> 2.00000\n<strong>Explanation:</strong> merged array = [1,2,3] and median is 2.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums1 = [1,2], nums2 = [3,4]\n<strong>Output:</strong> 2.50000\n<strong>Explanation:</strong> merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>nums1.length == m</code></li>\n\t<li><code>nums2.length == n</code></li>\n\t<li><code>0 &lt;= m &lt;= 1000</code></li>\n\t<li><code>0 &lt;= n &lt;= 1000</code></li>\n\t<li><code>1 &lt;= m + n &lt;= 2000</code></li>\n\t<li><code>-10<sup>6</sup> &lt;= nums1[i], nums2[i] &lt;= 10<sup>6</sup></code></li>\n</ul>\n",
+      "problem_statement_text": "Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)). Example 1: Input: nums1 = [1,3], nums2 = [2] Output: 2.00000 Explanation: merged array = [1,2,3] and median is 2. Example 2: Input: nums1 = [1,2], nums2 = [3,4] Output: 2.50000 Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5. Constraints: nums1.length == m nums2.length == n 0 <= m <= 1000 0 <= n <= 1000 1 <= m + n <= 2000 -106 <= nums1[i], nums2[i] <= 106",
+      "examples": [
+        {
+          "example_number": 1,
+          "input": "nums1 = [1,3], nums2 = [2]",
+          "output": "2.00000",
+          "explanation": "merged array = [1,2,3] and median is 2."
+        },
+        {
+          "example_number": 2,
+          "input": "nums1 = [1,2], nums2 = [3,4]",
+          "output": "2.50000",
+          "explanation": "merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5."
+        }
+      ],
+      "sample_test_cases": [
+        {
+          "input": "nums1 = [1,3], nums2 = [2]",
+          "expected_output": "2.00000",
+          "explanation": "merged array = [1,2,3] and median is 2.",
+          "example_number": 1
+        },
+        {
+          "input": "nums1 = [1,2], nums2 = [3,4]",
+          "expected_output": "2.50000",
+          "explanation": "merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.",
+          "example_number": 2
+        }
+      ],
+      "constraints": [
+        "nums1.length == m",
+        "nums2.length == n",
+        "0 <= m <= 1000",
+        "0 <= n <= 1000",
+        "1 <= m + n <= 2000",
+        "106 <= nums1[i], nums2[i] <= 106"
+      ],
+      "code_templates": {
+        "python": "class Solution:\n    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:\n        "
+      },
+      "default_code": "class Solution:\n    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:\n        ",
+      "hints": [],
+      "topics": [
+        "Array",
+        "Binary Search",
+        "Divide and Conquer"
+      ],
+      "company_tags": [],
+      "similar_questions": [
+        2387
+      ],
+      "follow_up_questions": [],
+      "note_sections": [],
+      "scraping_duration": 1.3623020648956299,
+      "scraped_at": "2025-09-28T00:56:18.598366",
+      "scraping_success": true,
+      "scraping_error": null,
+      "course": "ai-challenge-test",
+      "original_question_id": "mdinf2srtdrrys"
+    },
+    {
+      "question_id": "ai_challenge_rvrsllingrpfgivnsizk",
+      "original_title": "Reverse LL in group of given size K",
+      "a2z_step": "AI Capability Test - Extreme Challenges",
+      "a2z_sub_step": "Hard Problems",
+      "a2z_difficulty": 2,
+      "a2z_topics": "[{\"value\":\"linked-list\",\"label\":\"Linked List\"},{\"value\":\"data-structure\",\"label\":\"Data Structures\"}]",
+      "lc_link": "https://leetcode.com/problems/reverse-nodes-in-k-group/",
+      "step_number": 2,
+      "leetcode_title": "Reverse Nodes in k-Group",
+      "leetcode_title_slug": "reverse-nodes-in-k-group",
+      "leetcode_difficulty": "Hard",
+      "leetcode_question_id": 25,
+      "is_paid_only": false,
+      "problem_statement_html": "<p>Given the <code>head</code> of a linked list, reverse the nodes of the list <code>k</code> at a time, and return <em>the modified list</em>.</p>\n\n<p><code>k</code> is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of <code>k</code> then left-out nodes, in the end, should remain as it is.</p>\n\n<p>You may not alter the values in the list&#39;s nodes, only nodes themselves may be changed.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<img alt=\"\" src=\"https://assets.leetcode.com/uploads/2020/10/03/reverse_ex1.jpg\" style=\"width: 542px; height: 222px;\" />\n<pre>\n<strong>Input:</strong> head = [1,2,3,4,5], k = 2\n<strong>Output:</strong> [2,1,4,3,5]\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n<img alt=\"\" src=\"https://assets.leetcode.com/uploads/2020/10/03/reverse_ex2.jpg\" style=\"width: 542px; height: 222px;\" />\n<pre>\n<strong>Input:</strong> head = [1,2,3,4,5], k = 3\n<strong>Output:</strong> [3,2,1,4,5]\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li>The number of nodes in the list is <code>n</code>.</li>\n\t<li><code>1 &lt;= k &lt;= n &lt;= 5000</code></li>\n\t<li><code>0 &lt;= Node.val &lt;= 1000</code></li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong>Follow-up:</strong> Can you solve the problem in <code>O(1)</code> extra memory space?</p>\n",
+      "problem_statement_text": "Given the head of a linked list, reverse the nodes of the list k at a time, and return the modified list. k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes, in the end, should remain as it is. You may not alter the values in the list's nodes, only nodes themselves may be changed. Example 1: Input: head = [1,2,3,4,5], k = 2 Output: [2,1,4,3,5] Example 2: Input: head = [1,2,3,4,5], k = 3 Output: [3,2,1,4,5] Constraints: The number of nodes in the list is n. 1 <= k <= n <= 5000 0 <= Node.val <= 1000 Follow-up: Can you solve the problem in O(1) extra memory space?",
+      "examples": [
+        {
+          "example_number": 1,
+          "input": "head = [1,2,3,4,5], k = 2",
+          "output": "[2,1,4,3,5]"
+        },
+        {
+          "example_number": 2,
+          "input": "head = [1,2,3,4,5], k = 3",
+          "output": "[3,2,1,4,5]"
+        }
+      ],
+      "sample_test_cases": [
+        {
+          "input": "head = [1,2,3,4,5], k = 2",
+          "expected_output": "[2,1,4,3,5]",
+          "explanation": "",
+          "example_number": 1
+        },
+        {
+          "input": "head = [1,2,3,4,5], k = 3",
+          "expected_output": "[3,2,1,4,5]",
+          "explanation": "",
+          "example_number": 2
+        }
+      ],
+      "constraints": [
+        "The number of nodes in the list is n.",
+        "1 <= k <= n <= 5000",
+        "0 <= Node.val <= 1000"
+      ],
+      "code_templates": {
+        "python": "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\nclass Solution:\n    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:\n        "
+      },
+      "default_code": "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\nclass Solution:\n    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:\n        ",
+      "hints": [],
+      "topics": [
+        "Linked List",
+        "Recursion"
+      ],
+      "company_tags": [],
+      "similar_questions": [
+        24,
+        1721,
+        2074
+      ],
+      "follow_up_questions": [],
+      "note_sections": [],
+      "scraping_duration": 1.7637732028961182,
+      "scraped_at": "2025-09-28T00:57:20.389183",
+      "scraping_success": true,
+      "scraping_error": null,
+      "course": "ai-challenge-test",
+      "original_question_id": "rvrsllingrpfgivnsizk"
+    },
+    {
+      "question_id": "ai_challenge_nqn",
+      "original_title": "N Queen",
+      "a2z_step": "AI Capability Test - Extreme Challenges",
+      "a2z_sub_step": "Hard Problems",
+      "a2z_difficulty": 2,
+      "a2z_topics": "[{\"value\":\"arrays\",\"label\":\"Arrays\"},{\"value\":\"recursion\",\"label\":\"Recursion\"}]",
+      "lc_link": "https://leetcode.com/problems/n-queens/",
+      "step_number": 3,
+      "leetcode_title": "N-Queens",
+      "leetcode_title_slug": "n-queens",
+      "leetcode_difficulty": "Hard",
+      "leetcode_question_id": 51,
+      "is_paid_only": false,
+      "problem_statement_html": "<p>The <strong>n-queens</strong> puzzle is the problem of placing <code>n</code> queens on an <code>n x n</code> chessboard such that no two queens attack each other.</p>\n\n<p>Given an integer <code>n</code>, return <em>all distinct solutions to the <strong>n-queens puzzle</strong></em>. You may return the answer in <strong>any order</strong>.</p>\n\n<p>Each solution contains a distinct board configuration of the n-queens&#39; placement, where <code>&#39;Q&#39;</code> and <code>&#39;.&#39;</code> both indicate a queen and an empty space, respectively.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<img alt=\"\" src=\"https://assets.leetcode.com/uploads/2020/11/13/queens.jpg\" style=\"width: 600px; height: 268px;\" />\n<pre>\n<strong>Input:</strong> n = 4\n<strong>Output:</strong> [[&quot;.Q..&quot;,&quot;...Q&quot;,&quot;Q...&quot;,&quot;..Q.&quot;],[&quot;..Q.&quot;,&quot;Q...&quot;,&quot;...Q&quot;,&quot;.Q..&quot;]]\n<strong>Explanation:</strong> There exist two distinct solutions to the 4-queens puzzle as shown above\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> n = 1\n<strong>Output:</strong> [[&quot;Q&quot;]]\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= n &lt;= 9</code></li>\n</ul>\n",
+      "problem_statement_text": "The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other. Given an integer n, return all distinct solutions to the n-queens puzzle. You may return the answer in any order. Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space, respectively. Example 1: Input: n = 4 Output: [[\".Q..\",\"...Q\",\"Q...\",\"..Q.\"],[\"..Q.\",\"Q...\",\"...Q\",\".Q..\"]] Explanation: There exist two distinct solutions to the 4-queens puzzle as shown above Example 2: Input: n = 1 Output: [[\"Q\"]] Constraints: 1 <= n <= 9",
+      "examples": [
+        {
+          "example_number": 1,
+          "input": "n = 4",
+          "output": "[[\".Q..\",\"...Q\",\"Q...\",\"..Q.\"],[\"..Q.\",\"Q...\",\"...Q\",\".Q..\"]]",
+          "explanation": "There exist two distinct solutions to the 4-queens puzzle as shown above"
+        },
+        {
+          "example_number": 2,
+          "input": "n = 1",
+          "output": "[[\"Q\"]]"
+        }
+      ],
+      "sample_test_cases": [
+        {
+          "input": "n = 4",
+          "expected_output": "[[\".Q..\",\"...Q\",\"Q...\",\"..Q.\"],[\"..Q.\",\"Q...\",\"...Q\",\".Q..\"]]",
+          "explanation": "There exist two distinct solutions to the 4-queens puzzle as shown above",
+          "example_number": 1
+        },
+        {
+          "input": "n = 1",
+          "expected_output": "[[\"Q\"]]",
+          "explanation": "",
+          "example_number": 2
+        }
+      ],
+      "constraints": [
+        "1 <= n <= 9"
+      ],
+      "code_templates": {
+        "python": "class Solution:\n    def solveNQueens(self, n: int) -> List[List[str]]:\n        "
+      },
+      "default_code": "class Solution:\n    def solveNQueens(self, n: int) -> List[List[str]]:\n        ",
+      "hints": [],
+      "topics": [
+        "Array",
+        "Backtracking"
+      ],
+      "company_tags": [],
+      "similar_questions": [
+        52,
+        1001
+      ],
+      "follow_up_questions": [],
+      "note_sections": [],
+      "scraping_duration": 1.0594627857208252,
+      "scraped_at": "2025-09-28T00:57:50.465444",
+      "scraping_success": true,
+      "scraping_error": null,
+      "course": "ai-challenge-test",
+      "original_question_id": "nqn"
+    },
+    {
+      "question_id": "ai_challenge_sdkslvr",
+      "original_title": "Sudoko Solver",
+      "a2z_step": "AI Capability Test - Extreme Challenges",
+      "a2z_sub_step": "Hard Problems",
+      "a2z_difficulty": 2,
+      "a2z_topics": "[{\"value\":\"arrays\",\"label\":\"Arrays\"},{\"value\":\"hashing\",\"label\":\"Hashing\"},{\"value\":\"data-structure\",\"label\":\"Data Structures\"}]",
+      "lc_link": "https://leetcode.com/problems/sudoku-solver/",
+      "step_number": 4,
+      "leetcode_title": "Sudoku Solver",
+      "leetcode_title_slug": "sudoku-solver",
+      "leetcode_difficulty": "Hard",
+      "leetcode_question_id": 37,
+      "is_paid_only": false,
+      "problem_statement_html": "<p>Write a program to solve a Sudoku puzzle by filling the empty cells.</p>\n\n<p>A sudoku solution must satisfy <strong>all of the following rules</strong>:</p>\n\n<ol>\n\t<li>Each of the digits <code>1-9</code> must occur exactly once in each row.</li>\n\t<li>Each of the digits <code>1-9</code> must occur exactly once in each column.</li>\n\t<li>Each of the digits <code>1-9</code> must occur exactly once in each of the 9 <code>3x3</code> sub-boxes of the grid.</li>\n</ol>\n\n<p>The <code>&#39;.&#39;</code> character indicates empty cells.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<img src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Sudoku-by-L2G-20050714.svg/250px-Sudoku-by-L2G-20050714.svg.png\" style=\"height:250px; width:250px\" />\n<pre>\n<strong>Input:</strong> board = [[&quot;5&quot;,&quot;3&quot;,&quot;.&quot;,&quot;.&quot;,&quot;7&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;],[&quot;6&quot;,&quot;.&quot;,&quot;.&quot;,&quot;1&quot;,&quot;9&quot;,&quot;5&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;],[&quot;.&quot;,&quot;9&quot;,&quot;8&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;6&quot;,&quot;.&quot;],[&quot;8&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;6&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;3&quot;],[&quot;4&quot;,&quot;.&quot;,&quot;.&quot;,&quot;8&quot;,&quot;.&quot;,&quot;3&quot;,&quot;.&quot;,&quot;.&quot;,&quot;1&quot;],[&quot;7&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;2&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;6&quot;],[&quot;.&quot;,&quot;6&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;2&quot;,&quot;8&quot;,&quot;.&quot;],[&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;4&quot;,&quot;1&quot;,&quot;9&quot;,&quot;.&quot;,&quot;.&quot;,&quot;5&quot;],[&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;.&quot;,&quot;8&quot;,&quot;.&quot;,&quot;.&quot;,&quot;7&quot;,&quot;9&quot;]]\n<strong>Output:</strong> [[&quot;5&quot;,&quot;3&quot;,&quot;4&quot;,&quot;6&quot;,&quot;7&quot;,&quot;8&quot;,&quot;9&quot;,&quot;1&quot;,&quot;2&quot;],[&quot;6&quot;,&quot;7&quot;,&quot;2&quot;,&quot;1&quot;,&quot;9&quot;,&quot;5&quot;,&quot;3&quot;,&quot;4&quot;,&quot;8&quot;],[&quot;1&quot;,&quot;9&quot;,&quot;8&quot;,&quot;3&quot;,&quot;4&quot;,&quot;2&quot;,&quot;5&quot;,&quot;6&quot;,&quot;7&quot;],[&quot;8&quot;,&quot;5&quot;,&quot;9&quot;,&quot;7&quot;,&quot;6&quot;,&quot;1&quot;,&quot;4&quot;,&quot;2&quot;,&quot;3&quot;],[&quot;4&quot;,&quot;2&quot;,&quot;6&quot;,&quot;8&quot;,&quot;5&quot;,&quot;3&quot;,&quot;7&quot;,&quot;9&quot;,&quot;1&quot;],[&quot;7&quot;,&quot;1&quot;,&quot;3&quot;,&quot;9&quot;,&quot;2&quot;,&quot;4&quot;,&quot;8&quot;,&quot;5&quot;,&quot;6&quot;],[&quot;9&quot;,&quot;6&quot;,&quot;1&quot;,&quot;5&quot;,&quot;3&quot;,&quot;7&quot;,&quot;2&quot;,&quot;8&quot;,&quot;4&quot;],[&quot;2&quot;,&quot;8&quot;,&quot;7&quot;,&quot;4&quot;,&quot;1&quot;,&quot;9&quot;,&quot;6&quot;,&quot;3&quot;,&quot;5&quot;],[&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;2&quot;,&quot;8&quot;,&quot;6&quot;,&quot;1&quot;,&quot;7&quot;,&quot;9&quot;]]\n<strong>Explanation:</strong>&nbsp;The input board is shown above and the only valid solution is shown below:\n\n<img src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Sudoku-by-L2G-20050714_solution.svg/250px-Sudoku-by-L2G-20050714_solution.svg.png\" style=\"height:250px; width:250px\" />\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>board.length == 9</code></li>\n\t<li><code>board[i].length == 9</code></li>\n\t<li><code>board[i][j]</code> is a digit or <code>&#39;.&#39;</code>.</li>\n\t<li>It is <strong>guaranteed</strong> that the input board has only one solution.</li>\n</ul>\n",
+      "problem_statement_text": "Write a program to solve a Sudoku puzzle by filling the empty cells. A sudoku solution must satisfy all of the following rules: Each of the digits 1-9 must occur exactly once in each row. Each of the digits 1-9 must occur exactly once in each column. Each of the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid. The '.' character indicates empty cells. Example 1: Input: board = [[\"5\",\"3\",\".\",\".\",\"7\",\".\",\".\",\".\",\".\"],[\"6\",\".\",\".\",\"1\",\"9\",\"5\",\".\",\".\",\".\"],[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\"6\",\".\"],[\"8\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"3\"],[\"4\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"1\"],[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"],[\".\",\"6\",\".\",\".\",\".\",\".\",\"2\",\"8\",\".\"],[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"5\"],[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]] Output: [[\"5\",\"3\",\"4\",\"6\",\"7\",\"8\",\"9\",\"1\",\"2\"],[\"6\",\"7\",\"2\",\"1\",\"9\",\"5\",\"3\",\"4\",\"8\"],[\"1\",\"9\",\"8\",\"3\",\"4\",\"2\",\"5\",\"6\",\"7\"],[\"8\",\"5\",\"9\",\"7\",\"6\",\"1\",\"4\",\"2\",\"3\"],[\"4\",\"2\",\"6\",\"8\",\"5\",\"3\",\"7\",\"9\",\"1\"],[\"7\",\"1\",\"3\",\"9\",\"2\",\"4\",\"8\",\"5\",\"6\"],[\"9\",\"6\",\"1\",\"5\",\"3\",\"7\",\"2\",\"8\",\"4\"],[\"2\",\"8\",\"7\",\"4\",\"1\",\"9\",\"6\",\"3\",\"5\"],[\"3\",\"4\",\"5\",\"2\",\"8\",\"6\",\"1\",\"7\",\"9\"]] Explanation: The input board is shown above and the only valid solution is shown below: Constraints: board.length == 9 board[i].length == 9 board[i][j] is a digit or '.'. It is guaranteed that the input board has only one solution.",
+      "examples": [
+        {
+          "example_number": 1,
+          "input": "board = [[\"5\",\"3\",\".\",\".\",\"7\",\".\",\".\",\".\",\".\"],[\"6\",\".\",\".\",\"1\",\"9\",\"5\",\".\",\".\",\".\"],[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\"6\",\".\"],[\"8\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"3\"],[\"4\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"1\"],[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"],[\".\",\"6\",\".\",\".\",\".\",\".\",\"2\",\"8\",\".\"],[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"5\"],[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]",
+          "output": "[[\"5\",\"3\",\"4\",\"6\",\"7\",\"8\",\"9\",\"1\",\"2\"],[\"6\",\"7\",\"2\",\"1\",\"9\",\"5\",\"3\",\"4\",\"8\"],[\"1\",\"9\",\"8\",\"3\",\"4\",\"2\",\"5\",\"6\",\"7\"],[\"8\",\"5\",\"9\",\"7\",\"6\",\"1\",\"4\",\"2\",\"3\"],[\"4\",\"2\",\"6\",\"8\",\"5\",\"3\",\"7\",\"9\",\"1\"],[\"7\",\"1\",\"3\",\"9\",\"2\",\"4\",\"8\",\"5\",\"6\"],[\"9\",\"6\",\"1\",\"5\",\"3\",\"7\",\"2\",\"8\",\"4\"],[\"2\",\"8\",\"7\",\"4\",\"1\",\"9\",\"6\",\"3\",\"5\"],[\"3\",\"4\",\"5\",\"2\",\"8\",\"6\",\"1\",\"7\",\"9\"]]",
+          "explanation": "The input board is shown above and the only valid solution is shown below:"
+        }
+      ],
+      "sample_test_cases": [
+        {
+          "input": "board = [[\"5\",\"3\",\".\",\".\",\"7\",\".\",\".\",\".\",\".\"],[\"6\",\".\",\".\",\"1\",\"9\",\"5\",\".\",\".\",\".\"],[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\"6\",\".\"],[\"8\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"3\"],[\"4\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"1\"],[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"],[\".\",\"6\",\".\",\".\",\".\",\".\",\"2\",\"8\",\".\"],[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"5\"],[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]",
+          "expected_output": "[[\"5\",\"3\",\"4\",\"6\",\"7\",\"8\",\"9\",\"1\",\"2\"],[\"6\",\"7\",\"2\",\"1\",\"9\",\"5\",\"3\",\"4\",\"8\"],[\"1\",\"9\",\"8\",\"3\",\"4\",\"2\",\"5\",\"6\",\"7\"],[\"8\",\"5\",\"9\",\"7\",\"6\",\"1\",\"4\",\"2\",\"3\"],[\"4\",\"2\",\"6\",\"8\",\"5\",\"3\",\"7\",\"9\",\"1\"],[\"7\",\"1\",\"3\",\"9\",\"2\",\"4\",\"8\",\"5\",\"6\"],[\"9\",\"6\",\"1\",\"5\",\"3\",\"7\",\"2\",\"8\",\"4\"],[\"2\",\"8\",\"7\",\"4\",\"1\",\"9\",\"6\",\"3\",\"5\"],[\"3\",\"4\",\"5\",\"2\",\"8\",\"6\",\"1\",\"7\",\"9\"]]",
+          "explanation": "The input board is shown above and the only valid solution is shown below:",
+          "example_number": 1
+        }
+      ],
+      "constraints": [
+        "board.length == 9",
+        "board[i].length == 9",
+        "board[i][j] is a digit or '.'.",
+        "It is guaranteed that the input board has only one solution."
+      ],
+      "code_templates": {
+        "python": "class Solution:\n    def solveSudoku(self, board: List[List[str]]) -> None:\n        \"\"\"\n        Do not return anything, modify board in-place instead.\n        \"\"\"\n        "
+      },
+      "default_code": "class Solution:\n    def solveSudoku(self, board: List[List[str]]) -> None:\n        \"\"\"\n        Do not return anything, modify board in-place instead.\n        \"\"\"\n        ",
+      "hints": [
+        "For each cell, place a valid number and try solving for the remaining empty cells.",
+        "If stuck, undo (backtrack) and try another valid number."
+      ],
+      "topics": [
+        "Array",
+        "Hash Table",
+        "Backtracking",
+        "Matrix"
+      ],
+      "company_tags": [],
+      "similar_questions": [
+        36,
+        980
+      ],
+      "follow_up_questions": [],
+      "note_sections": [],
+      "scraping_duration": 0.9123599529266357,
+      "scraped_at": "2025-09-28T00:57:54.599291",
+      "scraping_success": true,
+      "scraping_error": null,
+      "course": "ai-challenge-test",
+      "original_question_id": "sdkslvr"
+    },
+    {
+      "question_id": "ai_challenge_lrgstrctnglinhistgrm",
+      "original_title": "Largest rectangle in a histogram",
+      "a2z_step": "AI Capability Test - Extreme Challenges",
+      "a2z_sub_step": "Hard Problems",
+      "a2z_difficulty": 1,
+      "a2z_topics": "[{\"value\":\"arrays\",\"label\":\"Arrays\"},{\"value\":\"data-structure\",\"label\":\"Data Structures\"}]",
+      "lc_link": "https://leetcode.com/problems/largest-rectangle-in-histogram/",
+      "step_number": 5,
+      "leetcode_title": "Largest Rectangle in Histogram",
+      "leetcode_title_slug": "largest-rectangle-in-histogram",
+      "leetcode_difficulty": "Hard",
+      "leetcode_question_id": 84,
+      "is_paid_only": false,
+      "problem_statement_html": "<p>Given an array of integers <code>heights</code> representing the histogram&#39;s bar height where the width of each bar is <code>1</code>, return <em>the area of the largest rectangle in the histogram</em>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<img alt=\"\" src=\"https://assets.leetcode.com/uploads/2021/01/04/histogram.jpg\" style=\"width: 522px; height: 242px;\" />\n<pre>\n<strong>Input:</strong> heights = [2,1,5,6,2,3]\n<strong>Output:</strong> 10\n<strong>Explanation:</strong> The above is a histogram where width of each bar is 1.\nThe largest rectangle is shown in the red area, which has an area = 10 units.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n<img alt=\"\" src=\"https://assets.leetcode.com/uploads/2021/01/04/histogram-1.jpg\" style=\"width: 202px; height: 362px;\" />\n<pre>\n<strong>Input:</strong> heights = [2,4]\n<strong>Output:</strong> 4\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= heights.length &lt;= 10<sup>5</sup></code></li>\n\t<li><code>0 &lt;= heights[i] &lt;= 10<sup>4</sup></code></li>\n</ul>\n",
+      "problem_statement_text": "Given an array of integers heights representing the histogram's bar height where the width of each bar is 1, return the area of the largest rectangle in the histogram. Example 1: Input: heights = [2,1,5,6,2,3] Output: 10 Explanation: The above is a histogram where width of each bar is 1. The largest rectangle is shown in the red area, which has an area = 10 units. Example 2: Input: heights = [2,4] Output: 4 Constraints: 1 <= heights.length <= 105 0 <= heights[i] <= 104",
+      "examples": [
+        {
+          "example_number": 1,
+          "input": "heights = [2,1,5,6,2,3]",
+          "output": "10",
+          "explanation": "The above is a histogram where width of each bar is 1. The largest rectangle is shown in the red area, which has an area = 10 units."
+        },
+        {
+          "example_number": 2,
+          "input": "heights = [2,4]",
+          "output": "4"
+        }
+      ],
+      "sample_test_cases": [
+        {
+          "input": "heights = [2,1,5,6,2,3]",
+          "expected_output": "10",
+          "explanation": "The above is a histogram where width of each bar is 1. The largest rectangle is shown in the red area, which has an area = 10 units.",
+          "example_number": 1
+        },
+        {
+          "input": "heights = [2,4]",
+          "expected_output": "4",
+          "explanation": "",
+          "example_number": 2
+        }
+      ],
+      "constraints": [
+        "1 <= heights.length <= 105",
+        "0 <= heights[i] <= 104"
+      ],
+      "code_templates": {
+        "python": "class Solution:\n    def largestRectangleArea(self, heights: List[int]) -> int:\n        "
+      },
+      "default_code": "class Solution:\n    def largestRectangleArea(self, heights: List[int]) -> int:\n        ",
+      "hints": [],
+      "topics": [
+        "Array",
+        "Stack",
+        "Monotonic Stack"
+      ],
+      "company_tags": [],
+      "similar_questions": [
+        85,
+        1793
+      ],
+      "follow_up_questions": [],
+      "note_sections": [],
+      "scraping_duration": 1.0923960208892822,
+      "scraped_at": "2025-09-28T00:58:34.523061",
+      "scraping_success": true,
+      "scraping_error": null,
+      "course": "ai-challenge-test",
+      "original_question_id": "lrgstrctnglinhistgrm"
+    },
+    {
+      "question_id": "ai_challenge_mximlrctngls",
+      "original_title": "Maximal Rectangles",
+      "a2z_step": "AI Capability Test - Extreme Challenges",
+      "a2z_sub_step": "Hard Problems",
+      "a2z_difficulty": 2,
+      "a2z_topics": "[{\"value\":\"arrays\",\"label\":\"Arrays\"},{\"value\":\"dynamic-programming\",\"label\":\"Dynamic Programming\"},{\"value\":\"stack\",\"label\":\"Stack\"},{\"value\":\"data-structure\",\"label\":\"Data Structures\"}]",
+      "lc_link": "https://leetcode.com/problems/maximal-rectangle/",
+      "step_number": 6,
+      "leetcode_title": "Maximal Rectangle",
+      "leetcode_title_slug": "maximal-rectangle",
+      "leetcode_difficulty": "Hard",
+      "leetcode_question_id": 85,
+      "is_paid_only": false,
+      "problem_statement_html": "<p>Given a <code>rows x cols</code>&nbsp;binary <code>matrix</code> filled with <code>0</code>&#39;s and <code>1</code>&#39;s, find the largest rectangle containing only <code>1</code>&#39;s and return <em>its area</em>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n<img alt=\"\" src=\"https://assets.leetcode.com/uploads/2020/09/14/maximal.jpg\" style=\"width: 402px; height: 322px;\" />\n<pre>\n<strong>Input:</strong> matrix = [[&quot;1&quot;,&quot;0&quot;,&quot;1&quot;,&quot;0&quot;,&quot;0&quot;],[&quot;1&quot;,&quot;0&quot;,&quot;1&quot;,&quot;1&quot;,&quot;1&quot;],[&quot;1&quot;,&quot;1&quot;,&quot;1&quot;,&quot;1&quot;,&quot;1&quot;],[&quot;1&quot;,&quot;0&quot;,&quot;0&quot;,&quot;1&quot;,&quot;0&quot;]]\n<strong>Output:</strong> 6\n<strong>Explanation:</strong> The maximal rectangle is shown in the above picture.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> matrix = [[&quot;0&quot;]]\n<strong>Output:</strong> 0\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> matrix = [[&quot;1&quot;]]\n<strong>Output:</strong> 1\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>rows == matrix.length</code></li>\n\t<li><code>cols == matrix[i].length</code></li>\n\t<li><code>1 &lt;= row, cols &lt;= 200</code></li>\n\t<li><code>matrix[i][j]</code> is <code>&#39;0&#39;</code> or <code>&#39;1&#39;</code>.</li>\n</ul>\n",
+      "problem_statement_text": "Given a rows x cols binary matrix filled with 0's and 1's, find the largest rectangle containing only 1's and return its area. Example 1: Input: matrix = [[\"1\",\"0\",\"1\",\"0\",\"0\"],[\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"1\",\"1\"],[\"1\",\"0\",\"0\",\"1\",\"0\"]] Output: 6 Explanation: The maximal rectangle is shown in the above picture. Example 2: Input: matrix = [[\"0\"]] Output: 0 Example 3: Input: matrix = [[\"1\"]] Output: 1 Constraints: rows == matrix.length cols == matrix[i].length 1 <= row, cols <= 200 matrix[i][j] is '0' or '1'.",
+      "examples": [
+        {
+          "example_number": 1,
+          "input": "matrix = [[\"1\",\"0\",\"1\",\"0\",\"0\"],[\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"1\",\"1\"],[\"1\",\"0\",\"0\",\"1\",\"0\"]]",
+          "output": "6",
+          "explanation": "The maximal rectangle is shown in the above picture."
+        },
+        {
+          "example_number": 2,
+          "input": "matrix = [[\"0\"]]",
+          "output": "0"
+        },
+        {
+          "example_number": 3,
+          "input": "matrix = [[\"1\"]]",
+          "output": "1"
+        }
+      ],
+      "sample_test_cases": [
+        {
+          "input": "matrix = [[\"1\",\"0\",\"1\",\"0\",\"0\"],[\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"1\",\"1\"],[\"1\",\"0\",\"0\",\"1\",\"0\"]]",
+          "expected_output": "6",
+          "explanation": "The maximal rectangle is shown in the above picture.",
+          "example_number": 1
+        },
+        {
+          "input": "matrix = [[\"0\"]]",
+          "expected_output": "0",
+          "explanation": "",
+          "example_number": 2
+        },
+        {
+          "input": "matrix = [[\"1\"]]",
+          "expected_output": "1",
+          "explanation": "",
+          "example_number": 3
+        }
+      ],
+      "constraints": [
+        "rows == matrix.length",
+        "cols == matrix[i].length",
+        "1 <= row, cols <= 200",
+        "matrix[i][j] is '0' or '1'."
+      ],
+      "code_templates": {
+        "python": "class Solution:\n    def maximalRectangle(self, matrix: List[List[str]]) -> int:\n        "
+      },
+      "default_code": "class Solution:\n    def maximalRectangle(self, matrix: List[List[str]]) -> int:\n        ",
+      "hints": [],
+      "topics": [
+        "Array",
+        "Dynamic Programming",
+        "Stack",
+        "Matrix",
+        "Monotonic Stack"
+      ],
+      "company_tags": [],
+      "similar_questions": [
+        84,
+        221,
+        3359
+      ],
+      "follow_up_questions": [],
+      "note_sections": [],
+      "scraping_duration": 3.0058722496032715,
+      "scraped_at": "2025-09-28T00:58:36.770452",
+      "scraping_success": true,
+      "scraping_error": null,
+      "course": "ai-challenge-test",
+      "original_question_id": "mximlrctngls"
+    },
+    {
+      "question_id": "ai_challenge_lfcch",
+      "original_title": "LFU cache",
+      "a2z_step": "AI Capability Test - Extreme Challenges",
+      "a2z_sub_step": "Hard Problems",
+      "a2z_difficulty": 2,
+      "a2z_topics": "[{\"value\":\"linked-list\",\"label\":\"Linked List\"},{\"value\":\"data-structure\",\"label\":\"Data Structures\"}]",
+      "lc_link": "https://leetcode.com/problems/lfu-cache/",
+      "step_number": 7,
+      "leetcode_title": "LFU Cache",
+      "leetcode_title_slug": "lfu-cache",
+      "leetcode_difficulty": "Hard",
+      "leetcode_question_id": 460,
+      "is_paid_only": false,
+      "problem_statement_html": "<p>Design and implement a data structure for a <a href=\"https://en.wikipedia.org/wiki/Least_frequently_used\" target=\"_blank\">Least Frequently Used (LFU)</a> cache.</p>\n\n<p>Implement the <code>LFUCache</code> class:</p>\n\n<ul>\n\t<li><code>LFUCache(int capacity)</code> Initializes the object with the <code>capacity</code> of the data structure.</li>\n\t<li><code>int get(int key)</code> Gets the value of the <code>key</code> if the <code>key</code> exists in the cache. Otherwise, returns <code>-1</code>.</li>\n\t<li><code>void put(int key, int value)</code> Update the value of the <code>key</code> if present, or inserts the <code>key</code> if not already present. When the cache reaches its <code>capacity</code>, it should invalidate and remove the <strong>least frequently used</strong> key before inserting a new item. For this problem, when there is a <strong>tie</strong> (i.e., two or more keys with the same frequency), the <strong>least recently used</strong> <code>key</code> would be invalidated.</li>\n</ul>\n\n<p>To determine the least frequently used key, a <strong>use counter</strong> is maintained for each key in the cache. The key with the smallest <strong>use counter</strong> is the least frequently used key.</p>\n\n<p>When a key is first inserted into the cache, its <strong>use counter</strong> is set to <code>1</code> (due to the <code>put</code> operation). The <strong>use counter</strong> for a key in the cache is incremented either a <code>get</code> or <code>put</code> operation is called on it.</p>\n\n<p>The functions&nbsp;<code data-stringify-type=\"code\">get</code>&nbsp;and&nbsp;<code data-stringify-type=\"code\">put</code>&nbsp;must each run in <code>O(1)</code> average time complexity.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input</strong>\n[&quot;LFUCache&quot;, &quot;put&quot;, &quot;put&quot;, &quot;get&quot;, &quot;put&quot;, &quot;get&quot;, &quot;get&quot;, &quot;put&quot;, &quot;get&quot;, &quot;get&quot;, &quot;get&quot;]\n[[2], [1, 1], [2, 2], [1], [3, 3], [2], [3], [4, 4], [1], [3], [4]]\n<strong>Output</strong>\n[null, null, null, 1, null, -1, 3, null, -1, 3, 4]\n\n<strong>Explanation</strong>\n// cnt(x) = the use counter for key x\n// cache=[] will show the last used order for tiebreakers (leftmost element is  most recent)\nLFUCache lfu = new LFUCache(2);\nlfu.put(1, 1);   // cache=[1,_], cnt(1)=1\nlfu.put(2, 2);   // cache=[2,1], cnt(2)=1, cnt(1)=1\nlfu.get(1);      // return 1\n                 // cache=[1,2], cnt(2)=1, cnt(1)=2\nlfu.put(3, 3);   // 2 is the LFU key because cnt(2)=1 is the smallest, invalidate 2.\n&nbsp;                // cache=[3,1], cnt(3)=1, cnt(1)=2\nlfu.get(2);      // return -1 (not found)\nlfu.get(3);      // return 3\n                 // cache=[3,1], cnt(3)=2, cnt(1)=2\nlfu.put(4, 4);   // Both 1 and 3 have the same cnt, but 1 is LRU, invalidate 1.\n                 // cache=[4,3], cnt(4)=1, cnt(3)=2\nlfu.get(1);      // return -1 (not found)\nlfu.get(3);      // return 3\n                 // cache=[3,4], cnt(4)=1, cnt(3)=3\nlfu.get(4);      // return 4\n                 // cache=[4,3], cnt(4)=2, cnt(3)=3\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= capacity&nbsp;&lt;= 10<sup>4</sup></code></li>\n\t<li><code>0 &lt;= key &lt;= 10<sup>5</sup></code></li>\n\t<li><code>0 &lt;= value &lt;= 10<sup>9</sup></code></li>\n\t<li>At most <code>2 * 10<sup>5</sup></code>&nbsp;calls will be made to <code>get</code> and <code>put</code>.</li>\n</ul>\n\n<p>&nbsp;</p>\n<span style=\"display: none;\">&nbsp;</span>",
+      "problem_statement_text": "Design and implement a data structure for a Least Frequently Used (LFU) cache. Implement the LFUCache class: LFUCache(int capacity) Initializes the object with the capacity of the data structure. int get(int key) Gets the value of the key if the key exists in the cache. Otherwise, returns -1. void put(int key, int value) Update the value of the key if present, or inserts the key if not already present. When the cache reaches its capacity, it should invalidate and remove the least frequently used key before inserting a new item. For this problem, when there is a tie (i.e., two or more keys with the same frequency), the least recently used key would be invalidated. To determine the least frequently used key, a use counter is maintained for each key in the cache. The key with the smallest use counter is the least frequently used key. When a key is first inserted into the cache, its use counter is set to 1 (due to the put operation). The use counter for a key in the cache is incremented either a get or put operation is called on it. The functions get and put must each run in O(1) average time complexity. Example 1: Input [\"LFUCache\", \"put\", \"put\", \"get\", \"put\", \"get\", \"get\", \"put\", \"get\", \"get\", \"get\"] [[2], [1, 1], [2, 2], [1], [3, 3], [2], [3], [4, 4], [1], [3], [4]] Output [null, null, null, 1, null, -1, 3, null, -1, 3, 4] Explanation // cnt(x) = the use counter for key x // cache=[] will show the last used order for tiebreakers (leftmost element is most recent) LFUCache lfu = new LFUCache(2); lfu.put(1, 1); // cache=[1,_], cnt(1)=1 lfu.put(2, 2); // cache=[2,1], cnt(2)=1, cnt(1)=1 lfu.get(1); // return 1 // cache=[1,2], cnt(2)=1, cnt(1)=2 lfu.put(3, 3); // 2 is the LFU key because cnt(2)=1 is the smallest, invalidate 2. // cache=[3,1], cnt(3)=1, cnt(1)=2 lfu.get(2); // return -1 (not found) lfu.get(3); // return 3 // cache=[3,1], cnt(3)=2, cnt(1)=2 lfu.put(4, 4); // Both 1 and 3 have the same cnt, but 1 is LRU, invalidate 1. // cache=[4,3], cnt(4)=1, cnt(3)=2 lfu.get(1); // return -1 (not found) lfu.get(3); // return 3 // cache=[3,4], cnt(4)=1, cnt(3)=3 lfu.get(4); // return 4 // cache=[4,3], cnt(4)=2, cnt(3)=3 Constraints: 1 <= capacity <= 104 0 <= key <= 105 0 <= value <= 109 At most 2 * 105 calls will be made to get and put.",
+      "examples": [],
+      "sample_test_cases": [],
+      "constraints": [
+        "1 <= capacity <= 104",
+        "0 <= key <= 105",
+        "0 <= value <= 109",
+        "At most 2 * 105 calls will be made to get and put."
+      ],
+      "code_templates": {
+        "python": "class LFUCache:\n\n    def __init__(self, capacity: int):\n        \n\n    def get(self, key: int) -> int:\n        \n\n    def put(self, key: int, value: int) -> None:\n        \n\n\n# Your LFUCache object will be instantiated and called as such:\n# obj = LFUCache(capacity)\n# param_1 = obj.get(key)\n# obj.put(key,value)"
+      },
+      "default_code": "class LFUCache:\n\n    def __init__(self, capacity: int):\n        \n\n    def get(self, key: int) -> int:\n        \n\n    def put(self, key: int, value: int) -> None:\n        \n\n\n# Your LFUCache object will be instantiated and called as such:\n# obj = LFUCache(capacity)\n# param_1 = obj.get(key)\n# obj.put(key,value)",
+      "hints": [],
+      "topics": [
+        "Hash Table",
+        "Linked List",
+        "Design",
+        "Doubly-Linked List"
+      ],
+      "company_tags": [],
+      "similar_questions": [
+        146,
+        588
+      ],
+      "follow_up_questions": [],
+      "note_sections": [],
+      "scraping_duration": 0.9921908378601074,
+      "scraped_at": "2025-09-28T00:58:46.510365",
+      "scraping_success": true,
+      "scraping_error": null,
+      "course": "ai-challenge-test",
+      "original_question_id": "lfcch"
+    },
+    {
+      "question_id": "ai_challenge_sbrrywithkdiffrntintgrs",
+      "original_title": "Subarray with k different integers",
+      "a2z_step": "AI Capability Test - Extreme Challenges",
+      "a2z_sub_step": "Hard Problems",
+      "a2z_difficulty": 2,
+      "a2z_topics": "[{\"value\":\"arrays\",\"label\":\"Arrays\"},{\"value\":\"hashing\",\"label\":\"Hashing\"},{\"value\":\"data-structure\",\"label\":\"Data Structures\"}]",
+      "lc_link": "https://leetcode.com/problems/subarrays-with-k-different-integers/",
+      "step_number": 8,
+      "leetcode_title": "Subarrays with K Different Integers",
+      "leetcode_title_slug": "subarrays-with-k-different-integers",
+      "leetcode_difficulty": "Hard",
+      "leetcode_question_id": 992,
+      "is_paid_only": false,
+      "problem_statement_html": "<p>Given an integer array <code>nums</code> and an integer <code>k</code>, return <em>the number of <strong>good subarrays</strong> of </em><code>nums</code>.</p>\n\n<p>A <strong>good array</strong> is an array where the number of different integers in that array is exactly <code>k</code>.</p>\n\n<ul>\n\t<li>For example, <code>[1,2,3,1,2]</code> has <code>3</code> different integers: <code>1</code>, <code>2</code>, and <code>3</code>.</li>\n</ul>\n\n<p>A <strong>subarray</strong> is a <strong>contiguous</strong> part of an array.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [1,2,1,2,3], k = 2\n<strong>Output:</strong> 7\n<strong>Explanation:</strong> Subarrays formed with exactly 2 different integers: [1,2], [2,1], [1,2], [2,3], [1,2,1], [2,1,2], [1,2,1,2]\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> nums = [1,2,1,3,4], k = 3\n<strong>Output:</strong> 3\n<strong>Explanation:</strong> Subarrays formed with exactly 3 different integers: [1,2,1,3], [2,1,3], [1,3,4].\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>1 &lt;= nums.length &lt;= 2 * 10<sup>4</sup></code></li>\n\t<li><code>1 &lt;= nums[i], k &lt;= nums.length</code></li>\n</ul>\n",
+      "problem_statement_text": "Given an integer array nums and an integer k, return the number of good subarrays of nums. A good array is an array where the number of different integers in that array is exactly k. For example, [1,2,3,1,2] has 3 different integers: 1, 2, and 3. A subarray is a contiguous part of an array. Example 1: Input: nums = [1,2,1,2,3], k = 2 Output: 7 Explanation: Subarrays formed with exactly 2 different integers: [1,2], [2,1], [1,2], [2,3], [1,2,1], [2,1,2], [1,2,1,2] Example 2: Input: nums = [1,2,1,3,4], k = 3 Output: 3 Explanation: Subarrays formed with exactly 3 different integers: [1,2,1,3], [2,1,3], [1,3,4]. Constraints: 1 <= nums.length <= 2 * 104 1 <= nums[i], k <= nums.length",
+      "examples": [
+        {
+          "example_number": 1,
+          "input": "nums = [1,2,1,2,3], k = 2",
+          "output": "7",
+          "explanation": "Subarrays formed with exactly 2 different integers: [1,2], [2,1], [1,2], [2,3], [1,2,1], [2,1,2], [1,2,1,2]"
+        },
+        {
+          "example_number": 2,
+          "input": "nums = [1,2,1,3,4], k = 3",
+          "output": "3",
+          "explanation": "Subarrays formed with exactly 3 different integers: [1,2,1,3], [2,1,3], [1,3,4]."
+        }
+      ],
+      "sample_test_cases": [
+        {
+          "input": "nums = [1,2,1,2,3], k = 2",
+          "expected_output": "7",
+          "explanation": "Subarrays formed with exactly 2 different integers: [1,2], [2,1], [1,2], [2,3], [1,2,1], [2,1,2], [1,2,1,2]",
+          "example_number": 1
+        },
+        {
+          "input": "nums = [1,2,1,3,4], k = 3",
+          "expected_output": "3",
+          "explanation": "Subarrays formed with exactly 3 different integers: [1,2,1,3], [2,1,3], [1,3,4].",
+          "example_number": 2
+        }
+      ],
+      "constraints": [
+        "1 <= nums.length <= 2 * 104",
+        "1 <= nums[i], k <= nums.length"
+      ],
+      "code_templates": {
+        "python": "class Solution:\n    def subarraysWithKDistinct(self, nums: List[int], k: int) -> int:\n        "
+      },
+      "default_code": "class Solution:\n    def subarraysWithKDistinct(self, nums: List[int], k: int) -> int:\n        ",
+      "hints": [
+        "Try generating all possible subarrays and check for the number of unique integers. Increment the count accordingly.",
+        "How about using a map to store the count of integers?",
+        "Think about the Sliding Window and 2-pointer approach."
+      ],
+      "topics": [
+        "Array",
+        "Hash Table",
+        "Sliding Window",
+        "Counting"
+      ],
+      "company_tags": [],
+      "similar_questions": [
+        3,
+        159,
+        340,
+        2062,
+        2107,
+        2261,
+        2799
+      ],
+      "follow_up_questions": [],
+      "note_sections": [],
+      "scraping_duration": 0.9763059616088867,
+      "scraped_at": "2025-09-28T00:59:05.817518",
+      "scraping_success": true,
+      "scraping_error": null,
+      "course": "ai-challenge-test",
+      "original_question_id": "sbrrywithkdiffrntintgrs"
+    },
+    {
+      "question_id": "ai_challenge_minimmwindwsbstring",
+      "original_title": "Minimum Window Substring",
+      "a2z_step": "AI Capability Test - Extreme Challenges",
+      "a2z_sub_step": "Hard Problems",
+      "a2z_difficulty": 2,
+      "a2z_topics": "[{\"value\":\"string\",\"label\":\"String\"},{\"value\":\"data-structure\",\"label\":\"Data Structures\"}]",
+      "lc_link": "https://leetcode.com/problems/minimum-window-substring/",
+      "step_number": 9,
+      "leetcode_title": "Minimum Window Substring",
+      "leetcode_title_slug": "minimum-window-substring",
+      "leetcode_difficulty": "Hard",
+      "leetcode_question_id": 76,
+      "is_paid_only": false,
+      "problem_statement_html": "<p>Given two strings <code>s</code> and <code>t</code> of lengths <code>m</code> and <code>n</code> respectively, return <em>the <strong>minimum window</strong></em> <span data-keyword=\"substring-nonempty\"><strong><em>substring</em></strong></span><em> of </em><code>s</code><em> such that every character in </em><code>t</code><em> (<strong>including duplicates</strong>) is included in the window</em>. If there is no such substring, return <em>the empty string </em><code>&quot;&quot;</code>.</p>\n\n<p>The testcases will be generated such that the answer is <strong>unique</strong>.</p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;ADOBECODEBANC&quot;, t = &quot;ABC&quot;\n<strong>Output:</strong> &quot;BANC&quot;\n<strong>Explanation:</strong> The minimum window substring &quot;BANC&quot; includes &#39;A&#39;, &#39;B&#39;, and &#39;C&#39; from string t.\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;a&quot;, t = &quot;a&quot;\n<strong>Output:</strong> &quot;a&quot;\n<strong>Explanation:</strong> The entire string s is the minimum window.\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> s = &quot;a&quot;, t = &quot;aa&quot;\n<strong>Output:</strong> &quot;&quot;\n<strong>Explanation:</strong> Both &#39;a&#39;s from t must be included in the window.\nSince the largest window of s only has one &#39;a&#39;, return empty string.\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>m == s.length</code></li>\n\t<li><code>n == t.length</code></li>\n\t<li><code>1 &lt;= m, n &lt;= 10<sup>5</sup></code></li>\n\t<li><code>s</code> and <code>t</code> consist of uppercase and lowercase English letters.</li>\n</ul>\n\n<p>&nbsp;</p>\n<p><strong>Follow up:</strong> Could you find an algorithm that runs in <code>O(m + n)</code> time?</p>\n",
+      "problem_statement_text": "Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string \"\". The testcases will be generated such that the answer is unique. Example 1: Input: s = \"ADOBECODEBANC\", t = \"ABC\" Output: \"BANC\" Explanation: The minimum window substring \"BANC\" includes 'A', 'B', and 'C' from string t. Example 2: Input: s = \"a\", t = \"a\" Output: \"a\" Explanation: The entire string s is the minimum window. Example 3: Input: s = \"a\", t = \"aa\" Output: \"\" Explanation: Both 'a's from t must be included in the window. Since the largest window of s only has one 'a', return empty string. Constraints: m == s.length n == t.length 1 <= m, n <= 105 s and t consist of uppercase and lowercase English letters. Follow up: Could you find an algorithm that runs in O(m + n) time?",
+      "examples": [
+        {
+          "example_number": 1,
+          "input": "s = \"ADOBECODEBANC\", t = \"ABC\"",
+          "output": "\"BANC\"",
+          "explanation": "The minimum window substring \"BANC\" includes 'A', 'B', and 'C' from string t."
+        },
+        {
+          "example_number": 2,
+          "input": "s = \"a\", t = \"a\"",
+          "output": "\"a\"",
+          "explanation": "The entire string s is the minimum window."
+        },
+        {
+          "example_number": 3,
+          "input": "s = \"a\", t = \"aa\"",
+          "output": "\"\"",
+          "explanation": "Both 'a's from t must be included in the window. Since the largest window of s only has one 'a', return empty string."
+        }
+      ],
+      "sample_test_cases": [
+        {
+          "input": "s = \"ADOBECODEBANC\", t = \"ABC\"",
+          "expected_output": "\"BANC\"",
+          "explanation": "The minimum window substring \"BANC\" includes 'A', 'B', and 'C' from string t.",
+          "example_number": 1
+        },
+        {
+          "input": "s = \"a\", t = \"a\"",
+          "expected_output": "\"a\"",
+          "explanation": "The entire string s is the minimum window.",
+          "example_number": 2
+        },
+        {
+          "input": "s = \"a\", t = \"aa\"",
+          "expected_output": "\"\"",
+          "explanation": "Both 'a's from t must be included in the window. Since the largest window of s only has one 'a', return empty string.",
+          "example_number": 3
+        }
+      ],
+      "constraints": [
+        "m == s.length",
+        "n == t.length",
+        "1 <= m, n <= 105",
+        "s and t consist of uppercase and lowercase English letters."
+      ],
+      "code_templates": {
+        "python": "class Solution:\n    def minWindow(self, s: str, t: str) -> str:\n        "
+      },
+      "default_code": "class Solution:\n    def minWindow(self, s: str, t: str) -> str:\n        ",
+      "hints": [
+        "Use two pointers to create a window of letters in s, which would have all the characters from t.",
+        "Expand the right pointer until all the characters of t are covered.",
+        "Once all the characters are covered, move the left pointer and ensure that all the characters are still covered to minimize the subarray size.",
+        "Continue expanding the right and left pointers until you reach the end of s."
+      ],
+      "topics": [
+        "Hash Table",
+        "String",
+        "Sliding Window"
+      ],
+      "company_tags": [],
+      "similar_questions": [
+        30,
+        209,
+        239,
+        567,
+        632,
+        727,
+        3298,
+        3297
+      ],
+      "follow_up_questions": [
+        "Could you find an algorithm that runs in O(m + n) time?"
+      ],
+      "note_sections": [],
+      "scraping_duration": 1.0205566883087158,
+      "scraped_at": "2025-09-28T00:59:06.641263",
+      "scraping_success": true,
+      "scraping_error": null,
+      "course": "ai-challenge-test",
+      "original_question_id": "minimmwindwsbstring"
+    },
+    {
+      "question_id": "ai_challenge_mrgmsrtdlists",
+      "original_title": "Merge M sorted Lists",
+      "a2z_step": "AI Capability Test - Extreme Challenges",
+      "a2z_sub_step": "Hard Problems",
+      "a2z_difficulty": 2,
+      "a2z_topics": "[{\"value\":\"arrays\",\"label\":\"Arrays\"},{\"value\":\"heap\",\"label\":\"Heap\"},{\"value\":\"data-structure\",\"label\":\"Data Structures\"},{\"value\":\"linked-list\",\"label\":\"Linked List\"}]",
+      "lc_link": "https://leetcode.com/problems/merge-k-sorted-lists/",
+      "step_number": 10,
+      "leetcode_title": "Merge k Sorted Lists",
+      "leetcode_title_slug": "merge-k-sorted-lists",
+      "leetcode_difficulty": "Hard",
+      "leetcode_question_id": 23,
+      "is_paid_only": false,
+      "problem_statement_html": "<p>You are given an array of <code>k</code> linked-lists <code>lists</code>, each linked-list is sorted in ascending order.</p>\n\n<p><em>Merge all the linked-lists into one sorted linked-list and return it.</em></p>\n\n<p>&nbsp;</p>\n<p><strong class=\"example\">Example 1:</strong></p>\n\n<pre>\n<strong>Input:</strong> lists = [[1,4,5],[1,3,4],[2,6]]\n<strong>Output:</strong> [1,1,2,3,4,4,5,6]\n<strong>Explanation:</strong> The linked-lists are:\n[\n  1-&gt;4-&gt;5,\n  1-&gt;3-&gt;4,\n  2-&gt;6\n]\nmerging them into one sorted linked list:\n1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4-&gt;5-&gt;6\n</pre>\n\n<p><strong class=\"example\">Example 2:</strong></p>\n\n<pre>\n<strong>Input:</strong> lists = []\n<strong>Output:</strong> []\n</pre>\n\n<p><strong class=\"example\">Example 3:</strong></p>\n\n<pre>\n<strong>Input:</strong> lists = [[]]\n<strong>Output:</strong> []\n</pre>\n\n<p>&nbsp;</p>\n<p><strong>Constraints:</strong></p>\n\n<ul>\n\t<li><code>k == lists.length</code></li>\n\t<li><code>0 &lt;= k &lt;= 10<sup>4</sup></code></li>\n\t<li><code>0 &lt;= lists[i].length &lt;= 500</code></li>\n\t<li><code>-10<sup>4</sup> &lt;= lists[i][j] &lt;= 10<sup>4</sup></code></li>\n\t<li><code>lists[i]</code> is sorted in <strong>ascending order</strong>.</li>\n\t<li>The sum of <code>lists[i].length</code> will not exceed <code>10<sup>4</sup></code>.</li>\n</ul>\n",
+      "problem_statement_text": "You are given an array of k linked-lists lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it. Example 1: Input: lists = [[1,4,5],[1,3,4],[2,6]] Output: [1,1,2,3,4,4,5,6] Explanation: The linked-lists are: [ 1->4->5, 1->3->4, 2->6 ] merging them into one sorted linked list: 1->1->2->3->4->4->5->6 Example 2: Input: lists = [] Output: [] Example 3: Input: lists = [[]] Output: [] Constraints: k == lists.length 0 <= k <= 104 0 <= lists[i].length <= 500 -104 <= lists[i][j] <= 104 lists[i] is sorted in ascending order. The sum of lists[i].length will not exceed 104.",
+      "examples": [
+        {
+          "example_number": 1,
+          "input": "lists = [[1,4,5],[1,3,4],[2,6]]",
+          "output": "[1,1,2,3,4,4,5,6]",
+          "explanation": "The linked-lists are: [ 1->4->5, 1->3->4, 2->6 ] merging them into one sorted linked list: 1->1->2->3->4->4->5->6"
+        },
+        {
+          "example_number": 2,
+          "input": "lists = []",
+          "output": "[]"
+        },
+        {
+          "example_number": 3,
+          "input": "lists = [[]]",
+          "output": "[]"
+        }
+      ],
+      "sample_test_cases": [
+        {
+          "input": "lists = [[1,4,5],[1,3,4],[2,6]]",
+          "expected_output": "[1,1,2,3,4,4,5,6]",
+          "explanation": "The linked-lists are: [ 1->4->5, 1->3->4, 2->6 ] merging them into one sorted linked list: 1->1->2->3->4->4->5->6",
+          "example_number": 1
+        },
+        {
+          "input": "lists = []",
+          "expected_output": "[]",
+          "explanation": "",
+          "example_number": 2
+        },
+        {
+          "input": "lists = [[]]",
+          "expected_output": "[]",
+          "explanation": "",
+          "example_number": 3
+        }
+      ],
+      "constraints": [
+        "k == lists.length",
+        "0 <= k <= 104",
+        "0 <= lists[i].length <= 500",
+        "104 <= lists[i][j] <= 104",
+        "lists[i] is sorted in ascending order.",
+        "The sum of lists[i].length will not exceed 104."
+      ],
+      "code_templates": {
+        "python": "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\nclass Solution:\n    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:\n        "
+      },
+      "default_code": "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\nclass Solution:\n    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:\n        ",
+      "hints": [],
+      "topics": [
+        "Linked List",
+        "Divide and Conquer",
+        "Heap (Priority Queue)",
+        "Merge Sort"
+      ],
+      "company_tags": [],
+      "similar_questions": [
+        21,
+        264,
+        2411
+      ],
+      "follow_up_questions": [],
+      "note_sections": [],
+      "scraping_duration": 1.1102221012115479,
+      "scraped_at": "2025-09-28T00:59:12.685226",
+      "scraping_success": true,
+      "scraping_error": null,
+      "course": "ai-challenge-test",
+      "original_question_id": "mrgmsrtdlists"
+    }
+  ],
+  "errors": []
+}

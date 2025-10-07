@@ -107,7 +107,7 @@ def import_roadmap_data(json_file: Path, skip_existing: bool = True, filter_paid
                 
                 # Create RoadmapItemCreate object
                 roadmap_item = RoadmapItemCreate(
-                    course="strivers-a2z",  # Add course identifier
+                    course=item_data.get('course', 'strivers-a2z'),  # Use course from JSON or default to strivers-a2z
                     question_id=question_id,
                     original_title=item_data.get('original_title', ''),
                     a2z_step=item_data.get('a2z_step', ''),

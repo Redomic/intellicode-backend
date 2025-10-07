@@ -8,7 +8,7 @@ The proficiency score ranges from 0.0 (beginner) to 1.0 (expert) and is
 calculated from multiple weighted metrics.
 """
 
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 import logging
 from app.models.user import User
 from app.models.learner_state import LearnerState
@@ -303,4 +303,60 @@ def get_hint_difficulty_prompt(proficiency_score: float) -> str:
         return "\n\nUser is intermediate. Assume familiarity with common algorithms and data structures."
     else:
         return "\n\nUser is advanced. Be concise, use technical terminology, and assume strong fundamentals."
+
+
+def format_last_run_context(last_run: Dict[str, Any]) -> str:
+    """
+    Format last_run state into a structured context string for AI agents.
+    
+    This is used by both hint generation and chat assistant to provide
+    consistent context about the user's most recent code execution.
+    
+    Args:
+        last_run: Dictionary containing last run state from session
+        
+    Returns:
+        Formatted string with run status, test results, and failed test details
+        
+    Example output:
+        <LastRunResults>
+        Status: Wrong Answer
+        Tests: 1/2 passed
+        
+        Failed Test Cases:
+          Test 1: Input=nums1 = [1,3], nums2 = [2], Expected=2.0, Got=2
+        </LastRunResults>
+    """
+    run_parts = []
+    
+    if last_run.get('status'):
+        run_parts.append(f"Status: {last_run['status']}")
+    
+    if last_run.get('passed_count') is not None and last_run.get('total_count') is not None:
+        run_parts.append(f"Tests: {last_run['passed_count']}/{last_run['total_count']} passed")
+    
+    if last_run.get('runtime_ms'):
+        run_parts.append(f"Runtime: {last_run['runtime_ms']}ms")
+    
+    if last_run.get('error_message'):
+        run_parts.append(f"Error: {last_run['error_message']}")
+    
+    # Add detailed failed test cases
+    if last_run.get('test_results'):
+        failed_tests = [
+            t for t in last_run['test_results'] 
+            if not t.get('passed', False)
+        ]
+        if failed_tests:
+            run_parts.append(f"\n\nFailed Test Cases:")
+            for idx, test in enumerate(failed_tests[:3], 1):  # Show up to 3 failed tests
+                input_val = test.get('input', 'N/A')
+                expected = test.get('expected_output', 'N/A')
+                actual = test.get('actual_output', 'N/A')
+                run_parts.append(f"  Test {idx}: Input={input_val}, Expected={expected}, Got={actual}")
+    
+    if run_parts:
+        return f"\n\n<LastRunResults>\n{chr(10).join(run_parts)}\n</LastRunResults>"
+    
+    return ""
 

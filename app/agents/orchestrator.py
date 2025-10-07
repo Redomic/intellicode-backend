@@ -266,15 +266,20 @@ class IntelliTOrchestrator:
             # Get feedback agent
             feedback_agent = get_feedback_agent()
             
+            # Extract last_run_state from context
+            last_run_state = context.get("last_run_state")
+            logger.info(f"🔍 ORCHESTRATOR - last_run_state from context: {last_run_state is not None}")
+            
             # Generate hint with proficiency adjustment
-            logger.info(f"🔍 DEBUG - Calling feedback_agent.generate_hint with proficiency={proficiency.get('overall_score')}")
+            logger.info(f"🔍 DEBUG - Calling feedback_agent.generate_hint with proficiency={proficiency.get('overall_score')}, has_last_run={last_run_state is not None}")
             hint_result = await feedback_agent.generate_hint(
                 problem_statement=problem_statement,
                 user_code=user_code,
                 error_message=error_message,
                 hint_level=hint_level,
                 topics=topics,
-                proficiency_score=proficiency.get("overall_score")
+                proficiency_score=proficiency.get("overall_score"),
+                last_run_state=last_run_state
             )
             
             logger.info(f"🔍 DEBUG - Feedback agent returned: success={hint_result.get('success')}, hint_text_length={len(hint_result.get('hint_text', ''))}, hint_level={hint_result.get('hint_level')}")

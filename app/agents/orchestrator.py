@@ -27,6 +27,7 @@ from app.models.learner_state import LearnerState
 from app.crud.user import UserCRUD
 from app.db.database import get_db
 from app.agents.feedback_agent import get_feedback_agent
+from app.agents.code_analysis_agent import get_code_analysis_agent
 from app.utils.user_profiling import calculate_user_proficiency
 
 logger = logging.getLogger(__name__)
@@ -45,7 +46,7 @@ class OrchestratorState(TypedDict):
     """
     # Core identifiers
     user_key: str
-    trigger: Literal["submission", "hint_request", "session_check"]
+    trigger: Literal["submission", "hint_request", "session_check", "code_analysis"]
     
     # User data (loaded from database)
     user: Optional[User]
@@ -113,6 +114,7 @@ class IntelliTOrchestrator:
         workflow.add_node("load_user", self._load_user_node)
         workflow.add_node("route_trigger", self._route_trigger_node)
         workflow.add_node("feedback", self._feedback_node)
+        workflow.add_node("code_analysis", self._code_analysis_node)
         workflow.add_node("save_state", self._save_state_node)
         
         # Add edges
@@ -122,14 +124,16 @@ class IntelliTOrchestrator:
         # Conditional routing based on trigger
         workflow.add_conditional_edges(
             "route_trigger",
-            self._should_run_feedback,
+            self._route_to_agent,
             {
                 "feedback": "feedback",
+                "code_analysis": "code_analysis",
                 "skip": "save_state"
             }
         )
         
         workflow.add_edge("feedback", "save_state")
+        workflow.add_edge("code_analysis", "save_state")
         workflow.add_edge("save_state", END)
         
         self.workflow = workflow
@@ -230,14 +234,16 @@ class IntelliTOrchestrator:
             "next_action": trigger  # Will be used for conditional routing
         }
     
-    def _should_run_feedback(self, state: OrchestratorState) -> str:
+    def _route_to_agent(self, state: OrchestratorState) -> str:
         """
-        Conditional edge function to determine if feedback should run.
+        Conditional edge function to route to appropriate agent.
         """
         next_action = state.get("next_action")
         
         if next_action == "hint_request":
             return "feedback"
+        elif next_action == "code_analysis":
+            return "code_analysis"
         else:
             return "skip"
     
@@ -303,6 +309,74 @@ class IntelliTOrchestrator:
                 "errors": [
                     *state.get("errors", []),
                     f"Feedback generation failed: {str(e)}"
+                ],
+                "next_action": "error"
+            }
+    
+    async def _code_analysis_node(self, state: OrchestratorState) -> Dict[str, Any]:
+        """
+        Analyze code quality and provide optimization suggestions.
+        
+        Uses code analysis agent to review successful submissions.
+        """
+        user = state["user"]
+        context = state["context"]
+        proficiency = state["agent_outputs"].get("proficiency", {})
+        
+        logger.info(f"🔍 Running Code Analysis Agent for user {user.key}")
+        
+        try:
+            # Get code analysis parameters from context
+            problem_statement = context.get("problem_statement", "")
+            user_code = context.get("code", "")
+            test_results = context.get("test_results", [])
+            language = context.get("language", "python")
+            
+            # Validate that all tests passed (safety check)
+            all_passed = all(tr.get("passed", False) for tr in test_results)
+            if not all_passed:
+                logger.warning("⚠️ Code analysis called but not all tests passed - skipping")
+                return {
+                    "agent_outputs": {
+                        **state.get("agent_outputs", {}),
+                        "code_analysis": {
+                            "success": False,
+                            "error": "Code analysis only runs on successful submissions"
+                        }
+                    },
+                    "next_action": "save"
+                }
+            
+            logger.info(f"🔍 Analyzing code: problem_length={len(problem_statement)}, code_length={len(user_code)}, tests={len(test_results)}")
+            
+            # Get code analysis agent
+            analysis_agent = get_code_analysis_agent()
+            
+            # Generate analysis with proficiency adjustment
+            analysis_result = await analysis_agent.analyze_code(
+                problem_statement=problem_statement,
+                user_code=user_code,
+                test_results=test_results,
+                proficiency_score=proficiency.get("overall_score"),
+                language=language
+            )
+            
+            logger.info(f"✅ Code analysis generated: {analysis_result.get('suggestion_count', 0)} suggestions")
+            
+            return {
+                "agent_outputs": {
+                    **state.get("agent_outputs", {}),
+                    "code_analysis": analysis_result
+                },
+                "next_action": "save"
+            }
+            
+        except Exception as e:
+            logger.exception(f"❌ Code Analysis Agent failed: {e}")
+            return {
+                "errors": [
+                    *state.get("errors", []),
+                    f"Code analysis failed: {str(e)}"
                 ],
                 "next_action": "error"
             }

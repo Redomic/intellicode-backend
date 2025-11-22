@@ -294,6 +294,7 @@ async def submit_code(
         # Points system disabled for now
         points_earned = 0
         
+        # TODO: Calculate percentiles based on actual distribution of all submissions
         # Calculate percentiles (mock for now - can be enhanced with historical data)
         runtime_percentile = None
         memory_percentile = None

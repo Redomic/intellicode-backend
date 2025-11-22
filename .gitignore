@@ -90,3 +90,5 @@ desktop.ini
 data/agent_memory/*.md
 data/temp/
 
+
+**/__pycache__/

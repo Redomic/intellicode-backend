@@ -1,9 +1,30 @@
-# IntelliCode Backend
+<h1 align="center">
+  IntelliCode - Multi-Agent LLM Intelligent Teaching System
+</h1>
+<h3 align="center">
+  A Principled Architecture with Centralized Learner Modeling
+</h3>
+
+<div align="center">
+  <p style="margin:3px 0;">
+    <b>Jones David</b><sup>1</sup>, 
+    <b>Shreya Ghosh</b><sup>2</sup>
+  </p>
+  <p style="margin:3px 0;">
+    <sup>1</sup> School of Computer Science and Engineering, VIT-AP University, India
+  </p>
+  <p style="margin:3px 0;">
+    <sup>2</sup> School of Electrical and Computer Sciences, Indian Institute of Technology Bhubaneswar, India
+  </p>
+</div>
+<br />
 
 ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![ArangoDB](https://img.shields.io/badge/ArangoDB-D7E317?style=for-the-badge&logo=arangodb&logoColor=333)
 ![LangGraph](https://img.shields.io/badge/LangGraph-F0F0F0?style=for-the-badge)
+
+# IntelliCode Backend
 
 **IntelliCode (IntelliT)** is an adaptive learning platform that bridges Intelligent Tutoring Systems (ITS) with coordinated Large Language Model (LLM) agents. This backend serves as the centralized "StateGraph Orchestrator," managing learner state, agent coordination, and curriculum adaptation.
 

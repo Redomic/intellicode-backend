@@ -38,9 +38,12 @@ class Settings(BaseSettings):
     def allowed_origins(self) -> list:
         """Get list of allowed CORS origins."""
         # In production, allow the specific frontend URL
-        # In development, allow both localhost variations
         if self.is_production:
-            return [self.FRONTEND_URL]
+            return [
+                self.FRONTEND_URL,
+                "https://intellicode.redomic.in"  # Explicitly allow production frontend
+            ]
+        # In development, allow localhost variations
         return [
             self.FRONTEND_URL,
             "http://localhost:5173",

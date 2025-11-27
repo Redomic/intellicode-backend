@@ -74,6 +74,10 @@ class UserInDB(UserBase):
         default_factory=dict,
         description="XP, badges, level, achievements"
     )
+
+    # Usage Tracking
+    llm_usage_count: int = Field(default=0, description="Number of LLM calls made by the user")
+    interacted_questions: List[str] = Field(default_factory=list, description="List of question keys interacted with")
     
     model_config = {
         "populate_by_name": True,
@@ -139,6 +143,10 @@ class User(UserBase):
         default_factory=dict,
         description="XP, badges, level, achievements"
     )
+
+    # Usage Tracking
+    llm_usage_count: int = Field(default=0, description="Number of LLM calls made by the user")
+    interacted_questions: List[str] = Field(default_factory=list, description="List of question keys interacted with")
     
     model_config = {
         "populate_by_name": True,

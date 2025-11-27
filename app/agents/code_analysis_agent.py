@@ -335,7 +335,7 @@ class CodeAnalysisAgent:
             model=settings.GEMINI_MODEL,
             google_api_key=settings.GEMINI_API_KEY,
             temperature=0.4,  # Lower temp (0.2-0.4) for focused, consistent code review
-            max_output_tokens=4096  # Plenty of room for reasoning + actual response (default is 65,535)
+            max_output_tokens=12288  # Doubled from 4096
         )
         
         logger.info(f"✅ CodeAnalysisAgent initialized with model: {settings.GEMINI_MODEL}")

@@ -1,7 +1,6 @@
+import logging
 from arango import ArangoClient
 from arango.database import StandardDatabase
-import logging
-
 from app.core.config import settings
 
 logger = logging.getLogger(__name__)

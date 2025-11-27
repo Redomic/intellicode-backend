@@ -21,7 +21,9 @@ class UserCRUD:
             "hashed_password": get_password_hash(user.password),
             "is_active": user.is_active,
             "created_at": now.isoformat(),
-            "onboarding_completed": False
+            "onboarding_completed": False,
+            "llm_usage_count": 0,
+            "interacted_questions": []
         }
         
         result = self.collection.insert(user_data, return_new=True)
@@ -45,6 +47,12 @@ class UserCRUD:
             if 'active_course' not in user_data:
                 user_data['active_course'] = None
             
+            # Ensure usage tracking fields exist
+            if 'llm_usage_count' not in user_data:
+                user_data['llm_usage_count'] = 0
+            if 'interacted_questions' not in user_data:
+                user_data['interacted_questions'] = []
+            
             # Convert datetime strings to datetime objects
             if 'created_at' in user_data and isinstance(user_data['created_at'], str):
                 user_data['created_at'] = datetime.fromisoformat(user_data['created_at'].replace('Z', '+00:00'))
@@ -66,6 +74,12 @@ class UserCRUD:
                 # Ensure active_course field exists (for backward compatibility)
                 if 'active_course' not in user_data:
                     user_data['active_course'] = None
+
+                # Ensure usage tracking fields exist
+                if 'llm_usage_count' not in user_data:
+                    user_data['llm_usage_count'] = 0
+                if 'interacted_questions' not in user_data:
+                    user_data['interacted_questions'] = []
                 
                 # Convert datetime strings to datetime objects
                 if 'created_at' in user_data and isinstance(user_data['created_at'], str):
@@ -255,3 +269,39 @@ class UserCRUD:
         """Get the active course for a user."""
         user = self.get_user_by_key(user_key)
         return user.active_course if user else None
+
+    def increment_llm_usage(self, key: str) -> bool:
+        """Increment LLM usage count for a user."""
+        try:
+            # Use AQL for atomic increment
+            query = """
+                FOR u IN users
+                    FILTER u._key == @key
+                    UPDATE u WITH { llm_usage_count: (u.llm_usage_count || 0) + 1 } IN users
+                    RETURN NEW.llm_usage_count
+            """
+            cursor = self.db.aql.execute(query, bind_vars={'key': key})
+            result = list(cursor)
+            return bool(result)
+        except Exception as e:
+            print(f"Error incrementing LLM usage for {key}: {e}")
+            return False
+
+    def add_interacted_question(self, key: str, question_key: str) -> bool:
+        """Add a question to the list of interacted questions."""
+        try:
+            # Use AQL for atomic update, checking if already exists
+            query = """
+                FOR u IN users
+                    FILTER u._key == @key
+                    LET current_questions = u.interacted_questions || []
+                    FILTER @question_key NOT IN current_questions
+                    UPDATE u WITH { interacted_questions: APPEND(current_questions, @question_key) } IN users
+                    RETURN NEW.interacted_questions
+            """
+            cursor = self.db.aql.execute(query, bind_vars={'key': key, 'question_key': question_key})
+            # Even if it returns empty (already exists), it's a success in terms of "ensure added"
+            return True
+        except Exception as e:
+            print(f"Error adding interacted question {question_key} for {key}: {e}")
+            return False

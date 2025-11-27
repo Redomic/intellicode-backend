@@ -26,6 +26,12 @@ from app.api.auth import get_current_user
 from app.db.database import get_db
 from app.services.code_executor import execute_code, ExecutionStatus
 from app.services.learner_state_service import create_learner_state_service
+from app.services.usage_service import (
+    check_and_increment_llm_usage, 
+    check_question_interaction_limit,
+    register_question_interaction,
+    AI_CALL_LIMIT
+)
 from app.agents.orchestrator import get_orchestrator
 
 
@@ -190,7 +196,8 @@ class SubmitCodeResponse(BaseModel):
 async def run_code(
     request: RunCodeRequest,
     background_tasks: BackgroundTasks,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_current_user),
+    user_crud: UserCRUD = Depends(get_user_crud)
 ):
     """
     Run code with custom test cases without creating a submission.
@@ -201,6 +208,10 @@ async def run_code(
     to get the optimization suggestions.
     """
     try:
+        # Demo Limit: Check question interaction limit
+        if request.question_id:
+            check_question_interaction_limit(current_user, request.question_id)
+
         # Execute the code
         result = execute_code(
             code=request.code,
@@ -224,18 +235,25 @@ async def run_code(
         # Trigger code analysis in background if all tests passed
         analysis_pending = False
         if result.status == ExecutionStatus.ACCEPTED and request.problem_statement and request.question_id:
-            # Add background task - runs AFTER response is sent
-            background_tasks.add_task(
-                run_code_analysis_background,
-                user_key=current_user.key,
-                question_id=request.question_id,
-                code=request.code,
-                problem_statement=request.problem_statement,
-                test_results=test_results_dict,
-                language=request.language
-            )
-            analysis_pending = True
-            print(f"✅ Code analysis scheduled in background for user {current_user.key}")
+            # Demo Limit: Check and increment LLM usage (if within limit)
+            if current_user.llm_usage_count >= AI_CALL_LIMIT:
+                print(f"⚠️ LLM usage limit reached for user {current_user.key}. Skipping analysis.")
+            else:
+                # Increment usage
+                user_crud.increment_llm_usage(current_user.key)
+                
+                # Add background task - runs AFTER response is sent
+                background_tasks.add_task(
+                    run_code_analysis_background,
+                    user_key=current_user.key,
+                    question_id=request.question_id,
+                    code=request.code,
+                    problem_statement=request.problem_statement,
+                    test_results=test_results_dict,
+                    language=request.language
+                )
+                analysis_pending = True
+                print(f"✅ Code analysis scheduled in background for user {current_user.key}")
         
         # Return results immediately (without waiting for analysis)
         return RunCodeResponse(
@@ -250,6 +268,8 @@ async def run_code(
             analysis_pending=analysis_pending
         )
         
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -271,6 +291,9 @@ async def submit_code(
     Runs all test cases and stores the result.
     """
     try:
+        # Demo Limit: Register question interaction (checks limit and adds if new)
+        register_question_interaction(current_user, user_crud, request.question_key)
+
         # Execute the code with all test cases
         result = execute_code(
             code=request.code,

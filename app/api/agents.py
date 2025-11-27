@@ -17,6 +17,8 @@ from app.crud.session import SessionCRUD
 from app.db.database import get_db
 from app.agents.feedback_agent import get_feedback_agent
 from app.agents.orchestrator import get_orchestrator
+from app.crud.user import UserCRUD
+from app.services.usage_service import check_and_increment_llm_usage
 
 logger = logging.getLogger(__name__)
 
@@ -61,6 +63,12 @@ def get_session_crud():
     return SessionCRUD(db)
 
 
+def get_user_crud():
+    """Get UserCRUD instance."""
+    db = get_db()
+    return UserCRUD(db)
+
+
 # ============================================================================
 # ENDPOINTS
 # ============================================================================
@@ -69,7 +77,8 @@ def get_session_crud():
 async def get_hint(
     request: HintRequest,
     current_user: User = Depends(get_current_user),
-    roadmap_crud: RoadmapCRUD = Depends(get_roadmap_crud)
+    roadmap_crud: RoadmapCRUD = Depends(get_roadmap_crud),
+    user_crud: UserCRUD = Depends(get_user_crud)
 ):
     """
     Generate an adaptive pedagogical hint using the full ITS orchestrator.
@@ -106,6 +115,9 @@ async def get_hint(
     logger.info(f"🔍 DEBUG - Request data: question_id={request.question_id}, session_id={request.session_id}, code_length={len(request.code) if request.code else 0}")
     
     try:
+        # Demo Limit: Check and increment LLM usage
+        check_and_increment_llm_usage(current_user, user_crud)
+
         # 1. Get session and check hint limit
         from app.models.session import CodingSessionUpdate
         session_crud = SessionCRUD(get_db())
@@ -293,7 +305,8 @@ async def get_hint(
 @router.post("/chat")
 async def chat_with_assistant(
     request: dict,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_current_user),
+    user_crud: UserCRUD = Depends(get_user_crud)
 ):
     """
     Chat with the AI assistant about the coding problem.
@@ -309,6 +322,9 @@ async def chat_with_assistant(
     logger.info(f"💬 Chat request from user {current_user.key}")
     
     try:
+        # Demo Limit: Check and increment LLM usage
+        check_and_increment_llm_usage(current_user, user_crud)
+
         message = request.get("message", "")
         question_id = request.get("question_id")
         code = request.get("code")

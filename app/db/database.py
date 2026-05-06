@@ -57,13 +57,20 @@ class DatabaseManager:
         """Create required collections if they don't exist."""
         # Only valid collections as per architecture requirements
         collections = [
-            'users',         # User data
-            'questions',     # All questions/problems
-            'assessments',   # User assessments
-            'roadmap',       # Roadmap questions (from A2Z, etc.)
-            'sessions',      # Active coding sessions
-            'submissions',   # Code submissions (LeetCode-style)
-            'behavior'       # Behavior tracking data
+            'users',                # User data
+            'questions',            # All questions/problems
+            'assessments',          # User assessments
+            'roadmap',              # Roadmap questions (from A2Z, etc.)
+            'sessions',             # Active coding sessions
+            'submissions',          # Code submissions (LeetCode-style)
+            'behavior',             # Behavior tracking data
+            # Research study collections (append-only logs)
+            'mastery_history',      # Per-submission mastery delta log (learning trajectory)
+            'hint_outcomes',        # Hint text + link to next submission outcome
+            'daily_snapshots',      # End-of-day mastery vector + engagement stats
+            'content_policy_log',   # What problem was served and why (40/50/10 audit)
+            'review_log',           # Scheduled vs completed SM-2 reviews
+            'calibration_pairs',    # (predicted_mastery_t, actual_outcome_t+1) for Brier/ECE
         ]
         
         for collection_name in collections:

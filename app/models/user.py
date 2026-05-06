@@ -78,17 +78,20 @@ class UserInDB(UserBase):
     # Usage Tracking
     llm_usage_count: int = Field(default=0, description="Number of LLM calls made by the user")
     interacted_questions: List[str] = Field(default_factory=list, description="List of question keys interacted with")
-    
+
+    # Research study flag — bypasses demo limits for study participants
+    is_study_participant: bool = Field(default=False, description="Enrolled in a research study; demo limits disabled")
+
     model_config = {
         "populate_by_name": True,
         "extra": "ignore"
     }
-    
+
     @property
     def _key(self) -> str:
         """Provide backward compatibility for _key access."""
         return self.key
-    
+
 class User(UserBase):
     key: str = Field(alias="_key", serialization_alias="key")
     created_at: datetime
@@ -147,12 +150,15 @@ class User(UserBase):
     # Usage Tracking
     llm_usage_count: int = Field(default=0, description="Number of LLM calls made by the user")
     interacted_questions: List[str] = Field(default_factory=list, description="List of question keys interacted with")
-    
+
+    # Research study flag — bypasses demo limits for study participants
+    is_study_participant: bool = Field(default=False, description="Enrolled in a research study; demo limits disabled")
+
     model_config = {
         "populate_by_name": True,
         "extra": "ignore"
     }
-    
+
     @property
     def _key(self) -> str:
         """Provide backward compatibility for _key access."""

@@ -18,6 +18,7 @@ from app.db.database import get_db
 from app.agents.feedback_agent import get_feedback_agent
 from app.agents.orchestrator import get_orchestrator
 from app.crud.user import UserCRUD
+from app.crud.research_metrics import ResearchMetricsCRUD
 from app.services.usage_service import check_and_increment_llm_usage
 
 logger = logging.getLogger(__name__)
@@ -231,6 +232,21 @@ async def get_hint(
                 detail="Hint generation failed"
             )
         
+        # 5a. Research logging: hint_outcomes (fire-and-forget)
+        try:
+            metrics = ResearchMetricsCRUD(get_db())
+            proficiency_score = proficiency.get("overall_score", 0.0)
+            metrics.log_hint(
+                user_key=current_user.key,
+                session_key=request.session_id or "",
+                question_key=request.question_id,
+                hint_level=hint_level,
+                hint_text=hint_data['hint_text'],
+                proficiency_at_time=proficiency_score,
+            )
+        except Exception as _e:
+            logger.warning(f"hint_outcomes log failed (non-fatal): {_e}")
+
         # 5. Update session analytics and save hint to chat history
         try:
             analytics_update = analytics.copy()

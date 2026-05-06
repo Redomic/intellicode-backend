@@ -14,6 +14,8 @@ from app.models.learner_state import LearnerState, create_default_learner_state
 from app.models.submission import SubmissionStatus
 from app.crud.learner_state import LearnerStateCRUD
 from app.crud.user import UserCRUD
+from app.crud.research_metrics import ResearchMetricsCRUD
+from app.db.database import get_db
 
 logger = logging.getLogger(__name__)
 
@@ -63,18 +65,48 @@ class LearnerStateService:
             state = user.learner_state
         
         is_success = submission_status == SubmissionStatus.ACCEPTED
-        
+        outcome = 1 if is_success else 0
+
         logger.info(
             f"📊 Updating learner state for user {user.key}: "
             f"Question={question_key}, Success={is_success}, Topics={topics}"
         )
-        
+
+        # Capture mastery-before snapshot for research logging
+        mastery_before = {t: state.mastery.get(t, 0.0) for t in topics} if topics else {}
+
         # Update mastery for all relevant topics
         if topics:
             state.mastery = self.learner_crud.update_mastery_from_submission(
                 state, topics, is_success
             )
             logger.debug(f"✅ Updated mastery: {state.mastery}")
+
+            # Research logging: mastery_history + calibration_pairs (fire-and-forget)
+            try:
+                metrics = ResearchMetricsCRUD(get_db())
+                for topic in topics:
+                    before = mastery_before.get(topic, 0.0)
+                    after = state.mastery.get(topic, 0.0)
+                    metrics.log_mastery_update(
+                        user_key=user.key,
+                        topic=topic,
+                        mastery_before=before,
+                        mastery_after=after,
+                        trigger="submission",
+                        question_key=question_key,
+                        outcome=outcome,
+                        hints_used=hints_used,
+                        difficulty=None,
+                    )
+                    metrics.log_calibration_pair(
+                        user_key=user.key,
+                        topic=topic,
+                        predicted_mastery_t=before,
+                        actual_outcome_t1=outcome,
+                    )
+            except Exception as _e:
+                logger.warning(f"Research metric write failed (non-fatal): {_e}")
         
         # Schedule review if successfully solved
         if is_success and topics:

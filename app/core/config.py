@@ -1,6 +1,5 @@
 from pydantic_settings import BaseSettings
 from typing import Optional
-import os
 
 class Settings(BaseSettings):
     # Database settings
@@ -16,6 +15,9 @@ class Settings(BaseSettings):
     
     # CORS settings
     FRONTEND_URL: str = "http://localhost:5173"
+
+    # Admin panel
+    ADMIN_API_KEY: str = "intellicode-admin-dev"  # Override in production via env var
     
     # AI Agent settings
     GEMINI_API_KEY: Optional[str] = None
@@ -41,15 +43,19 @@ class Settings(BaseSettings):
         if self.is_production:
             return [
                 self.FRONTEND_URL,
-                "https://intellicode.redomic.in"  # Explicitly allow production frontend
+                "https://intellicode.redomic.in",
+                "https://intellicode-admin.netlify.app",
             ]
         # In development, allow localhost variations
         return [
             self.FRONTEND_URL,
             "http://localhost:5173",
+            "http://localhost:5174",
             "http://localhost:3000",
             "http://127.0.0.1:5173",
-            "http://127.0.0.1:3000"
+            "http://127.0.0.1:5174",
+            "http://127.0.0.1:3000",
+            "https://intellicode-admin.netlify.app",
         ]
 
 settings = Settings()

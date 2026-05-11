@@ -61,6 +61,13 @@ class RoadmapPatch(BaseModel):
     topics: Optional[List[str]] = None
     problem_statement_text: Optional[str] = None
     scraping_success: Optional[bool] = None
+    sample_test_cases: Optional[List[Dict[str, Any]]] = None
+
+
+class RoadmapTestCasesPut(BaseModel):
+    """Replace all sample test cases for a roadmap question."""
+
+    sample_test_cases: List[Dict[str, Any]]
 
 class RoadmapCreate(BaseModel):
     course: str
@@ -275,6 +282,23 @@ def patch_roadmap_item(key: str, body: RoadmapPatch):
     if not col.get(key):
         raise HTTPException(status_code=404, detail="Roadmap item not found")
     col.update({"_key": key, **updates})
+    return col.get(key)
+
+
+@router.put("/roadmap/{key}/test-cases", dependencies=[Depends(require_admin)])
+def put_roadmap_test_cases(key: str, body: RoadmapTestCasesPut):
+    """Replace `sample_test_cases` only (full list). Use an empty list to clear."""
+    db = get_db()
+    col = db.collection("roadmap")
+    if not col.get(key):
+        raise HTTPException(status_code=404, detail="Roadmap item not found")
+    col.update(
+        {
+            "_key": key,
+            "sample_test_cases": body.sample_test_cases,
+            "updated_at": datetime.utcnow().isoformat(),
+        }
+    )
     return col.get(key)
 
 
